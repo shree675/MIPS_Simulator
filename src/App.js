@@ -32,24 +32,9 @@ class App extends Component {
   render = () => {
     return (
       <div className="main-screen">
-        <div>
-          <Navbar
-            /* setFile={this.setFile}
-            deleteFile={this.deleteFile}
-            assemble={this.assemble}
-            execute={this.Execute}
-            stepRun={this.StepRun}
-            toggleDF={this.onDataForwardEnable}
-            dataForw={this.state.dataForwarding}
-            running={this.state.running}
-            toggleMS={this.onEnableMoreStats}
-            moreStats={this.state.enableMoreStats}
-            toggleCacheSettings={this.onToggleCacheSettings}
-            isShowing={this.state.showCacheConfig} */
-          />
-        </div>
+        
         <div className="App">
-          <div style={{ width: '30%' }}>
+          <div style={{width: '35%'}}>
             <SideBar
               /* registers={this.state.registers}
               pc={this.state.pc}
@@ -70,13 +55,29 @@ class App extends Component {
               refreshCacheContents={this.showCacheContents}  */
             />
           </div> 
-          <div style={{ width: '70%' }}>
+          <div style={{width: '65%', height: '722px'}}>
+          <div>
+          <Navbar
+            /* setFile={this.setFile}
+            deleteFile={this.deleteFile}
+            assemble={this.assemble}
+            execute={this.Execute}
+            stepRun={this.StepRun}
+            toggleDF={this.onDataForwardEnable}
+            dataForw={this.state.dataForwarding}
+            running={this.state.running}
+            toggleMS={this.onEnableMoreStats}
+            moreStats={this.state.enableMoreStats}
+            toggleCacheSettings={this.onToggleCacheSettings}
+            isShowing={this.state.showCacheConfig} */
+          />
+        </div>
             <IDE
               /* onCodeChange={this.onCodeChange}
               code={this.state.code}
               pc={this.state.pc} */
             />
-            <div style={{ height: '1px', backgroundColor: 'white' }}></div>
+            <div style={{height: '1px', backgroundColor: 'white'}}></div>
             <Console
               /* console={this.state.print}
               operations={currentOperations}

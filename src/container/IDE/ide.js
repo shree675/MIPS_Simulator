@@ -16,8 +16,8 @@ class IDE extends Component {
                   className={"IDE"}
                   mode="mips_assembler" 
                   theme="dracula"
-                  placeholder="//write assembly code here..."
-                  fontSize={18} 
+                  placeholder="// Type your code here:"
+                  fontSize={16} 
                   style={{width: "100%", height: "430px"}}
                   name="mipsIDE" 
                   editorProps={{$blockScrolling: true}}

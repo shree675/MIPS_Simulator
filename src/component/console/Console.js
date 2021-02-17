@@ -29,7 +29,7 @@ const Console = props => {
                     className={"console"}
                     theme="dracula"
                     fontSize={14}
-                    style={{ width: "100%", height: "192px" }}
+                    style={{ width: "100%", height: "220px" }}
                     name="console"
                     editorProps={{ $blockScrolling: true }}
                     setOptions={{ tabSize: 4, wrap: false }}

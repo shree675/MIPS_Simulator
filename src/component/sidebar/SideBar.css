@@ -1,7 +1,8 @@
 .sidebar{
     width: 100%;
-    height: 622px;
+    height: 722px;
     overflow: auto;
+    background-color: #383144;
 }
 
 .register{

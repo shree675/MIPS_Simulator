@@ -1,17 +1,21 @@
 .upload {
     position: relative;
     overflow: hidden;
-  }
-  input {
+}
+
+input {
     position: absolute;
     font-size: 20px;
     opacity: 0;
     right: 0;
     top: 0;
-  }
+}
   
 .main-nav{
-    background-color: #3a3b3d;
+    background-color: #2e2e2e;
+    /* width: 70%; */
+    /* float: right; */
+    /* float: left; */
     display: flex;
     flex-direction: row;
     justify-content: space-between;
@@ -61,4 +65,32 @@
     width: 20%;
     left: -101px !important;
     background-color: yellow
+}
+
+button {
+    float: left;
+    height: 100%;
+    background-color: #2e2e2e;
+    color: grey;
+    border: none;
+    border-left: 1px solid grey;
+    /* border-right: 1px solid #001c3d; */
+    text-decoration: none;
+    box-shadow: none;
+    cursor: pointer;
+    outline: none;
+    font-family: 'montserrat';     /* montserrat */
+    font-size: 14px;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+button:hover {
+    background-color: grey;
+    color: white;
+    transition-duration: 0.2s;
+}
+
+.navbar-buttons-right {
+    float: right;
 }

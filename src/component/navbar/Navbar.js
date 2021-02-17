@@ -1,18 +1,52 @@
 import React from 'react'
 import './Navbar.css';
+// import Button from 'react-button';
 // import CODE from '../code';
 // const fs = require('fs');
 
 class Navbar extends React.Component{
-    state = {
-        result: ""
+    // state = {
+    //     result: "",
+    //     clicked: (event) => {
+    //         // alert("hello");
+    //         console.log("hello");
+    //     }
+    // }
+
+    clicked() {
+        console.log("hello");    
     }
+
+    clearAll(){
+        console.log("clear");
+    }
+
+    steprun(){
+        console.log("step-run");
+    }
+
+    run(){
+        console.log("run");
+    }
+
+    help(){
+        console.log("help");
+    }
+    
     render(){
         return(
             <nav className="main-nav">
-                 <div className="title" style={{display: 'inline'}}>
-                    Mips Simulator
+
+                <div className="navbar-buttons">
+                    <button onClick={this.clicked}>UPLOAD</button>
+                    <button onClick={this.clearAll} style={{borderRight: `1px solid grey`}}>CLEAR ALL</button>
                 </div>
+
+                <span className="navbar-buttons-right">
+                    <button onClick={this.steprun}>STEP</button>
+                    <button onClick={this.run}>RUN</button>
+                    <button onClick={this.help}>HELP</button>
+                </span>
 
             </nav>
         )

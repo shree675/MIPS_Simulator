@@ -1,14 +1,19 @@
+@font-face {
+  font-family: 'montserrat';
+  src: url(./fonts/Montserrat-Medium.ttf) format('truetype');
+}
 
 .main-screen{
   width: 100%;
   overflow: hidden;
+  height: 100%;
   background-color: #2e2e2e;
 }
 
 .App{
   display: flex;
   flex-direction: row;
-  
+  height: 100%;
 }
 
 .alert{
