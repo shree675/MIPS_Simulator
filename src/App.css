@@ -1,4 +1,22 @@
-.App {
+
+.main-screen{
+  width: 100%;
+  overflow: hidden;
+  background-color: #2e2e2e;
+}
+
+.App{
+  display: flex;
+  flex-direction: row;
+  
+}
+
+.alert{
+  z-index: 100;
+}
+
+
+/* .App {
   text-align: center;
 }
 
@@ -36,3 +54,4 @@
     transform: rotate(360deg);
   }
 }
+ */

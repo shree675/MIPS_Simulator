@@ -1,0 +1,64 @@
+.upload {
+    position: relative;
+    overflow: hidden;
+  }
+  input {
+    position: absolute;
+    font-size: 20px;
+    opacity: 0;
+    right: 0;
+    top: 0;
+  }
+  
+.main-nav{
+    background-color: #3a3b3d;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    height: 36px;
+}
+
+.brand-icon{
+    display: inline;
+}
+
+.fa-microchip{
+    font-size: large;
+    color: skyblue;
+    margin-right: 10px;
+    margin-left: 10px;
+}
+
+.leftSide{
+    display: inline;
+}
+
+.nav-buttons{
+    color: white;
+    box-sizing: border-box;
+    opacity: 0.8;
+    display: inline;
+    font-weight: 400;
+    font-size: 14px;
+    padding: 6px;
+    margin: 0;
+} 
+.nav-buttons:hover{
+    cursor: default;
+    background-color: #72757a;
+} 
+
+.title{
+    color: white;
+    opacity: 0.8;
+    font-weight: 300;
+    font-size: 16px;
+}
+
+.dropdown-menu{
+    margin-top: 5px;
+    border-radius: 0%;
+    width: 20%;
+    left: -101px !important;
+    background-color: yellow
+}
