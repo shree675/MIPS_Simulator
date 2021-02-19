@@ -4,6 +4,13 @@ import "./SideBar.css";
 const SideBar = props =>
 {
 
+  // var d=0;
+  // var h=0;
+  // var b=0;
+  const [b,setB] = useState(false);
+  const [h,setH] = useState(false);
+  const [d,setD] = useState(true);
+
   function reg() {
     {document.getElementById("mem").style.display="none";}
     {document.getElementById("regs").style.display="block";}
@@ -12,7 +19,7 @@ const SideBar = props =>
     console.log("registers");
   }
 
-  function mem() {
+  function memory() {
     {document.getElementById("regs").style.display="none";}
     {document.getElementById("mem").style.display="block";}
     {document.getElementById("b1").style.backgroundColor="#383144"}
@@ -21,6 +28,12 @@ const SideBar = props =>
   }
 
   function dec() {
+    // d=true;
+    // h=false;
+    // b=false;
+    setB(false);
+    setD(true);
+    setH(false);
     {document.getElementById("decimal").style.display="block"}
     {document.getElementById("hexadecimal").style.display="none"}
     {document.getElementById("binary").style.display="none"}
@@ -31,6 +44,12 @@ const SideBar = props =>
   }
 
   function hex() {
+    // d=false;
+    // h=true;
+    // b=false;
+    setB(false);
+    setD(false);
+    setH(true);
     {document.getElementById("decimal").style.display="none"}
     {document.getElementById("hexadecimal").style.display="block"}
     {document.getElementById("binary").style.display="none"}
@@ -41,6 +60,12 @@ const SideBar = props =>
   }
 
   function bin() {
+    // d=false;
+    // h=false;
+    // b=true;
+    setB(true);
+    setD(false);
+    setH(false);
     {document.getElementById("decimal").style.display="none"}
     {document.getElementById("hexadecimal").style.display="none"}
     {document.getElementById("binary").style.display="block"}
@@ -55,7 +80,7 @@ const SideBar = props =>
       
       <div className="sidebar-menu">
         <button id="b1" onClick={reg}>REGISTERS</button>
-        <button id="b2" onClick={mem}>MEMORY</button>
+        <button id="b2" onClick={memory}>MEMORY</button>
       </div>
       
       <br></br>
@@ -75,13 +100,13 @@ const SideBar = props =>
           <li id="regs">
             <div>
               <ul>
-                <li id="decimal">
+                <li id="decimal" style={{display: d?`block`:`none`}}>
                   Decimal
                 </li>
-                <li id="hexadecimal">
+                <li id="hexadecimal" style={{display: h?`block`:`none`}}>
                   Hexadecimal
                 </li>
-                <li id="binary">
+                <li id="binary" style={{display: b?`block`:`none`}}>
                   Binary
                 </li>
               </ul>
@@ -90,15 +115,15 @@ const SideBar = props =>
           </li>
 
           <li id="mem">
-          <div>
+            <div>
               <ul>
-                <li id="decimal">
+                <li id="decimal" style={{display: d?`block`:`none`}}>
                   Decimal
                 </li>
-                <li id="hexadecimal">
+                <li id="hexadecimal" style={{display: h?`block`:`none`}}>
                   Hexadecimal
                 </li>
-                <li id="binary">
+                <li id="binary" style={{display: b?`block`:`none`}}>
                   Binary
                 </li>
               </ul>
@@ -106,8 +131,38 @@ const SideBar = props =>
             Memory segment
           </li>
 
+          {/* <li id="decimal">
+            Decimal
+            <div>
+              <ul>
+                <li id="regs">REGISTERS</li>
+                <li id="mem">MEMORY</li>
+              </ul>
+            </div>
+          </li>
+
+          <li id="hexadecimal">
+            Hexadecimal
+            <div>
+              <ul>
+                <li id="regs">REGISTERS</li>
+                <li id="mem">MEMORY</li>
+              </ul>
+            </div>
+          </li>
+
+          <li id="binary">
+            Binary
+            <div>
+              <ul>
+                <li id="regs">REGISTERS</li>
+                <li id="mem">MEMORY</li>
+              </ul>
+            </div>
+          </li>*/}
+
         </ul>
-      </div>
+      </div> 
 
     </div>
   );

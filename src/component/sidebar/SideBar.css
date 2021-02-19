@@ -165,7 +165,7 @@
     background-color: #383144;
 }
 
-#regs{
+#regs {
     display: block;
 }
 
@@ -204,9 +204,8 @@
     background-color: gray;
 }
 
-#decimal {
+/* #decimal {
     display: block;
-    /* background-color: gray; */
 }
 
 #hexadecimal {
@@ -215,4 +214,4 @@
 
 #binary {
     display: none;
-}
+} */

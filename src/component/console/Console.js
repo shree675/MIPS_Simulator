@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import './Console.css'
 import AceEditor from "react-ace";
 import 'brace/theme/dracula'; 
+import { ResizableArea } from 'react-resizable-area'
 
 const Console = props => {
     var [isConsole, setIsConsole] = useState(true)
@@ -20,6 +21,7 @@ const Console = props => {
 
     return (
         <div className={"console-wrapper"}>
+        
             <div className="console-nav">
                 <span className={classConsole} onClick={() => consoleScreen()}>Console</span>
                 {/* <span className={classPipeline} onClick={() => pipelineScreen()}>Pipeline</span> */}
@@ -49,7 +51,7 @@ const Console = props => {
 					</tr>
 				</table>
             </div> */}
-        </div>
+            </div>
     );
 }
 
