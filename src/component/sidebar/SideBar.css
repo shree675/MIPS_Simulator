@@ -127,3 +127,82 @@
     text-align: center;
     width: 30px;
 }
+
+/* ---------------------------------------------------------------- */
+
+.sidebar-menu button{
+    font-family: 'montserrat';
+    padding-top: 6px;
+    padding-bottom: 6px;
+    font-size: 18px;
+    background-color: #383144;
+    color: white;
+    box-shadow: none;
+    text-decoration: none;
+    outline: none;
+    cursor: pointer;
+    border: none;
+    border-right: 1px solid grey;
+}
+
+.sidebar-menu button:hover{
+    background-color: rgba(128, 128, 128, 0.466);
+    color: white;
+}
+
+#b1 {
+    background-color: gray;
+}
+
+#b2 {
+    background-color: #383144;
+}
+
+#regs{
+    display: block;
+}
+
+#mem {
+    display: none;
+}
+
+.sidebar-options {
+    margin-left: 0px;
+    padding-left: 0px;
+    /* float: left; */
+}
+
+.sidebar-options button{
+    font-family: 'montserrat';
+    /* padding: 0px; */
+    margin: 0px;
+    padding-top: 3px;
+    /* margin-top: 0px; */
+    padding-bottom: 3px;
+    font-size: 16px;
+    background-color: #383144;
+    color: white;
+    box-shadow: none;
+    text-decoration: none;
+    outline: none;
+    cursor: pointer;
+    border: none;
+    border-right: 1px solid grey;
+}
+
+#sb1 {
+    background-color: gray;
+}
+
+#decimal {
+    display: block;
+    /* background-color: gray; */
+}
+
+#hexadecimal {
+    display: none;
+}
+
+#binary {
+    display: none;
+}

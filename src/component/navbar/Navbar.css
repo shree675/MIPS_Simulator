@@ -88,7 +88,11 @@ button {
 button:hover {
     background-color: grey;
     color: white;
-    transition-duration: 0.2s;
+    transition-duration: 0.1s;
+}
+
+button:active {
+    background-color: #454545;
 }
 
 .navbar-buttons-right {

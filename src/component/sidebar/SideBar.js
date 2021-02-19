@@ -3,9 +3,111 @@ import "./SideBar.css";
 
 const SideBar = props =>
 {
+
+  function reg() {
+    {document.getElementById("mem").style.display="none";}
+    {document.getElementById("regs").style.display="block";}
+    {document.getElementById("b1").style.backgroundColor="gray"}
+    {document.getElementById("b2").style.backgroundColor="#383144"}
+    console.log("registers");
+  }
+
+  function mem() {
+    {document.getElementById("regs").style.display="none";}
+    {document.getElementById("mem").style.display="block";}
+    {document.getElementById("b1").style.backgroundColor="#383144"}
+    {document.getElementById("b2").style.backgroundColor="gray"}
+    console.log("memory");
+  }
+
+  function dec() {
+    {document.getElementById("decimal").style.display="block"}
+    {document.getElementById("hexadecimal").style.display="none"}
+    {document.getElementById("binary").style.display="none"}
+    {document.getElementById("sb1").style.backgroundColor="grey"}
+    {document.getElementById("sb2").style.backgroundColor="#383144"}
+    {document.getElementById("sb3").style.backgroundColor="#383144"}
+    console.log("decimal");
+  }
+
+  function hex() {
+    {document.getElementById("decimal").style.display="none"}
+    {document.getElementById("hexadecimal").style.display="block"}
+    {document.getElementById("binary").style.display="none"}
+    {document.getElementById("sb1").style.backgroundColor="#383144"}
+    {document.getElementById("sb2").style.backgroundColor="grey"}
+    {document.getElementById("sb3").style.backgroundColor="#383144"}
+    console.log("hexadecimal");
+  }
+
+  function bin() {
+    {document.getElementById("decimal").style.display="none"}
+    {document.getElementById("hexadecimal").style.display="none"}
+    {document.getElementById("binary").style.display="block"}
+    {document.getElementById("sb1").style.backgroundColor="#383144"}
+    {document.getElementById("sb2").style.backgroundColor="#383144"}
+    {document.getElementById("sb3").style.backgroundColor="grey"}
+    console.log("binary");
+  }
+
   return (
     <div className="sidebar">
-      <div className="test">Test</div>
+
+      <div className="sidebar-menu">
+        <button id="b1" onClick={reg}>REGISTERS</button>
+        <button id="b2" onClick={mem}>MEMORY</button>
+      </div>
+      <br></br>
+      <hr style={{marginTop:`13px`, marginBottom:`0px`, padding:`0px`, height:`1px`, border:`none`, backgroundColor:`gray`}}></hr>
+
+      <div className="sidebar-options">
+        <button id="sb1" onClick={dec}>DECIMAL</button>
+        <button id="sb2" onClick={hex}>HEXADECIMAL</button>
+        <button id="sb3" onClick={bin}>BINARY</button>
+      </div>
+      <br></br>
+      <hr style={{marginTop:`3.7px`, marginBottom:`0px`, padding:`0px`, height:`1px`, border:`none`, backgroundColor:`gray`}}></hr>
+
+      <div>
+        <ul>
+
+          <li id="regs">
+            <div>
+              <ul>
+                <li id="decimal">
+                  Decimal
+                </li>
+                <li id="hexadecimal">
+                  Hexadecimal
+                </li>
+                <li id="binary">
+                  Binary
+                </li>
+              </ul>
+            </div>
+            Register segment
+          </li>
+
+          <li id="mem">
+          <div>
+              <ul>
+                <li id="decimal">
+                  Decimal
+                </li>
+                <li id="hexadecimal">
+                  Hexadecimal
+                </li>
+                <li id="binary">
+                  Binary
+                </li>
+              </ul>
+            </div>
+            Memory segment
+          </li>
+
+        </ul>
+      </div>
+
     </div>
   );
 
