@@ -41,7 +41,7 @@
     overflow: auto;
 }
 
-.sidebar-options{
+/* .sidebar-options{
     padding-left: 6px;
     width: 100%;
     color: white;
@@ -49,12 +49,12 @@
     background-color: #696b6a;
     font-size: 14px;
     font-weight: 400;
-}
+} */
 
-.sidebar-options i{
+/* .sidebar-options i{
     font-size: 16px;
     padding-right: 6px;
-}
+} */
 
 .s-program{
     color: white;
@@ -130,7 +130,14 @@
 
 /* ---------------------------------------------------------------- */
 
-.sidebar-menu button{
+.sidebar-menu {
+    margin: 0px;
+    padding: 0px;
+    width: 100%;
+    clear: both;
+}
+
+.sidebar-menu button {
     font-family: 'montserrat';
     padding-top: 6px;
     padding-bottom: 6px;
@@ -167,7 +174,10 @@
 }
 
 .sidebar-options {
-    margin-left: 0px;
+    clear: both;
+    margin: 0px;
+    padding: 0px;
+    /* margin-left: 0px; */
     padding-left: 0px;
     /* float: left; */
 }

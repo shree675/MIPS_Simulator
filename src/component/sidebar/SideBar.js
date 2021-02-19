@@ -52,13 +52,14 @@ const SideBar = props =>
 
   return (
     <div className="sidebar">
-
+      
       <div className="sidebar-menu">
         <button id="b1" onClick={reg}>REGISTERS</button>
         <button id="b2" onClick={mem}>MEMORY</button>
       </div>
+      
       <br></br>
-      <hr style={{marginTop:`13px`, marginBottom:`0px`, padding:`0px`, height:`1px`, border:`none`, backgroundColor:`gray`}}></hr>
+      <hr style={{margin:`0px`, clear:`both`, padding:`0px`, height:`2px`, border:`none`, backgroundColor:`gray`}}></hr>
 
       <div className="sidebar-options">
         <button id="sb1" onClick={dec}>DECIMAL</button>
@@ -66,7 +67,7 @@ const SideBar = props =>
         <button id="sb3" onClick={bin}>BINARY</button>
       </div>
       <br></br>
-      <hr style={{marginTop:`3.7px`, marginBottom:`0px`, padding:`0px`, height:`1px`, border:`none`, backgroundColor:`gray`}}></hr>
+      <hr style={{margin:`0px`, clear:`both`, padding:`0px`, height:`1px`, border:`none`, backgroundColor:`gray`}}></hr>
 
       <div>
         <ul>
