@@ -160,14 +160,11 @@ execute.exe = (lines, tags, pc) =>
     {
         pc=pc+1
     }
-
-
     if(pc===lines.length)//if pc has reached the end of the lines pf code, reinitialize to 0, ready for the next step or run
     {
         pc=0
     }
     return pc
-
     //console.log(pc)
     //console.log(lines)
     
