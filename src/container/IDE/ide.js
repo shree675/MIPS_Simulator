@@ -7,7 +7,7 @@ let warning = []
 class IDE extends Component {
   onChange(newValue, e) {
     // console.log('onChange', newValue, e);
-    //this.props.onCodeChange(String(newValue))
+    this.props.onCodeChange(String(newValue))
   }
   render() {
       return (
@@ -24,7 +24,7 @@ class IDE extends Component {
                   setOptions={{tabSize: 4, wrap: false}}
                   showPrintMargin={false}
                   value = {this.props.code}
-                  //onChange={this.onChange.bind(this)}
+                  onChange={this.onChange.bind(this)}
                   annotations = {warning}
                   enableBasicAutocompletion
               />

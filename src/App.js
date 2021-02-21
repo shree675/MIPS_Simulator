@@ -7,37 +7,89 @@ import Navbar from './component/navbar/Navbar';
 import Console from './component/console/Console'
 import SideBar from './component/sidebar/SideBar'
 
-/* function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
-} */
+import processor from './simulator/processor'
+import parser from './simulator/parser'
+import execute from './simulator/execute'
 
 class App extends Component {
+
+  state = {
+		code: "",
+    //isRunning: false,
+		lines: null,
+    tags: null,
+		registers: processor.registers,
+		pc: 0,
+	}
+
+  run = () => {
+		processor.reset()
+		//parser.reset()
+    //console.log(this.state.code)
+    console.log("run");
+    do
+    {
+      this.step()
+
+    }while(this.state.pc!=0);
+    //this.state.lines = parser.parse(this.state.code)
+    //[this.state.lines, this.state.tags] = parser.parse(this.state.code)
+    //console.log(this.state.lines)
+    
+		//numCompInstr = 0
+		
+/* 
+		this.setState({
+			running: 0
+		})	
+		this.setState({
+			instructions: parser.parse(textArea)
+		})
+ */
+		
+	}
+
+  step = () =>{
+    if(this.state.pc===0)
+    {   this.setState({
+        lines: null,
+        tags: null,
+      })
+    }
+    if(this.state.lines==null)
+    {
+      [this.state.lines, this.state.tags] = parser.parse(this.state.code)
+    }
+    console.log("Going to execute")
+    this.state.pc = execute.exe(this.state.lines, this.state.tags, this.state.pc)
+    console.log("Checking Registers")
+    console.log(processor.registers)
+    console.log("Checking pc")
+    console.log(this.state.pc) 
+    console.log("Checking Memory")
+    console.log(processor.memory)
+
+  }
+
+
+  onCodeChange = changedCode => {
+		this.setState({
+			code: changedCode,
+      lines: null,
+      tags: null,
+      pc:0
+		})
+	}
+
   render = () => {
     return (
       <div className="main-screen">
-        
         <div className="App">
           <div style={{width: '35%'}}>
             <SideBar
-              /* registers={this.state.registers}
+              /*registers={this.state.registers}
               pc={this.state.pc}
+              
               clicked={this.state.clicked}
               onNavClick={this.onSideNavClick}
               dataSegment={processor.memory}
@@ -58,6 +110,8 @@ class App extends Component {
           <div style={{width: '65%', height: '722px'}}>
           <div>
           <Navbar
+            run={this.run}
+            step={this.step}
             /* setFile={this.setFile}
             deleteFile={this.deleteFile}
             assemble={this.assemble}
@@ -73,9 +127,9 @@ class App extends Component {
           />
         </div>
             <IDE
-              /* onCodeChange={this.onCodeChange}
+              onCodeChange={this.onCodeChange}
               code={this.state.code}
-              pc={this.state.pc} */
+              pc={this.state.pc} 
             />
             <div style={{height: '1px', backgroundColor: 'white'}}></div>
             <Console

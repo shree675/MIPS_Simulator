@@ -43,8 +43,8 @@ class Navbar extends React.Component{
                 </div>
 
                 <span className="navbar-buttons-right">
-                    <button onClick={this.steprun}>STEP</button>
-                    <button onClick={this.run}>RUN</button>
+                    <button onClick={this.props.step}>STEP</button>
+                    <button onClick={this.props.run}>RUN</button>
                     <button onClick={this.help}>HELP</button>
                 </span>
 
