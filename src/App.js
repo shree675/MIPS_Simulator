@@ -20,6 +20,7 @@ class App extends Component {
     tags: null,
 		registers: processor.registers,
 		pc: 0,
+    memory: processor.memory
 	}
 
   run = () => {
@@ -60,14 +61,21 @@ class App extends Component {
     {
       [this.state.lines, this.state.tags] = parser.parse(this.state.code)
     }
-    console.log("Going to execute")
-    this.state.pc = execute.exe(this.state.lines, this.state.tags, this.state.pc)
-    console.log("Checking Registers")
-    console.log(processor.registers)
-    console.log("Checking pc")
-    console.log(this.state.pc) 
-    console.log("Checking Memory")
-    console.log(processor.memory)
+    // console.log("Going to execute")
+    // this.state.pc = execute.exe(this.state.lines, this.state.tags, this.state.pc)
+    this.setState({
+      pc: execute.exe(this.state.lines, this.state.tags, this.state.pc),
+      registers: processor.registers,
+      memory: processor.memory
+    });
+    // this.render();
+
+    // console.log("Checking Registers")
+    // console.log(processor.registers)
+    // console.log("Checking pc")
+    // console.log(this.state.pc)
+    // console.log("Checking Memory")
+    // console.log(processor.memory)
 
   }
 
@@ -87,6 +95,9 @@ class App extends Component {
         <div className="App">
           <div style={{width: '35%'}}>
             <SideBar
+              registersmap={this.state.registers}
+              programCounter={this.state.pc}
+              memoryArray={this.state.memory}
               /*registers={this.state.registers}
               pc={this.state.pc}
               

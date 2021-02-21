@@ -10,7 +10,7 @@ var execute =
 execute.exe = (lines, tags, pc) =>
 {
     let line = lines[pc]
-    console.log("Instruction number pc")
+    // console.log("Instruction number pc")
     if(line[0]=="#")
     {
         pc = pc+1
@@ -45,8 +45,8 @@ execute.exe = (lines, tags, pc) =>
     {
         let src1 = line[2].replace("$", "")
         let src2 = parseInt(line[3])
-        console.log(src2)
-        console.log(typeof src2)
+        // console.log(src2)
+        // console.log(typeof src2)
         let dest = line[1].replace("$", "")
         //console.log(processor.registers)
         let val1 = processor.getRegister(src1)
@@ -60,8 +60,8 @@ execute.exe = (lines, tags, pc) =>
         let src1 = line[1].replace("$", "")
         let src2 = line[2].replace("$", "")
         let dest = tags.get(line[3]+":")
-        console.log(typeof dest)
-        console.log(dest)
+        // console.log(typeof dest)
+        // console.log(dest)
         let val1 = processor.getRegister(src1)
         let val2 = processor.getRegister(src2)
         if(val1!=val2)
@@ -78,8 +78,8 @@ execute.exe = (lines, tags, pc) =>
         let src1 = line[1].replace("$", "")
         let src2 = line[2].replace("$", "")
         let dest = tags.get(line[3]+":")
-        console.log(typeof dest)
-        console.log(dest)
+        // console.log(typeof dest)
+        // console.log(dest)
         let val1 = processor.getRegister(src1)
         let val2 = processor.getRegister(src2)
         if(val1===val2)
@@ -96,8 +96,8 @@ execute.exe = (lines, tags, pc) =>
         let src1 = line[1].replace("$", "")
         let src2 = line[2].replace("$", "")
         let dest = tags.get(line[3]+":")
-        console.log(typeof dest)
-        console.log(dest)
+        // console.log(typeof dest)
+        // console.log(dest)
         let val1 = processor.getRegister(src1)
         let val2 = processor.getRegister(src2)
         if(val1<=val2)

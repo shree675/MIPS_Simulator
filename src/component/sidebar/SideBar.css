@@ -204,14 +204,37 @@
     background-color: gray;
 }
 
-/* #decimal {
-    display: block;
+ul, li {
+    padding: 0px;
+    margin: 0px;
+    clear: both;
+    /* float:left; */
 }
 
-#hexadecimal {
-    display: none;
+.registers-table {
+    margin: 0px;
+    width: 100%;
+    clear: both;
+    padding: 0px;
+    color: white;
 }
 
-#binary {
-    display: none;
-} */
+tr {
+    padding: 0px;
+    margin: 0px;
+}
+
+td {
+    border: 1px solid gray;
+    margin: 0px;
+    padding: 7px;
+    width: 50%;
+    /* background-color: yellowgreen; */
+}
+
+.memory-table {
+    color: white;
+    font-family: 'montserrat';
+    font-size: 18px;
+    padding: 5px;
+}

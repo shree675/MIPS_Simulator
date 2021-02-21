@@ -49,8 +49,8 @@ parser.parse = code => {
         }
     }
 
-    console.log(lineWiseSplit)
-    console.log(tags)
+    // console.log(lineWiseSplit)
+    // console.log(tags)
     return [lineWiseSplit, tags]
 };
 export default parser
