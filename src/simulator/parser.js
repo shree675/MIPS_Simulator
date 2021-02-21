@@ -9,6 +9,7 @@ var parser = {
 };
 
 parser.parse = code => {
+    processor.reset()
     const lineWiseSplit = [];
     var tags = new Map();
     //const tags=[];
