@@ -135,6 +135,7 @@
     padding: 0px;
     width: 100%;
     clear: both;
+    background-color: #333333;
 }
 
 .sidebar-menu button {
@@ -162,7 +163,7 @@
 }
 
 #b2 {
-    background-color: #383144;
+    background-color: #333333;
 }
 
 #regs {
@@ -171,9 +172,14 @@
 
 #mem {
     display: none;
+    border: 1px solid #bd93f9;
+    margin: 5px;
+    padding: 5px;
 }
 
 .sidebar-options {
+    background-color: #333333;
+    width: 100%;
     clear: both;
     margin: 0px;
     padding: 0px;
@@ -204,6 +210,10 @@
     background-color: gray;
 }
 
+#sb2, #sb3 {
+    background-color: #333333;
+}
+
 ul, li {
     padding: 0px;
     margin: 0px;
@@ -225,7 +235,7 @@ tr {
 }
 
 td {
-    border: 1px solid gray;
+    border: 1px solid #bd93f9;
     margin: 0px;
     padding: 7px;
     width: 50%;
