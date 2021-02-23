@@ -9,9 +9,14 @@ var execute =
 //and pc which is the index of the instruction to execute in the lines array
 execute.exe = (lines, tags, pc) =>
 {
+    if(lines==null)
+    {
+        pc = 0;
+        return pc;
+    }
     let line = lines[pc]
     // console.log("Instruction number pc")
-    if(line[0]=="#")
+    if(line[0]=="" || line[0]=="#")
     {
         pc = pc+1
     }

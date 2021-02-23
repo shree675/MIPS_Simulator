@@ -27,7 +27,7 @@ class App extends Component {
 		processor.reset()
 		//parser.reset()
     //console.log(this.state.code)
-    console.log("run");
+    //console.log("run");
     do
     {
       this.step()
@@ -35,7 +35,7 @@ class App extends Component {
     }while(this.state.pc!=0);
     //this.state.lines = parser.parse(this.state.code)
     //[this.state.lines, this.state.tags] = parser.parse(this.state.code)
-    //console.log(this.state.lines)
+    console.log(this.state.lines)
     
 		//numCompInstr = 0
 		
@@ -77,14 +77,43 @@ class App extends Component {
     }
     // this.render();
 
-    // console.log("Checking Registers")
-    // console.log(processor.registers)
+    //console.log("Checking Registers")
+    //console.log(processor.registers)
     // console.log("Checking pc")
     // console.log(this.state.pc)
-    // console.log("Checking Memory")
-    // console.log(this.state.memory)
+    //console.log("Checking Memory")
+    //console.log(this.state.memory)
 
   }
+
+  // --- logic to upload and clear file ---
+	setFile = async (event) => {
+		let file = event.target.files[0];
+		//creating a reader object
+		var reader = new FileReader();
+    //console.log("SetFile")
+
+		//reading file
+		reader.onload = () => {
+			// console.log(reader.result);
+			this.setState({
+				code: String(reader.result)
+			})
+		}
+
+		reader.readAsText(file);
+	}
+
+	deleteFile = (event) => {
+		// localStorage.removeItem("result");
+		// window.location.reload()
+		this.setState({
+			code: "",
+      processor: processor.reset(),
+      pc: 0
+		})
+    
+	}
 
 
   onCodeChange = changedCode => {
@@ -130,9 +159,9 @@ class App extends Component {
           <Navbar
             run={this.run}
             step={this.step}
-            /* setFile={this.setFile}
+            setFile={this.setFile}
             deleteFile={this.deleteFile}
-            assemble={this.assemble}
+            /*assemble={this.assemble}
             execute={this.Execute}
             stepRun={this.StepRun}
             toggleDF={this.onDataForwardEnable}

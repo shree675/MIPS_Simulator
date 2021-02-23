@@ -1,11 +1,26 @@
 .upload {
     position: relative;
     overflow: hidden;
+    float: left;
+    height: 100%;
+    background-color: #2e2e2e;
+    color: #D3D3D3;
+    border: none;
+ /*    border-left: 1px solid grey; */
+    /* border-right: 1px solid #001c3d; */
+    text-decoration: none;
+    box-shadow: none;
+    cursor: pointer;
+    outline: none;
+    font-family: 'montserrat';     /* montserrat */
+    font-size: 18px;
+    padding-left: 10px;
+    padding-right: 10px;
 }
 
 input {
     position: absolute;
-    font-size: 20px;
+    font-size: 18px;
     opacity: 0;
     right: 0;
     top: 0;
@@ -20,72 +35,65 @@ input {
     flex-direction: row;
     justify-content: space-between;
     height: 36px;
-}
-
-.brand-icon{
-    display: inline;
-}
-
-.fa-microchip{
-    font-size: large;
-    color: skyblue;
-    margin-right: 10px;
-    margin-left: 10px;
-}
-
-.leftSide{
-    display: inline;
+    font-size: 18px;
 }
 
 .nav-buttons{
-    color: white;
+    background-color: #292929;
     box-sizing: border-box;
     opacity: 0.8;
     display: inline;
     font-weight: 400;
-    font-size: 14px;
+    font-size: 18px;
     padding: 6px;
     margin: 0;
 } 
 .nav-buttons:hover{
     cursor: default;
-    background-color: #72757a;
+    /*background-color: #72757a;*/
+    background-color: grey;
+    color: white;
+    transition-duration: 0.1s;
 } 
 
-.title{
-    color: white;
-    opacity: 0.8;
-    font-weight: 300;
-    font-size: 16px;
-}
-
-.dropdown-menu{
-    margin-top: 5px;
-    border-radius: 0%;
-    width: 20%;
-    left: -101px !important;
-    background-color: yellow
-}
 
 button {
     float: left;
     height: 100%;
-    background-color: #2e2e2e;
-    color: grey;
+    background-color: #292929;
+    color: #D3D3D3;
     border: none;
-    border-left: 1px solid grey;
+    /* border-left: 1px solid grey; */
     /* border-right: 1px solid #001c3d; */
     text-decoration: none;
     box-shadow: none;
     cursor: pointer;
     outline: none;
     font-family: 'montserrat';     /* montserrat */
-    font-size: 14px;
+    font-size: 18px;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+.nav-item {
+    float: left;
+    height: 100%;
+    background-color: #2e2e2e;
+    color: #D3D3D3;
+    border: none;
+    /* border-left: 1px solid grey; */
+    /* border-right: 1px solid #001c3d; */
+    text-decoration: none;
+    box-shadow: none;
+    cursor: pointer;
+    outline: none;
+    font-family: 'montserrat';     /* montserrat */
+    font-size: 18px;
     padding-left: 10px;
     padding-right: 10px;
 }
 
 button:hover {
+    cursor: default;
     background-color: grey;
     color: white;
     transition-duration: 0.1s;
@@ -95,6 +103,70 @@ button:active {
     background-color: #454545;
 }
 
-.navbar-buttons-right {
+/* .navbar-buttons-right {
     float: right;
+    height: 100%;
+    background-color: #292929;
+     color: #D3D3D3;
+    border: none;
+    /* border-left: 1px solid grey; */
+    /* border-right: 1px solid #001c3d; */
+    /*text-decoration: none;
+    box-shadow: none;
+    cursor: pointer;
+    outline: none;
+    font-family: 'montserrat';     /* montserrat */
+    /*font-size: 18px;
+    padding-left: 10px;
+    padding-right: 10px;
+} */
+
+/* .navbar-buttons-left {
+    float: left;
+    height: 100%;
+    background-color: #292929;
+   color: #D3D3D3;
+    border: none;
+    /* border-left: 1px solid grey; */
+    /* border-right: 1px solid #001c3d; */
+    /*text-decoration: none;
+    box-shadow: none;
+    cursor: pointer;
+    outline: none;
+    font-family: 'montserrat';     /* montserrat */
+    /*font-size: 18px;
+    padding-left: 10px;
+    padding-right: 10px;
 }
+ */
+
+
+/* .brand-icon{
+    display: inline;
+}
+
+.fa-microchip{
+    font-size: large;
+    color: skyblue;
+    margin-right: 10px;
+    margin-left: 10px;
+} */
+
+/* .title{
+    color: white;
+    opacity: 0.8;
+    font-weight: 300;
+    font-size: 16px;
+} */
+
+/* .dropdown-menu{
+    margin-top: 5px;
+    border-radius: 0%;
+    width: 20%;
+    left: -101px !important;
+    background-color: yellow
+}
+ */
+ /* .leftSide{
+    display: inline;
+} */
