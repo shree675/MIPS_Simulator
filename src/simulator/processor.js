@@ -1,6 +1,6 @@
 var processor = {
     //running: true,
-    memory: new Array(1024),
+    memory: new Array(1024).fill(0),
     //instrLabels: {},
     //dataLables: {},
     // wordAddr: [],
@@ -69,7 +69,12 @@ processor.getMemory = (wordAddress) =>
 } 
 processor.reset = () => {
     //processor.running = true
-    processor.memory = new Array(1024)
+    
+    processor.memory = new Array(1024).fill(0)
+    // console.log('reset',processor.memory);
+    // for(var i=0;i<1024;i++){
+    //     processor.memory[i]=0;
+    // }
     //processor.dataLables = {}
     //processor.instrLabels = {}
     processor.pc = 0
