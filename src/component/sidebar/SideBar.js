@@ -28,7 +28,7 @@ const SideBar = props =>
   var str="";
   var strdec="";
   var strbin="";
-  // const [s,setString] = useState("");
+
   var start=0;
   var prev=0;
   var c=0;
@@ -39,17 +39,24 @@ const SideBar = props =>
       c=1;
       lastSeen=i;
       if(start==prev){
-        str+=((4*i+268500992).toString(16) + ": " + memoryArr[i].toString(16) + "<br/>");
-        strdec+=((4*i+268500992).toString(16) + ": " + memoryArr[i].toString(10) + "<br/>");
-        strbin+=((4*i+268500992).toString(16) + ": " + memoryArr[i].toString(2) + "<br/>");
-        // setString(s+((4*i+268500992).toString(16) + ": " + memoryArr[i].toString(16) + "\n"));
+        str+=("[0x" + (4*i+268500992).toString(16) + "]: " + memoryArr[i].toString(16) + "<br/>");
+        strdec+=("[0x" + (4*i+268500992).toString(16) + "]: " + memoryArr[i].toString(10) + "<br/>");
+        strbin+=("[0x" + (4*i+268500992).toString(16) + "]: " + memoryArr[i].toString(2) + "<br/>");
         prev=i;
       }
       else{
-        // console.log("start,",start,"prev,",prev);
-        str+=(start==prev?((4*i+268500992).toString(16) + ": " + memoryArr[i].toString(16) + "<br/>"):("<br>" + (4*(prev+1)+268500992).toString(16) + "...<br/>..." + (4*(i)+268500992).toString(16) + ": 0<br></br>" + (4*i+268500992).toString(16) + ": " + memoryArr[i].toString(16) + "<br/>"));
-        strdec+=(start==prev?((4*i+268500992).toString(16) + ": " + memoryArr[i].toString(10) + "<br/>"):("<br>" + (4*(prev+1)+268500992).toString(16) + "...<br/>..." + (4*(i)+268500992).toString(16) + ": 0<br></br>" + (4*i+268500992).toString(16) + ": " + memoryArr[i].toString(10) + "<br/>"));
-        strbin+=(start==prev?((4*i+268500992).toString(16) + ": " + memoryArr[i].toString(2) + "<br/>"):("<br>" + (4*(prev+1)+268500992).toString(16) + "...<br/>..." + (4*(i)+268500992).toString(16) + ": 0<br></br>" + (4*i+268500992).toString(16) + ": " + memoryArr[i].toString(2) + "<br/>"));
+        // if(i==(prev+2)){
+        //   str+=(4*(prev+1)+268500992).toString(16) + ": 0" + "<br/>";
+        //   prev=i;
+        // }
+        // else{
+        str+=(start==prev?("[0x" + (4*i+268500992).toString(16) + "]: " + memoryArr[i].toString(16) + "<br/>"):("<br>" + "[0x" + (4*(prev+1)+268500992).toString(16) + "...<br/>..." + "0x" + (4*(i)+268500992).toString(16) + "]: 0<br></br>" + "[0x" + (4*i+268500992).toString(16) + "]: " + memoryArr[i].toString(16) + "<br/>"));
+        strdec+=(start==prev?("[0x" + (4*i+268500992).toString(16) + "]: " + memoryArr[i].toString(10) + "<br/>"):("<br>" + "[0x" + (4*(prev+1)+268500992).toString(16) + "...<br/>..." + "0x" + (4*(i)+268500992).toString(16) + "]: 0<br></br>" + "[0x" + (4*i+268500992).toString(16) + "]: " + memoryArr[i].toString(10) + "<br/>"));
+        strbin+=(start==prev?("[0x" + (4*i+268500992).toString(16) + "]: " + memoryArr[i].toString(2) + "<br/>"):("<br>" + "[0x" + (4*(prev+1)+268500992).toString(16) + "...<br/>..." + "0x" + (4*(i)+268500992).toString(16) + "]: 0<br></br>" + "[0x" + (4*i+268500992).toString(16) + "]: " + memoryArr[i].toString(2) + "<br/>"));
+        // strdec+=(start==prev?((4*i+268500992).toString(16) + ": " + memoryArr[i].toString(10) + "<br/>"):("<br>" + (4*(prev+1)+268500992).toString(16) + "...<br/>..." + (4*(i)+268500992).toString(16) + ": 0<br></br>" + (4*i+268500992).toString(16) + ": " + memoryArr[i].toString(10) + "<br/>"));
+        // strbin+=(start==prev?((4*i+268500992).toString(16) + ": " + memoryArr[i].toString(2) + "<br/>"):("<br>" + (4*(prev+1)+268500992).toString(16) + "...<br/>..." + (4*(i)+268500992).toString(16) + ": 0<br></br>" + (4*i+268500992).toString(16) + ": " + memoryArr[i].toString(2) + "<br/>"));
+        prev=i;
+        // }
         // setString(s+((4*start+268500992).toString(16) + "..." + (4*(i-1)+268500992).toString(16) + ": 0\n" + memoryArr[i].toString(16) + "\n" + (4*i+268500992).toString(16) + ": " + memoryArr[i].toString(16) + "\n"));
       }
     }
@@ -58,17 +65,17 @@ const SideBar = props =>
   }
 
   if(c===0){
-    str+=((4*prev+268500992).toString(16) + "...<br/>..." + (4*(1024)+268500992).toString(16) + ": 0<br/>");
-    strdec+=((4*prev+268500992).toString(16) + "...<br/>..." + (4*(1024)+268500992).toString(16) + ": 0<br/>");
-    strbin+=((4*prev+268500992).toString(16) + "...<br/>..." + (4*(1024)+268500992).toString(16) + ": 0<br/>");
+    str+=("[0x" + (4*prev+268500992).toString(16) + "...<br/>...0x" + (4*(1024)+268500992).toString(16) + "]: 0<br/>");
+    strdec+=("[0x" + (4*prev+268500992).toString(16) + "...<br/>...0x" + (4*(1024)+268500992).toString(16) + "]: 0<br/>");
+    strbin+=("[0x" + (4*prev+268500992).toString(16) + "...<br/>...0x" + (4*(1024)+268500992).toString(16) + "]: 0<br/>");
   }
 
   else{
     if(lastSeen!=1023){
       // console.log(start);
-      str+=("<br>" + (4*(lastSeen+1)+268500992).toString(16) + "...<br/>..." + (4*(1024)+268500992).toString(16) + ": 0<br/>");
-      strdec+=("<br>" + (4*(lastSeen+1)+268500992).toString(16) + "...<br/>..." + (4*(1024)+268500992).toString(16) + ": 0<br/>");
-      strbin+=("<br>" + (4*(lastSeen+1)+268500992).toString(16) + "...<br/>..." + (4*(1024)+268500992).toString(16) + ": 0<br/>");
+      str+=("<br>" + "[0x" + (4*(lastSeen+1)+268500992).toString(16) + "...<br/>...0x" + (4*(1024)+268500992).toString(16) + "]: 0<br/>");
+      strdec+=("<br>" + "[0x" + (4*(lastSeen+1)+268500992).toString(16) + "...<br/>...0x" + (4*(1024)+268500992).toString(16) + "]: 0<br/>");
+      strbin+=("<br>" + "[0x" + (4*(lastSeen+1)+268500992).toString(16) + "...<br/>...0x" + (4*(1024)+268500992).toString(16) + "]: 0<br/>");
     }
   }
 
@@ -105,11 +112,14 @@ const SideBar = props =>
   //   }
   // }
 
+  // console.log(registersmap);
+
   for(var [key,value] of registersmap){
     // console.log(key," ",value);
     // registersmaphex.set(key,(value).toString(16));
     // console.log(value);
     // registersmap[key]=value.toString(16);
+    
     registersmaphex.set(key,value.toString(16));
     // console.log(value.toString(16));
     // console.log(registersmaphex.get(key));
@@ -121,14 +131,14 @@ const SideBar = props =>
     {document.getElementById("mem").style.display="none";}
     {document.getElementById("regs").style.display="block";}
     {document.getElementById("b1").style.backgroundColor="gray"}
-    {document.getElementById("b2").style.backgroundColor="#383144"}
+    {document.getElementById("b2").style.backgroundColor="#333333"}
     console.log("registers");
   }
 
   function memory() {
     {document.getElementById("regs").style.display="none";}
     {document.getElementById("mem").style.display="block";}
-    {document.getElementById("b1").style.backgroundColor="#383144"}
+    {document.getElementById("b1").style.backgroundColor="#333333"}
     {document.getElementById("b2").style.backgroundColor="gray"}
     console.log("memory");
   }
@@ -144,8 +154,8 @@ const SideBar = props =>
     {document.getElementById("hexadecimal").style.display="none"}
     {document.getElementById("binary").style.display="none"}
     {document.getElementById("sb1").style.backgroundColor="grey"}
-    {document.getElementById("sb2").style.backgroundColor="#383144"}
-    {document.getElementById("sb3").style.backgroundColor="#383144"}
+    {document.getElementById("sb2").style.backgroundColor="#333333"}
+    {document.getElementById("sb3").style.backgroundColor="#333333"}
     console.log("decimal");
   }
 
@@ -159,9 +169,9 @@ const SideBar = props =>
     {document.getElementById("decimal").style.display="none"}
     {document.getElementById("hexadecimal").style.display="block"}
     {document.getElementById("binary").style.display="none"}
-    {document.getElementById("sb1").style.backgroundColor="#383144"}
+    {document.getElementById("sb1").style.backgroundColor="#333333"}
     {document.getElementById("sb2").style.backgroundColor="grey"}
-    {document.getElementById("sb3").style.backgroundColor="#383144"}
+    {document.getElementById("sb3").style.backgroundColor="#333333"}
     console.log("hexadecimal");
   }
 
@@ -175,8 +185,8 @@ const SideBar = props =>
     {document.getElementById("decimal").style.display="none"}
     {document.getElementById("hexadecimal").style.display="none"}
     {document.getElementById("binary").style.display="block"}
-    {document.getElementById("sb1").style.backgroundColor="#383144"}
-    {document.getElementById("sb2").style.backgroundColor="#383144"}
+    {document.getElementById("sb1").style.backgroundColor="#333333"}
+    {document.getElementById("sb2").style.backgroundColor="#333333"}
     {document.getElementById("sb3").style.backgroundColor="grey"}
     console.log("binary");
   }

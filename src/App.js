@@ -31,7 +31,7 @@ class App extends Component {
     do
     {
       this.step()
-
+      console.log(this.state.pc);
     }while(this.state.pc!=0);
     //this.state.lines = parser.parse(this.state.code)
     //[this.state.lines, this.state.tags] = parser.parse(this.state.code)
@@ -62,9 +62,10 @@ class App extends Component {
       [this.state.lines, this.state.tags] = parser.parse(this.state.code)
     }
     // console.log("Going to execute")
-    // this.state.pc = execute.exe(this.state.lines, this.state.tags, this.state.pc)
+    this.state.pc = execute.exe(this.state.lines, this.state.tags, this.state.pc)
     this.setState({
-      pc: execute.exe(this.state.lines, this.state.tags, this.state.pc),
+      // pc: execute.exe(this.state.lines, this.state.tags, this.state.pc)
+      pc: this.state.pc,
       registers: processor.registers,
       memory: processor.memory
     });
