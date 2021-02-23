@@ -68,6 +68,12 @@ class App extends Component {
       registers: processor.registers,
       memory: processor.memory
     });
+
+    if(this.state.pc===0){
+      this.setState({
+        memory: new Array(1024).fill(0)
+      });
+    }
     // this.render();
 
     // console.log("Checking Registers")
@@ -75,7 +81,7 @@ class App extends Component {
     // console.log("Checking pc")
     // console.log(this.state.pc)
     // console.log("Checking Memory")
-    // console.log(processor.memory)
+    // console.log(this.state.memory)
 
   }
 

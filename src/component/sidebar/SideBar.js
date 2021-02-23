@@ -23,30 +23,70 @@ const SideBar = props =>
 
   var memoryArr=props.memoryArray;
   
-  // console.log(memoryArr);
+  // console.log('sidebar',memoryArr);
 
-  var s="";
+  var str="";
+  var strdec="";
+  var strbin="";
   // const [s,setString] = useState("");
-  // var start=0;
-  // var prev=0;
+  var start=0;
+  var prev=0;
+  var c=0;
+  var lastSeen=0;
 
-  // for(var i=0;i<1024;i++){
-  //   // console.log(s);
-  //   if(memoryArr[i]!=0){
-  //     if(start==prev){
-  //       // s+=((4*i+268500992).toString(16) + ": " + memoryArr[i].toString(16) + "\n");
-  //       s.setString(s+((4*i+268500992).toString(16) + ": " + memoryArr[i].toString(16) + "\n"));
-  //     }
-  //     else{
-  //       // s+=((4*start+268500992).toString(16) + "..." + (4*(i-1)+268500992).toString(16) + ": 0\n" + memoryArr[i].toString(16) + "\n" + (4*i+268500992).toString(16) + ": " + memoryArr[i].toString(16) + "\n");
-  //       s.setString(s+((4*start+268500992).toString(16) + "..." + (4*(i-1)+268500992).toString(16) + ": 0\n" + memoryArr[i].toString(16) + "\n" + (4*i+268500992).toString(16) + ": " + memoryArr[i].toString(16) + "\n"));
-  //     }
-  //   }
-  //   start=i;
-  //   prev=start;
-  // }
+  for(var i=0;i<1024;i++){
+    if(memoryArr[i]!=0){
+      c=1;
+      lastSeen=i;
+      if(start==prev){
+        str+=((4*i+268500992).toString(16) + ": " + memoryArr[i].toString(16) + "<br/>");
+        strdec+=((4*i+268500992).toString(16) + ": " + memoryArr[i].toString(10) + "<br/>");
+        strbin+=((4*i+268500992).toString(16) + ": " + memoryArr[i].toString(2) + "<br/>");
+        // setString(s+((4*i+268500992).toString(16) + ": " + memoryArr[i].toString(16) + "\n"));
+        prev=i;
+      }
+      else{
+        // console.log("start,",start,"prev,",prev);
+        str+=(start==prev?((4*i+268500992).toString(16) + ": " + memoryArr[i].toString(16) + "<br/>"):("<br>" + (4*(prev+1)+268500992).toString(16) + "...<br/>..." + (4*(i)+268500992).toString(16) + ": 0<br></br>" + (4*i+268500992).toString(16) + ": " + memoryArr[i].toString(16) + "<br/>"));
+        strdec+=(start==prev?((4*i+268500992).toString(16) + ": " + memoryArr[i].toString(10) + "<br/>"):("<br>" + (4*(prev+1)+268500992).toString(16) + "...<br/>..." + (4*(i)+268500992).toString(16) + ": 0<br></br>" + (4*i+268500992).toString(16) + ": " + memoryArr[i].toString(10) + "<br/>"));
+        strbin+=(start==prev?((4*i+268500992).toString(16) + ": " + memoryArr[i].toString(2) + "<br/>"):("<br>" + (4*(prev+1)+268500992).toString(16) + "...<br/>..." + (4*(i)+268500992).toString(16) + ": 0<br></br>" + (4*i+268500992).toString(16) + ": " + memoryArr[i].toString(2) + "<br/>"));
+        // setString(s+((4*start+268500992).toString(16) + "..." + (4*(i-1)+268500992).toString(16) + ": 0\n" + memoryArr[i].toString(16) + "\n" + (4*i+268500992).toString(16) + ": " + memoryArr[i].toString(16) + "\n"));
+      }
+    }
+    start=i;
+    // prev=start;
+  }
 
-  // console.log(s);
+  if(c===0){
+    str+=((4*prev+268500992).toString(16) + "...<br/>..." + (4*(1024)+268500992).toString(16) + ": 0<br/>");
+    strdec+=((4*prev+268500992).toString(16) + "...<br/>..." + (4*(1024)+268500992).toString(16) + ": 0<br/>");
+    strbin+=((4*prev+268500992).toString(16) + "...<br/>..." + (4*(1024)+268500992).toString(16) + ": 0<br/>");
+  }
+
+  else{
+    if(lastSeen!=1023){
+      // console.log(start);
+      str+=("<br>" + (4*(lastSeen+1)+268500992).toString(16) + "...<br/>..." + (4*(1024)+268500992).toString(16) + ": 0<br/>");
+      strdec+=("<br>" + (4*(lastSeen+1)+268500992).toString(16) + "...<br/>..." + (4*(1024)+268500992).toString(16) + ": 0<br/>");
+      strbin+=("<br>" + (4*(lastSeen+1)+268500992).toString(16) + "...<br/>..." + (4*(1024)+268500992).toString(16) + ": 0<br/>");
+    }
+  }
+
+  if(document.getElementById("memory-table")!=null){
+    document.getElementById("memory-table").innerHTML=str;
+  }
+
+  if(document.getElementById("memory-tabledec")!=null){
+    document.getElementById("memory-tabledec").innerHTML=strdec;
+  }
+
+  if(document.getElementById("memory-tablebin")!=null){
+    document.getElementById("memory-tablebin").innerHTML=strbin;
+  }
+
+  // setString(str);
+
+  // console.log(str);
 
   // if(pc!=0){
   //   // console.log("hello");
@@ -407,18 +447,28 @@ const SideBar = props =>
             <div>
               <ul>
                 <li id="decimal" style={{display: d?`block`:`none`}}>
-                  Decimal
+                  {/* Decimal */}
+
+                  <div id="memory-tabledec">
+
+                  </div>
+
                 </li>
                 <li id="hexadecimal" style={{display: h?`block`:`none`}}>
                   {/* Hexadecimal */}
 
-                  <div className="memory-table">
-                    {s}
+                  <div id="memory-table">
+                    {/* {str} */}
                   </div>
 
                 </li>
                 <li id="binary" style={{display: b?`block`:`none`}}>
-                  Binary
+                  {/* Binary */}
+
+                  <div id="memory-tablebin">
+                    {/* {str} */}
+                  </div>
+
                 </li>
               </ul>
             </div>

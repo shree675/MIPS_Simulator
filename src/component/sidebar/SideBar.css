@@ -232,7 +232,7 @@ td {
     /* background-color: yellowgreen; */
 }
 
-.memory-table {
+#memory-table, #memory-tabledec, #memory-tablebin {
     color: white;
     font-family: 'montserrat';
     font-size: 18px;
