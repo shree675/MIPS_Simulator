@@ -12,6 +12,7 @@ class IDE extends Component {
   render() {
       return (
           <div className={"IDE-wrapper"}>
+            <div id="editor">
               <AceEditor
                   className={"IDE"}
                   mode="mips_assembler" 
@@ -28,6 +29,7 @@ class IDE extends Component {
                   annotations = {warning}
                   enableBasicAutocompletion
               />
+              </div>
           </div>
       );
   }

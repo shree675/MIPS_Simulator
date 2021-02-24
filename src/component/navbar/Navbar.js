@@ -1,5 +1,6 @@
 import React from 'react'
 import './Navbar.css';
+import Dropdown from 'react-dropdown';
 // import Button from 'react-button';
 // import CODE from '../code';
 // const fs = require('fs');
@@ -12,6 +13,8 @@ class Navbar extends React.Component{
     //         console.log("hello");
     //     }
     // }
+
+    list=["abc", "hello", "aldfj"];
 
     clicked() {
         console.log("hello");    
@@ -38,22 +41,27 @@ class Navbar extends React.Component{
             <nav className="main-nav">
                 
                 
-               {/*  <button className="file">UPLOAD</button> */}
-                    <div className="nav-buttons-left nav-buttons upload">
-                        <span className="file">
-                            UPLOAD
-                            <input type="file" name="file" id ="fileInput" accept=".asm" onChange={this.props.setFile.bind(this)} multiple/>
-                        </span>
-                    </div>  
-                    <div><span className="navbar-buttons-left"> <button className="file" onClick={this.props.deleteFile.bind(this)} style={{borderRight: `1px solid grey`}}>CLEAR ALL</button></span></div>                 
+            {/*  <button className="file">UPLOAD</button> */}
+                <div id="navbar-buttons-id" className="nav-buttons-left nav-buttons upload">
+                    <span className="file">
+                        UPLOAD
+                        <input type="file" name="file" id ="fileInput" accept=".asm" onChange={this.props.setFile.bind(this)} multiple/>
+                    </span>
+                </div>  
+                <div style={{float:`left`}} className="navbar-buttons-left"> 
+                    <button className="file" onClick={this.props.deleteFile.bind(this)} style={{borderRight: `1px solid grey`, float: `left`}}>CLEAR ALL</button>
+                </div>
 
-            <div>
-                <span className="navbar-buttons-right">
-                <button onClick={this.props.step}>STEP</button>
-                <button onClick={this.props.run}>RUN</button>
-                <button onClick={this.help}>HELP</button>
-                </span>
-            </div>
+                
+
+                <div id="navbar-right-id">
+                    <div className="navbar-buttons-right">
+                    <button onClick={this.props.step}>STEP</button>
+                    <button onClick={this.props.run}>RUN</button>
+                    {/* <button onClick={this.help}>HELP</button> */}
+                    <Dropdown className="dropdown" options={this.list} value={this.list[0]} onChange={this._onSelect} placeholder="HELP">HELP</Dropdown>
+                    </div>
+                </div>
                 
 
             </nav>
