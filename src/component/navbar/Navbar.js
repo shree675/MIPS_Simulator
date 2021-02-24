@@ -36,17 +36,25 @@ class Navbar extends React.Component{
     render(){
         return(
             <nav className="main-nav">
+                
+                
+               {/*  <button className="file">UPLOAD</button> */}
+                    <div className="nav-buttons-left nav-buttons upload">
+                        <span className="file">
+                            UPLOAD
+                            <input type="file" name="file" id ="fileInput" accept=".asm" onChange={this.props.setFile.bind(this)} multiple/>
+                        </span>
+                    </div>  
+                    <div><span className="navbar-buttons-left"> <button className="file" onClick={this.props.deleteFile.bind(this)} style={{borderRight: `1px solid grey`}}>CLEAR ALL</button></span></div>                 
 
-                <div className="navbar-buttons">
-                    <button onClick={this.clicked}>UPLOAD</button>
-                    <button onClick={this.clearAll} style={{borderRight: `1px solid grey`}}>CLEAR ALL</button>
-                </div>
-
+            <div>
                 <span className="navbar-buttons-right">
-                    <button onClick={this.props.step}>STEP</button>
-                    <button onClick={this.props.run}>RUN</button>
-                    <button onClick={this.help}>HELP</button>
+                <button onClick={this.props.step}>STEP</button>
+                <button onClick={this.props.run}>RUN</button>
+                <button onClick={this.help}>HELP</button>
                 </span>
+            </div>
+                
 
             </nav>
         )

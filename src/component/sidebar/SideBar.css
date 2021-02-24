@@ -143,7 +143,7 @@
     padding-top: 6px;
     padding-bottom: 6px;
     font-size: 18px;
-    background-color: #383144;
+    background-color: #292929;
     color: white;
     box-shadow: none;
     text-decoration: none;
@@ -178,7 +178,7 @@
 }
 
 .sidebar-options {
-    background-color: #333333;
+    background-color: #292929;
     width: 100%;
     clear: both;
     margin: 0px;

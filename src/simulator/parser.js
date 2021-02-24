@@ -16,10 +16,11 @@ parser.parse = code => {
   
     code.split("\n").forEach(line => {
       var lineArr = line.trim().split(/[ ,]+/)
-      if(!(lineArr.length === 1 && lineArr[0] === "")) 
+      lineWiseSplit.push(lineArr);
+      /* if(!(lineArr.length === 1 && lineArr[0] === "")) 
       {
           lineWiseSplit.push(lineArr);
-      }
+      } */
     });
     for(let i =0; i<lineWiseSplit.length; i++)
     {
