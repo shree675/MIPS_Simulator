@@ -1,7 +1,10 @@
 import logo from './logo.svg';
 import './App.css';
 import React, { Component } from 'react';
-
+import ace from 'ace-builds/src-min-noconflict/ace';
+// import "brace/mode/{mode_name}";
+// import "brace/snippets/{mode_name}";
+// import "brace/ext/language_tools";
 import IDE from './container/IDE/ide';
 import Navbar from './component/navbar/Navbar';
 import Console from './component/console/Console'
@@ -10,6 +13,12 @@ import SideBar from './component/sidebar/SideBar'
 import processor from './simulator/processor'
 import parser from './simulator/parser'
 import execute from './simulator/execute'
+import { Editor } from 'brace';
+import AceEditor from "react-ace";
+// var Range = ace.require('ace/range').Range;
+import {Range} from 'ace-builds';
+
+var editor = ace.edit(document.getElementById("editor"));
 
 class App extends Component {
 
@@ -51,6 +60,10 @@ class App extends Component {
 	}
 
   step = () =>{
+    
+    editor.session.addMarker(new Range(0, 0, 2, 1), "editor-marker", "fullLine",true);
+    // console.log(editor.session);
+
     if(this.state.pc===0)
     {   this.setState({
         lines: null,
@@ -110,6 +123,8 @@ class App extends Component {
 		this.setState({
 			code: "",
       processor: processor.reset(),
+      memory: processor.memory,
+      registers: processor.registers,
       pc: 0
 		})
     
@@ -173,11 +188,13 @@ class App extends Component {
             isShowing={this.state.showCacheConfig} */
           />
         </div>
+          <div id="editor">
             <IDE
               onCodeChange={this.onCodeChange}
               code={this.state.code}
               pc={this.state.pc} 
             />
+          </div>
             <div style={{height: '1px', backgroundColor: 'white'}}></div>
             <Console
               /* console={this.state.print}

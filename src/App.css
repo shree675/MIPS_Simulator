@@ -20,6 +20,16 @@
   z-index: 100;
 }
 
+.editor-marker {
+  position: absolute;
+  background-color: gray;
+  opacity: 0.5;
+  z-index: 20;
+}
+
+#editor {
+  font-size: 16px;
+}
 
 /* .App {
   text-align: center;

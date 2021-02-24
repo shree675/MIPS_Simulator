@@ -1,5 +1,6 @@
 .upload {
-    position: relative;
+    /* position: relative; */
+    /* width: 100%; */
     overflow: hidden;
     float: left;
     height: 100%;
@@ -19,18 +20,20 @@
 }
 
 input {
-    position: absolute;
+    /* position: absolute; */
     font-size: 18px;
     opacity: 0;
-    right: 0;
-    top: 0;
+    /* right: 0; */
+    /* top: 0; */
 }
   
 .main-nav{
     background-color: #2e2e2e;
+    /* width: 100%; */
     /* width: 70%; */
     /* float: right; */
     /* float: left; */
+    /* clear: both; */
     display: flex;
     flex-direction: row;
     justify-content: space-between;
@@ -38,11 +41,24 @@ input {
     font-size: 18px;
 }
 
+.file{
+    clear: right;
+    float: left;
+}
+
+#navbar-buttons-id {
+    /* width: 100%; */
+    float: left;
+    width: 93px;
+    /* clear: right; */
+}
+
 .nav-buttons{
+    float: left;
     background-color: #292929;
     box-sizing: border-box;
     opacity: 0.8;
-    display: inline;
+    display: block;
     font-weight: 400;
     font-size: 18px;
     padding: 6px;
@@ -101,14 +117,35 @@ button:hover {
 
 button:active {
     background-color: #454545;
+    cursor: pointer;
 }
 
-/* .navbar-buttons-right {
+#navbar-right-id {
+    /* clear: both; */
+    /* float: right; */
+    overflow: auto;
+}
+
+.navbar-buttons-right {
+    /* width: 100%; */
     float: right;
     height: 100%;
     background-color: #292929;
-     color: #D3D3D3;
+    color: #D3D3D3;
     border: none;
+}
+
+.dropdown {
+    z-index: 20;
+    color: white;
+    background-color: gray;
+}
+
+.navbar-buttons-left {
+    /* width: 100%; */
+    clear: both;
+    /* float: left; */
+}
     /* border-left: 1px solid grey; */
     /* border-right: 1px solid #001c3d; */
     /*text-decoration: none;
@@ -119,7 +156,7 @@ button:active {
     /*font-size: 18px;
     padding-left: 10px;
     padding-right: 10px;
-} */
+}
 
 /* .navbar-buttons-left {
     float: left;
