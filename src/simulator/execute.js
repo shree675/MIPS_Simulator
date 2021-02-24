@@ -161,6 +161,26 @@ execute.exe = (lines, tags, pc) =>
         processor.setMemory(dest2, value)
         pc = pc+1
     }
+    
+    else if(line[0]==="syscall")
+    {
+        let code = processor.getRegister("v0")
+        switch(code)
+        {
+            case 1:
+                this.props.console.printToConsole(1, 4);
+                //print the integer stored in $a0 on the console
+                break;
+            case 4:
+                //print the string whose address is store in $a0, on the console
+                break;
+            case 10:
+                pc=0
+                //exit
+                break;
+        }
+        pc = pc+1
+    }
     else
     {
         pc=pc+1

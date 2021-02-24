@@ -32,7 +32,7 @@ loop:
         update:
         addiu   $t2, $t2, 1         # j++
         #sll     $t3, $t2, 2         # t3 = j*4
-        addu    $t0, $t0, 4        # point to next element -->
+        addiu    $t0, $t0, 4        # point to next element -->
         j       forLoop
     exitForLoop:
         addiu   $t1, $t1, 1  # i++;
