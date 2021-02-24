@@ -35,7 +35,7 @@ execute.exe = (lines, tags, pc) =>
         processor.setRegister(dest, (val1+val2))
         pc = pc+1
     }
-    else if(line[0]==="sub")
+    else if(line[0]==="sub" || line[0]==="subu")
     {
         let src1 = line[2].replace("$", "")
         let src2 = line[3].replace("$", "")
@@ -57,6 +57,32 @@ execute.exe = (lines, tags, pc) =>
         let val1 = processor.getRegister(src1)
         let val2 = src2
         processor.setRegister(dest, (val1+val2))
+        pc = pc+1
+    }
+    else if(line[0]==="srl")
+    {
+        let src1 = line[2].replace("$", "")
+        let src2 = parseInt(line[3])
+        // console.log(src2)
+        // console.log(typeof src2)
+        let dest = line[1].replace("$", "")
+        //console.log(processor.registers)
+        let val1 = processor.getRegister(src1)
+        let val2 = 2**src2
+        processor.setRegister(dest, (val1/val2))
+        pc = pc+1
+    }
+    else if(line[0]==="sll")
+    {
+        let src1 = line[2].replace("$", "")
+        let src2 = parseInt(line[3])
+        // console.log(src2)
+        // console.log(typeof src2)
+        let dest = line[1].replace("$", "")
+        //console.log(processor.registers)
+        let val1 = processor.getRegister(src1)
+        let val2 = 2**src2
+        processor.setRegister(dest, (val1*val2))
         pc = pc+1
     }
     //bne $t2, $s0, main
@@ -168,18 +194,25 @@ execute.exe = (lines, tags, pc) =>
         switch(code)
         {
             case 1:
-                this.props.console.printToConsole(1, 4);
+                //this.props.console.printToConsole(1, 4);
+                console.log("case 1")
+                pc = pc+1
                 //print the integer stored in $a0 on the console
                 break;
             case 4:
+                console.log("case 4")
+                pc = pc+1
                 //print the string whose address is store in $a0, on the console
                 break;
             case 10:
+                console.log("case 10")
                 pc=0
                 //exit
                 break;
+            default:
+                pc=pc+1
         }
-        pc = pc+1
+        
     }
     else
     {
