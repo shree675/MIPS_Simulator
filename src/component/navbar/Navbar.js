@@ -58,8 +58,8 @@ class Navbar extends React.Component{
                     <div className="navbar-buttons-right">
                     <button onClick={this.props.step}>STEP</button>
                     <button onClick={this.props.run}>RUN</button>
-                    {/* <button onClick={this.help}>HELP</button> */}
-                    <Dropdown className="dropdown" options={this.list} value={this.list[0]} onChange={this._onSelect} placeholder="HELP">HELP</Dropdown>
+                    <button onClick={this.help}>HELP</button> 
+                    {/* <Dropdown className="dropdown" options={this.list} value={this.list[0]} onChange={this._onSelect} placeholder="HELP">HELP</Dropdown> */}
                     </div>
                 </div>
                 

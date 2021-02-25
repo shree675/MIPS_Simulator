@@ -1,76 +1,46 @@
-<<<<<<< HEAD
-# Getting Started with Create React App
-
-
-Changes
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
-
-## Available Scripts
-
-In the project directory, you can run:
-
-### `yarn start`
-
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
-
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
-
-### `yarn test`
-
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `yarn build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `yarn eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `yarn build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
-=======
 # MIPS_Simulator
->>>>>>> df04a5fb939af5ae88211c40da4fbae3eefa5b0f
+**MIPSploration.asm** is a web-based assembly language simulator that shows you how your MIPS assembly code alters the registers, memory and other related entities, step by step.
+This project was developed as a part of the Computer Organization Lab course and aims to provide a exploratory experience of MIPS and related basic concepts of Computer Organization. 
+
+### Get Started
+This Simulator has been developed using React. To host it locally, run the following
+1. Download the zip file
+2. run "npm install"
+3. run "npm start"
+*Node and npm are required to run Simulator locally
+
+### How to use it?
+1. Enter your MIPS assembly code in the integrated code editor provided either by typing or using the Upload option
+2. Click on RUN to process the entire code altogether 
+    or
+   Click on STEP to execute each line of code step by step
+3. Observe the REGISTERS changing values in the panel on the left. 
+4. Switch to the MEMORY display to observe the contents of the data segment.
+5. Print outputs appear on the read-only console present at the bottom.
+5. Click on CLEAR ALL to clear the editor, console, registers and memory.
+
+### Instructions supported by MIPSploration.asm
+
+.word
+add $1,$2,$3
+sub $1,$2,$3
+subu $1,$2,$3 
+addi $1,$2,100 
+bne $1,$2,100
+lw $1,100($2)
+sw $1,100($2)
+lui $1,100 
+li $1,100 
+beq $1,$2,100
+ble $1,$2,100
+addiu $1,$2,100
+addu $1,$2,$3
+j loop:
+srl $a0,$a0,1
+sll $a0,$a0,1
+syscall
+
+### Note:
+1. It is recommended to strictly follow the syntax and formatting conventions of MIPS to avoid unforseen errors. Avoid using registers that are not allowed for user such as the $at register.
+2. Refreshing the page will result in loss of contents of the editor, registers and memory.
+

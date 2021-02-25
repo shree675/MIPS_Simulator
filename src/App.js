@@ -28,6 +28,7 @@ class App extends Component {
 		lines: null,
     tags: null,
 		registers: processor.registers,
+    print: "//console...read-only\n",
 		pc: 0,
     memory: processor.memory
 	}
@@ -91,7 +92,7 @@ class App extends Component {
     // this.render();
 
     //console.log("Checking Registers")
-    //console.log(processor.registers)
+    console.log(processor.registers)
     // console.log("Checking pc")
     // console.log(this.state.pc)
     //console.log("Checking Memory")
@@ -139,6 +140,18 @@ class App extends Component {
       pc:0
 		})
 	}
+
+  printToConsole = (regV0, regA0) => {
+		//printing logic
+		if (regV0 === 1) {
+			console.log("getting a0", regA0)
+			const printNew = this.state.print + regA0 + " "
+			this.setState({
+				print: printNew
+			})
+		}
+	}
+
 
   render = () => {
     return (
@@ -197,8 +210,8 @@ class App extends Component {
           </div>
             <div style={{height: '1px', backgroundColor: 'white'}}></div>
             <Console
-              /* console={this.state.print}
-              operations={currentOperations}
+              console={this.state.print}
+              /*operations={currentOperations}
               moreStats={this.state.enableMoreStats} */
             />
           </div>
