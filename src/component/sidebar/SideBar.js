@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "./SideBar.css";
 
-// var initial=0;
-
 const SideBar = props =>
 {
 
@@ -22,8 +20,21 @@ const SideBar = props =>
   var registersmapbin=new Map();
 
   var memoryArr=props.memoryArray;
-  
-  // console.log('sidebar',memoryArr);
+
+  var prevRegisters=props.prevRegisters;
+  // console.log('prev',prevRegisters);
+  // console.log('currnent',registersmap);
+
+  for(var [key,value] of registersmap){
+    if(document.getElementById(key)!=null){
+      if(prevRegisters.get(key)!=registersmap.get(key)){
+        document.getElementById(key).style.backgroundColor="#bd93f9";
+      }
+      else{
+        document.getElementById(key).style.backgroundColor="#383144";
+      }
+    }
+  }
 
   var str="";
   var strdec="";
