@@ -1,9 +1,38 @@
 import React from 'react'
 import './Navbar.css';
-import Dropdown from 'react-dropdown';
+// import Dropdown from 'react-dropdown';
+import {Dropdown, DropdownButton} from 'react-bootstrap';
 // import Button from 'react-button';
 // import CODE from '../code';
 // const fs = require('fs');
+
+// class Dropdown extends React.Component {
+//     constructor(){
+//      super();
+    
+//      this.state = {
+//            displayMenu: false,
+//          };
+    
+//       this.showDropdownMenu = this.showDropdownMenu.bind(this);
+//       this.hideDropdownMenu = this.hideDropdownMenu.bind(this);
+    
+//     };
+    
+//     showDropdownMenu(event) {
+//         event.preventDefault();
+//         this.setState({ displayMenu: true }, () => {
+//         document.addEventListener('click', this.hideDropdownMenu);
+//         });
+//       }
+    
+//       hideDropdownMenu() {
+//         this.setState({ displayMenu: false }, () => {
+//           document.removeEventListener('click', this.hideDropdownMenu);
+//         });
+    
+//       }
+// }
 
 class Navbar extends React.Component{
     // state = {
@@ -35,8 +64,11 @@ class Navbar extends React.Component{
     help(){
         console.log("help");
     }
+
+    // dropdown=new Dropdown();
     
     render(){
+        // console.log(this.dropdown.showDropdownMenu);
         return(
             <nav className="main-nav">
                 
@@ -75,7 +107,30 @@ class Navbar extends React.Component{
                     <span className="navbar-buttons-right">
                     <button onClick={this.props.step}>STEP</button>
                     <button onClick={this.props.run}>RUN</button>
-                    <button onClick={this.help}>HELP</button> 
+                    {/* <button onClick={this.help}> */}
+                    <button onClick={this.help} id="help-dropdown">
+                    <DropdownButton id="dropdown-item-button" title="HELP">
+                        <Dropdown.ItemText>Dropdown item text</Dropdown.ItemText>
+                        <Dropdown.Item as="button">Action</Dropdown.Item>
+                        <Dropdown.Item as="button">Another action</Dropdown.Item>
+                        <Dropdown.Item as="button">Something else</Dropdown.Item>
+                    </DropdownButton>
+                    </button>
+                    {/* </button> */}
+
+                    {/* <button onClick={this.dropdown.showDropdownMenu}>HELP</button> */}
+                    {/* { this.dropdown.state.displayMenu?(
+                        <ul>
+                            <li><a className="active" href="#Create Page">Create Page</a></li>
+                            <li><a href="#Manage Pages">Manage Pages</a></li>
+                            <li><a href="#Create Ads">Create Ads</a></li>
+                            <li><a href="#Manage Ads">Manage Ads</a></li>
+                            <li><a href="#Activity Logs">Activity Logs</a></li>
+                            <li><a href="#Setting">Setting</a></li>
+                            <li><a href="#Log Out">Log Out</a></li>
+                        </ul>
+                        ):(null)
+                    } */}
                     </span>
                 </span>
 

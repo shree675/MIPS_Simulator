@@ -216,7 +216,7 @@ class App extends Component {
 
 
   render = () => {
-    console.log(document.getElementById("editor"));
+    // console.log(document.getElementById("editor"));
     return (
       <div className="main-screen">
         <div className="App">

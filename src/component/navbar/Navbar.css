@@ -146,12 +146,6 @@ button:active {
     border: none;
 }
 
-.dropdown {
-    z-index: 20;
-    color: white;
-    background-color: gray;
-}
-
 #fileInput {
     width: 5px;
     margin: 0;
@@ -167,64 +161,18 @@ button:active {
     clear: both;
     /* float: left; */
 }
-    /* border-left: 1px solid grey; */
-    /* border-right: 1px solid #001c3d; */
-    /*text-decoration: none;
-    box-shadow: none;
-    cursor: pointer;
-    outline: none;
-    font-family: 'montserrat';     /* montserrat */
-    /*font-size: 18px;
-    padding-left: 10px;
-    padding-right: 10px;
+
+#dropdown-item-button {
+    padding: 6px;
+    margin: 0px;
+    /* z-index: 20; */
 }
 
-/* .navbar-buttons-left {
-    float: left;
-    height: 100%;
-    background-color: #292929;
-   color: #D3D3D3;
-    border: none;
-    /* border-left: 1px solid grey; */
-    /* border-right: 1px solid #001c3d; */
-    /*text-decoration: none;
-    box-shadow: none;
-    cursor: pointer;
-    outline: none;
-    font-family: 'montserrat';     /* montserrat */
-    /*font-size: 18px;
-    padding-left: 10px;
-    padding-right: 10px;
-}
- */
-
-
-/* .brand-icon{
-    display: inline;
+#help-dropdown {
+    padding: 0px;
+    z-index: 1000;
 }
 
-.fa-microchip{
-    font-size: large;
-    color: skyblue;
-    margin-right: 10px;
-    margin-left: 10px;
-} */
-
-/* .title{
-    color: white;
-    opacity: 0.8;
-    font-weight: 300;
-    font-size: 16px;
-} */
-
-/* .dropdown-menu{
-    margin-top: 5px;
-    border-radius: 0%;
-    width: 20%;
-    left: -101px !important;
-    background-color: yellow
+Dropdown {
+    z-index: 1000;
 }
- */
- /* .leftSide{
-    display: inline;
-} */
