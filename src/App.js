@@ -2,6 +2,7 @@ import logo from './logo.svg';
 import './App.css';
 import React, { Component } from 'react';
 import ace from 'ace-builds/src-min-noconflict/ace';
+
 // import "brace/mode/{mode_name}";
 // import "brace/snippets/{mode_name}";
 // import "brace/ext/language_tools";
@@ -86,7 +87,7 @@ class App extends Component {
     }while(this.state.pc!=0);
     //this.state.lines = parser.parse(this.state.code)
     //[this.state.lines, this.state.tags] = parser.parse(this.state.code)
-    console.log(this.state.lines)
+    //console.log(this.state.lines)
     
 		//numCompInstr = 0
 		
@@ -103,9 +104,6 @@ class App extends Component {
 
   step = () =>{
     
-    editor.session.addMarker(new Range(0, 0, 2, 10), "editor-marker", "text");
-    console.log(editor.session);
-
     if(this.state.pc===0)
     {   this.setState({
         lines: null,
@@ -121,14 +119,17 @@ class App extends Component {
       this.state.prevRegisters.set(key,value);
     }
     // console.log('prev', this.state.prevRegisters);
-    this.state.pc = execute.exe(this.state.lines, this.state.tags, this.state.pc)
+    [this.state.pc, this.state.print] = execute.exe(this.state.lines, this.state.tags, this.state.pc, this.state.print)
     this.setState({
       // pc: execute.exe(this.state.lines, this.state.tags, this.state.pc)
       pc: this.state.pc,
       registers: processor.registers,
       memory: processor.memory,
+      print: this.state. print
       // prevRegisters: this.state.tempRegisters
     });
+
+    IDE.highlight(this.state.pc);
 
     // this.state.prevRegisters=processor.registers;
     
@@ -149,7 +150,8 @@ class App extends Component {
     // this.render();
 
     //console.log("Checking Registers")
-    // console.log(processor.registers)
+    //console.log(processor.registers)
+    //console.log('current', this.state.registers);
     // console.log("Checking pc")
     // console.log(this.state.pc)
     //console.log("Checking Memory")
@@ -203,8 +205,9 @@ class App extends Component {
 		})
 	}
 
-  printToConsole = (regV0, regA0) => {
+  /* printToConsole = (regV0, regA0) => {
 		//printing logic
+    console.log("getting a0", regA0)
 		if (regV0 === 1) {
 			console.log("getting a0", regA0)
 			const printNew = this.state.print + regA0 + " "
@@ -212,11 +215,20 @@ class App extends Component {
 				print: printNew
 			})
 		}
-	}
+	} */
 
 
   render = () => {
     // console.log(document.getElementById("editor"));
+    /* var Range = require("ace/range").Range
+    editor.session.addMarker(new Range(8, 0, 8, 1), 'ace_highlight-marker', 'fullLine');  */
+    /* var ac = require('brace');
+    var Range = ac.require('ace/range').Range;
+    editor.session.addMarker(new Range(2, 0, 0, 1), 'myMarker', 'fullLine', true); */
+    
+   /*  var editor = ace.edit("ace-editor");
+    var Range = ace.require('ace/range').Range;
+    editor.session.addMarker(new Range(2, 3,2, 11), 'ace_highlight-marker', 'fullLine'); */
     return (
       <div className="main-screen">
         <div className="App">

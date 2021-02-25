@@ -1,35 +1,19 @@
 import processor from "./processor";
-import cornerCase from "./cornerCase";
-import App from "../App";
-
-//add $t1, $t2, $t3
-var execute = 
+//to handle the cases where the tag is in the same line as the rest of the instruction
+var cornerCase =
 {
-    //temp:4//dummy check
+    temp:0
 };
-//this function takes all the non empty lines of code as an array named lines, all the jump tags in a map named tags 
-//and pc which is the index of the instruction to execute in the lines array
-execute.exe = (lines, tags, pc, print) =>
+
+cornerCase.exe = (lines,  tags, pc, print) =>
 {
-    if(lines==null)
-    {
-        pc = 0;
-        return pc;
-    }
+    //console.log("Enter corner case")
     let line = lines[pc]
-    // console.log("Instruction number pc")
-    if(line[0]=="" || line[0]=="#")
+    line.splice(0,1)//removes the tag from the beginning hence s=extracting the instruction
+    //console.log(line)
+    if(line=="" || line[0]=="#")
     {
         pc = pc+1
-    }
-    else if(line[0].includes(":") && line.length===1)
-    {
-        pc = pc+1
-    }
-    else if(line[0].includes(":") && line.length!=1)
-    {
-        [pc, print] = cornerCase.exe(lines, tags, pc, print);
-        //pc = pc+1
     }
     else if(line[0]==="add" || line[0]==="addu")
     {
@@ -235,17 +219,8 @@ execute.exe = (lines, tags, pc, print) =>
     {
         pc=0
     }
-    return [pc, print]
-    //console.log(pc)
-    //console.log(lines)
-    
     //console.log(processor.registers)
-    
-    /* console.log(line)
-    pc = pc+1
-    line = lines[pc]
-    console.log("Instruction number pc")
-    console.log(line) */
+    return [pc, print]
 }
 
-export default execute
+export default cornerCase
