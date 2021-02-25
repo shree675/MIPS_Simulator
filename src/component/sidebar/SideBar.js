@@ -22,8 +22,40 @@ const SideBar = props =>
   var registersmapbin=new Map();
 
   var memoryArr=props.memoryArray;
+
+  var prevRegisters=props.prevRegisters;
+  // console.log('prev',prevRegisters);
+  // console.log('currnent',registersmap);
+
+  for(var [key,value] of registersmap){
+    if(prevRegisters.get(key)!=registersmap.get(key)){
+      document.getElementById(key).style.backgroundColor="#bd93f9";
+    }
+    else{
+      document.getElementById(key).style.backgroundColor="#383144";
+    }
+  }
   
   // console.log('sidebar',memoryArr);
+
+  // for(var [key,value] in registersmap){
+  //   if(document.getElementById(key).style.backgroundColor==="#bd93f9"){
+  //     document.getElementById(key).style.backgroundColor="";
+  //   }
+  // }
+
+  // for(var [key,value] of registersmap){
+  //   if(document.getElementById(key)!=null){
+  //     // console.log(registersmap.get(key)!=0 && (document.getElementById(key).style.backgroundColor)!="rgb(189, 147, 249)");
+  //     if(registersmap.get(key)!=0 && (document.getElementById(key).style.backgroundColor)!="white"){
+  //       document.getElementById(key).style.backgroundColor="white";
+  //       console.log(document.getElementById(key).style.backgroundColor);
+  //     }
+  //     else{
+  //       document.getElementById(key).style.backgroundColor="#383144";
+  //     }
+  //   }
+  // }
 
   var str="";
   var strdec="";

@@ -42,27 +42,45 @@ class Navbar extends React.Component{
                 
                 
             {/*  <button className="file">UPLOAD</button> */}
-                <div id="navbar-buttons-id" className="nav-buttons-left nav-buttons upload">
-                    <span className="file">
-                        UPLOAD
-                        <input type="file" name="file" id ="fileInput" accept=".asm" onChange={this.props.setFile.bind(this)} multiple/>
-                    </span>
-                </div>  
-                <div style={{float:`left`}} className="navbar-buttons-left"> 
-                    <button className="file" onClick={this.props.deleteFile.bind(this)} style={{borderRight: `1px solid grey`, float: `left`}}>CLEAR ALL</button>
-                </div>
-
+            <div>
+            
+                <span id="navbar-buttons-id" className="nav-buttons upload">
                 
+                    <span className="file">
+                        <label for="fileInput">UPLOAD</label>
+                        <input width="4" maxlength="0" type="file" name="file" id ="fileInput" size="0" accept=".asm" onChange={this.props.setFile.bind(this)} multiple/>
+                        {/* <br></br> */}
+                        
+                    </span>
+                    {/* <span> */}
+                        
+                    {/* </span> */}
+                </span>
+                {/* <span style={{float:`left`}} className="navbar-buttons-left"> */}
+                    {/* <button className="file" onClick={this.props.deleteFile.bind(this)} style={{borderRight: `1px solid grey`, float: `left`}}>CLEAR ALL</button> */}
+                {/* </span> */}
+                <button className="file" onClick={this.props.deleteFile.bind(this)} style={{borderRight: `1px solid grey`, float: `left`}}>CLEAR ALL</button>
+            </div>
 
-                <div id="navbar-right-id">
-                    <div className="navbar-buttons-right">
+                {/* <div>
+
+                <span id="left-buttons">
+                    <div>
+                        UPLOAD<input className="file" type="file" name="file" id ="fileInput" accept=".asm" onChange={this.props.setFile.bind(this)} multiple/>
+                    </div>
+                    <button className="file" onClick={this.props.deleteFile.bind(this)} style={{borderRight: `1px solid grey`, float: `left`}}>CLEAR ALL</button>
+                </span> */}
+
+                <span id="navbar-right-id">
+                    <span className="navbar-buttons-right">
                     <button onClick={this.props.step}>STEP</button>
                     <button onClick={this.props.run}>RUN</button>
                     <button onClick={this.help}>HELP</button> 
-                    {/* <Dropdown className="dropdown" options={this.list} value={this.list[0]} onChange={this._onSelect} placeholder="HELP">HELP</Dropdown> */}
-                    </div>
-                </div>
-                
+                    </span>
+                </span>
+
+                {/* </div> */}
+        
 
             </nav>
         )

@@ -20,7 +20,11 @@ import {Range} from 'ace-builds';
 
 var editor = ace.edit(document.getElementById("editor"));
 
+
+
 class App extends Component {
+
+  // console.log(document.getElementById("editor"));
 
   state = {
 		code: "",
@@ -30,7 +34,44 @@ class App extends Component {
 		registers: processor.registers,
     print: "//console...read-only\n",
 		pc: 0,
-    memory: processor.memory
+    memory: processor.memory,
+    prevRegisters:  new Map(
+      [
+          ["r0", 0],
+          ["at", 0],
+          ["v0", 0],
+          ["v1", 0],
+          ["a0", 0],
+          ["a1", 0],
+          ["a2", 0],
+          ["a3", 0],
+          ["t0", 0],
+          ["t1", 0],
+          ["t2", 0],
+          ["t3", 0],
+          ["t4", 0],
+          ["t5", 0],
+          ["t6", 0],
+          ["t7", 0],
+          ["s0", 0],
+          ["s1", 0],
+          ["s2", 0],
+          ["s3", 0],
+          ["s4", 0],
+          ["s5", 0],
+          ["s6", 0],
+          ["s7", 0],
+          ["t8", 0],
+          ["t9", 0],
+          ["k0", 0],
+          ["k1", 0],
+          ["gp", 0],
+          ["sp", 0],
+          ["s8", 0],
+          ["ra", 0]
+      ]),
+    // prevRegisters: processor.registers
+    // tempRegisters: processor.registers
 	}
 
   run = () => {
@@ -62,8 +103,8 @@ class App extends Component {
 
   step = () =>{
     
-    editor.session.addMarker(new Range(0, 0, 2, 1), "editor-marker", "fullLine",true);
-    // console.log(editor.session);
+    editor.session.addMarker(new Range(0, 0, 2, 10), "editor-marker", "text");
+    console.log(editor.session);
 
     if(this.state.pc===0)
     {   this.setState({
@@ -76,23 +117,39 @@ class App extends Component {
       [this.state.lines, this.state.tags] = parser.parse(this.state.code)
     }
     // console.log("Going to execute")
+    for(var [key,value] of processor.registers){
+      this.state.prevRegisters.set(key,value);
+    }
+    // console.log('prev', this.state.prevRegisters);
     this.state.pc = execute.exe(this.state.lines, this.state.tags, this.state.pc)
     this.setState({
       // pc: execute.exe(this.state.lines, this.state.tags, this.state.pc)
       pc: this.state.pc,
       registers: processor.registers,
-      memory: processor.memory
+      memory: processor.memory,
+      // prevRegisters: this.state.tempRegisters
     });
 
-    if(this.state.pc===0){
-      this.setState({
-        memory: new Array(1024).fill(0)
-      });
-    }
+    // this.state.prevRegisters=processor.registers;
+    
+    // console.log('current', this.state.registers);
+    // console.log('reg', processor.registers);
+    // console.log(this.state.prevRegisters===processor.registers);
+    // this.state.tempRegisters=this.state.registers;
+    // this.setState({
+    
+    // });
+    
+
+    // if(this.state.pc===0){
+    //   this.setState({
+    //     memory: new Array(1024).fill(0)
+    //   });
+    // }
     // this.render();
 
     //console.log("Checking Registers")
-    console.log(processor.registers)
+    // console.log(processor.registers)
     // console.log("Checking pc")
     // console.log(this.state.pc)
     //console.log("Checking Memory")
@@ -115,7 +172,12 @@ class App extends Component {
 			})
 		}
 
-		reader.readAsText(file);
+    try{
+		  reader.readAsText(file);
+    }
+    catch (error){
+
+    }
 	}
 
 	deleteFile = (event) => {
@@ -154,6 +216,7 @@ class App extends Component {
 
 
   render = () => {
+    console.log(document.getElementById("editor"));
     return (
       <div className="main-screen">
         <div className="App">
@@ -162,6 +225,7 @@ class App extends Component {
               registersmap={this.state.registers}
               programCounter={this.state.pc}
               memoryArray={this.state.memory}
+              prevRegisters={this.state.prevRegisters}
               /*registers={this.state.registers}
               pc={this.state.pc}
               

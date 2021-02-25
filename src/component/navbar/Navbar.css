@@ -1,7 +1,37 @@
+input {
+    /* position: absolute; */
+    font-size: 18px;
+    opacity: 0;
+    /* right: 0; */
+    /* top: 0; */
+}
+
+input:hover, input:active {
+    cursor:  pointer;
+}
+  
+.main-nav{
+    background-color: #2e2e2e;
+    width: 100%;
+    /* width: 70%; */
+    clear: both;
+    float: right;
+    /* float: left; */
+    /* clear: both; */
+    display: flex;
+    flex-direction: row;
+    /* display: block; */
+    height: 100%;
+    justify-content: space-between;
+    /* height: 36px; */
+    font-size: 18px;
+}
+
 .upload {
     /* position: relative; */
     /* width: 100%; */
     overflow: hidden;
+    /* margin: 0; */
     float: left;
     height: 100%;
     background-color: #2e2e2e;
@@ -19,37 +49,18 @@
     padding-right: 10px;
 }
 
-input {
-    /* position: absolute; */
-    font-size: 18px;
-    opacity: 0;
-    /* right: 0; */
-    /* top: 0; */
-}
-  
-.main-nav{
-    background-color: #2e2e2e;
-    /* width: 100%; */
-    /* width: 70%; */
-    /* float: right; */
-    /* float: left; */
-    /* clear: both; */
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    height: 36px;
-    font-size: 18px;
-}
-
 .file{
     clear: right;
     float: left;
+    cursor: pointer;
 }
 
 #navbar-buttons-id {
     /* width: 100%; */
     float: left;
-    width: 93px;
+    margin: 0;
+    cursor:pointer;
+    /* width: 93px; */
     /* clear: right; */
 }
 
@@ -57,8 +68,8 @@ input {
     float: left;
     background-color: #292929;
     box-sizing: border-box;
-    opacity: 0.8;
-    display: block;
+    /* opacity: 0.8; */
+    /* display: block; */
     font-weight: 400;
     font-size: 18px;
     padding: 6px;
@@ -109,7 +120,7 @@ button {
 }
 
 button:hover {
-    cursor: default;
+    cursor: pointer;
     background-color: grey;
     color: white;
     transition-duration: 0.1s;
@@ -121,8 +132,8 @@ button:active {
 }
 
 #navbar-right-id {
-    /* clear: both; */
-    /* float: right; */
+    clear: both;
+    float: right;
     overflow: auto;
 }
 
@@ -139,6 +150,16 @@ button:active {
     z-index: 20;
     color: white;
     background-color: gray;
+}
+
+#fileInput {
+    width: 5px;
+    margin: 0;
+    height: 100%;
+}
+
+.left-buttons {
+    float: left;
 }
 
 .navbar-buttons-left {
