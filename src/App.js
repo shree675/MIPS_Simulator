@@ -136,7 +136,8 @@ class App extends Component {
       // prevRegisters: this.state.tempRegisters
     });
 
-    // IDE.highlight(this.state.pc);
+    IDE.highlight(this.state.pc);
+    //IDE.highlight(pc);
 
     // this.state.prevRegisters=processor.registers;
     
@@ -299,6 +300,7 @@ class App extends Component {
             <div style={{height: '1px', backgroundColor: 'white'}}></div>
             <Console
               console={this.state.print}
+              
               /*operations={currentOperations}
               moreStats={this.state.enableMoreStats} */
             />
