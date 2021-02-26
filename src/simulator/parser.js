@@ -29,7 +29,7 @@ parser.parse = code => {
             tags.set(lineWiseSplit[i][0], i)
         }
     }
-    for(let i =0; i<lineWiseSplit.length; i++)
+    for(let i=0; i<lineWiseSplit.length; i++)
     {
         if(lineWiseSplit[i][0].includes(".word"))//only for storing integers
         {

@@ -33,10 +33,10 @@ class App extends Component {
 		lines: null,
     tags: null,
 		registers: processor.registers,
-    print: "//console...read-only\n",
+    print: "*Read Only*\n",
 		pc: 0,
     memory: processor.memory,
-    prevRegisters:  new Map(
+    prevRegisters: new Map(
       [
           ["r0", 0],
           ["at", 0],
@@ -77,6 +77,11 @@ class App extends Component {
 
   run = () => {
 		processor.reset()
+    this.setState({
+      // print: "*Read Only*\n"
+      print: new String("*Read Only*\n")
+    });
+    console.log(this.state.print);
 		//parser.reset()
     //console.log(this.state.code)
     //console.log("run");
@@ -108,6 +113,7 @@ class App extends Component {
     {   this.setState({
         lines: null,
         tags: null,
+        print: new String("*Read Only*\n")
       })
     }
     if(this.state.lines==null)
@@ -125,11 +131,11 @@ class App extends Component {
       pc: this.state.pc,
       registers: processor.registers,
       memory: processor.memory,
-      print: this.state. print
+      print: this.state.print
       // prevRegisters: this.state.tempRegisters
     });
 
-    IDE.highlight(this.state.pc);
+    // IDE.highlight(this.state.pc);
 
     // this.state.prevRegisters=processor.registers;
     
@@ -150,7 +156,7 @@ class App extends Component {
     // this.render();
 
     //console.log("Checking Registers")
-    //console.log(processor.registers)
+    // console.log(processor.registers)
     //console.log('current', this.state.registers);
     // console.log("Checking pc")
     // console.log(this.state.pc)
@@ -190,7 +196,8 @@ class App extends Component {
       processor: processor.reset(),
       memory: processor.memory,
       registers: processor.registers,
-      pc: 0
+      pc: 0,
+      print: "*Read Only*\n"
 		})
     
 	}
@@ -201,7 +208,7 @@ class App extends Component {
 			code: changedCode,
       lines: null,
       tags: null,
-      pc:0
+      pc:0,
 		})
 	}
 

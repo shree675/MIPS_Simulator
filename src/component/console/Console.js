@@ -5,17 +5,17 @@ import 'brace/theme/dracula';
 import { ResizableArea } from 'react-resizable-area'
 
 const Console = props => {
-    var [isConsole, setIsConsole] = useState(true)
+    // var [isConsole, setIsConsole] = useState(true)
 
-    var classConsole = isConsole ? "console-btn active" : "console-btn"
-    var classPipeline = isConsole ? "console-btn" : "console-btn active"
+    // var classConsole = isConsole ? "console-btn active" : "console-btn"
+    // var classPipeline = isConsole ? "console-btn" : "console-btn active"
 
-    const consoleScreen = () => {
-        setIsConsole(true)
-    }
-    const pipelineScreen = () => {
-        setIsConsole(false)
-    }
+    // const consoleScreen = () => {
+    //     setIsConsole(true)
+    // }
+    // const pipelineScreen = () => {
+    //     setIsConsole(false)
+    // }
     // console.log("Ops: ")
     // console.log(props.operations.length)
 
@@ -23,10 +23,10 @@ const Console = props => {
         <div className={"console-wrapper"}>
         
             <div className="console-nav">
-                <span className={classConsole} onClick={() => consoleScreen()}>Console</span>
+                <span className="console-btn">Console</span>
                 {/* <span className={classPipeline} onClick={() => pipelineScreen()}>Pipeline</span> */}
             </div>
-            <div style={!isConsole ? { display: 'none' } : { display: 'block' }}>
+            <div style={{display: 'block'}}>
                 <AceEditor
                     className={"console"}
                     theme="dracula"

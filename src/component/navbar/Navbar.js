@@ -62,6 +62,7 @@ class Navbar extends React.Component{
     }
 
     help(){
+
         console.log("help");
     }
 
@@ -80,7 +81,7 @@ class Navbar extends React.Component{
                 
                     <span className="file">
                         <label for="fileInput">UPLOAD</label>
-                        <input width="4" maxlength="0" type="file" name="file" id ="fileInput" size="0" accept=".asm" onChange={this.props.setFile.bind(this)} multiple/>
+                        <input style={{borderLeft: `1px solid grey`}} width="4" maxlength="0" type="file" name="file" id ="fileInput" size="0" accept=".asm" onChange={this.props.setFile.bind(this)} multiple/>
                         {/* <br></br> */}
                         
                     </span>
@@ -91,7 +92,7 @@ class Navbar extends React.Component{
                 {/* <span style={{float:`left`}} className="navbar-buttons-left"> */}
                     {/* <button className="file" onClick={this.props.deleteFile.bind(this)} style={{borderRight: `1px solid grey`, float: `left`}}>CLEAR ALL</button> */}
                 {/* </span> */}
-                <button className="file" onClick={this.props.deleteFile.bind(this)} style={{borderRight: `1px solid grey`, float: `left`}}>CLEAR ALL</button>
+                <button className="file" onClick={this.props.deleteFile.bind(this)} style={{borderRight: `1px solid grey`, float: `left`, borderLeft: `1px solid grey`}}>CLEAR ALL</button>
             </div>
 
                 {/* <div>
@@ -105,10 +106,10 @@ class Navbar extends React.Component{
 
                 <span id="navbar-right-id">
                     <span className="navbar-buttons-right">
-                    <button onClick={this.props.step}>STEP</button>
-                    <button onClick={this.props.run}>RUN</button>
+                    <button style={{borderLeft: `1px solid grey`}} onClick={this.props.step}>STEP</button>
+                    <button style={{borderLeft: `1px solid grey`}} onClick={this.props.run}>RUN</button>
                     {/* <button onClick={this.help}> */}
-                    <button onClick={this.help} id="help-dropdown">
+                    <button style={{zIndex: `1000`, borderLeft: `1px solid grey`}} onClick={this.help} id="help-dropdown">
                     <DropdownButton id="dropdown-item-button" title="HELP">
                         <Dropdown.ItemText>Dropdown item text</Dropdown.ItemText>
                         <Dropdown.Item as="button">Action</Dropdown.Item>

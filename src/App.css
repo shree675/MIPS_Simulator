@@ -3,6 +3,10 @@
   src: url(./fonts/Montserrat-Medium.ttf) format('truetype');
 }
 
+html, body {
+  z-index: 0;
+}
+
 .main-screen{
   width: 100%;
   overflow: hidden;
@@ -14,6 +18,7 @@
   display: flex;
   flex-direction: row;
   height: 100%;
+  z-index: 0;
 }
 
 .alert{

@@ -16,10 +16,10 @@
     opacity: 0.7;
 }
 
-.console-btn:hover{
+/* .console-btn:hover{
     cursor: pointer;
     background-color: #72757a;
-}
+} */
 
 .active{
     opacity: 1;
