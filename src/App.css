@@ -24,9 +24,22 @@
   position: absolute;
   background-color: gray;
   opacity: 0.5;
+  width: 100% !important;
+  left: 0 !important;
   /* z-index: 20; */
 }
 
+.ace_highlight-marker {
+  /* without this positions will be erong */
+  background: #abc; /* color */ 
+  z-index: 1000; /* in front of all other markers */ 
+}
+
+.myMarker {
+  position: absolute; /* without this positions will be erong */
+  background: #abc; /* color */ 
+  z-index: 1000; /* in front of all other markers */ 
+}
 #editor {
   /* position: absolute;
   top: 0;
