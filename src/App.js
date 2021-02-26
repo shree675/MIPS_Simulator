@@ -27,6 +27,10 @@ var editor = ace.edit(document.getElementById("editor"));
 class App extends Component {
 
   // console.log(document.getElementById("editor"));
+  constructor(props) {
+    super(props);
+    this.ideMan = React.createRef();
+  }
 
   state = {
 		code: "",
@@ -78,11 +82,13 @@ class App extends Component {
 
   run = () => {
 		processor.reset()
+    this.state.print = "*Read Only*\n"
+    //console.log(this.state.print)
     this.setState({
       // print: "*Read Only*\n"
-      print: new String("*Read Only*\n")
+      print: this.state.print
     });
-    console.log(this.state.print);
+    //console.log(this.state.print);
 		//parser.reset()
     //console.log(this.state.code)
     //console.log("run");
@@ -111,10 +117,12 @@ class App extends Component {
   step = () =>{
     
     if(this.state.pc===0)
-    {   this.setState({
+    { 
+      this.state.print = "*Read Only*\n"  
+      this.setState({
         lines: null,
         tags: null,
-        print: new String("*Read Only*\n")
+        print: this.state.print
       })
     }
     if(this.state.lines==null)
@@ -127,6 +135,7 @@ class App extends Component {
     }
     // console.log('prev', this.state.prevRegisters);
     [this.state.pc, this.state.print] = execute.exe(this.state.lines, this.state.tags, this.state.pc, this.state.print)
+    
     this.setState({
       // pc: execute.exe(this.state.lines, this.state.tags, this.state.pc)
       pc: this.state.pc,
@@ -136,7 +145,8 @@ class App extends Component {
       // prevRegisters: this.state.tempRegisters
     });
 
-    IDE.highlight(this.state.pc);
+    //IDE.highlight(this.state.pc);
+    this.ideMan.current.highlight(this.state.pc)
     //IDE.highlight(pc);
 
     // this.state.prevRegisters=processor.registers;
@@ -201,6 +211,7 @@ class App extends Component {
       pc: 0,
       print: "*Read Only*\n"
 		})
+    console.log(this.state.print)
     
 	}
 
@@ -291,7 +302,7 @@ class App extends Component {
         
           <div id="editor">
           {/* <DropDownCard /> */}
-            <IDE
+            <IDE ref={this.ideMan}
               onCodeChange={this.onCodeChange}
               code={this.state.code}
               pc={this.state.pc} 

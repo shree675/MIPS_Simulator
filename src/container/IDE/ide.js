@@ -21,18 +21,24 @@ class IDE extends Component {
   }
   highlight=(pc)=>{
     
-    console.log("highlighting");
-    console.log(pc)
+    //console.log("highlighting");
+    //console.log(pc)
     if(this.state.markers!=null)
     {
       this.state.markers.pop();
     }
     this.state.markers.push({startRow: pc, startCol: 0, endRow: (pc+1), endCol: -1, className: 'replacement_marker', type: 'text' });
+    console.log(this.state.markers)
+    this.setState({
+      markers: this.state.markers
+    })
     //this.state.markers.push({startRow: 3, startCol: 5, endRow: 5, endCol: 6, className: 'replacement_marker', type: 'text' });
 
   }
   render() {
-    this.highlight(this.props.pc);
+    /* const row = this.aceRef.editor.session.getLength();
+    this.aceRef.editor.gotoLine(row); */
+    // this.highlight(this.props.pc);
     /* console.log("highlighting");
     var pc = this.state.pc
     console.log(pc)
@@ -56,13 +62,14 @@ markers.push({startRow: 0, startCol: 0, endRow: 1, endCol: 6, className: 'replac
       return (
           <div className={"IDE-wrapper"}>
             <div id="editor">
-              <AceEditor
+              <AceEditor 
+                  key={this.props.pc}
                   className={"IDE"}
                   mode="mips_assembler" 
                   theme="dracula"
                   placeholder="// Type your code here:"
                   fontSize={16} 
-                  style={{width: "100%", height: "430px"}}
+                  style={{width: "100%", height: "470px"}}
                   name="mipsIDE" 
                   editorProps={{$blockScrolling: true}}
                   setOptions={{tabSize: 4, wrap: false}}
@@ -73,6 +80,7 @@ markers.push({startRow: 0, startCol: 0, endRow: 1, endCol: 6, className: 'replac
                   highlight = {this.highlight.bind(this)}
                   markers={this.state.markers}
                   enableBasicAutocompletion
+                  autoScrollEditorIntoView
               />
               </div>
           </div>

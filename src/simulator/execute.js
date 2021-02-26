@@ -17,6 +17,13 @@ execute.exe = (lines, tags, pc, print) =>
         return pc;
     }
     let line = lines[pc]
+    if(line[0].includes(":") && line.length!=1)
+    {
+        line.splice(0,1)//removes the tag from the beginning hence s=extracting the instruction
+        //[pc, print] = cornerCase.exe(lines, tags, pc, print);
+        //pc = pc+1
+    }
+
     // console.log("Instruction number pc")
     if(line[0]=="" || line[0]=="#")
     {
@@ -25,11 +32,6 @@ execute.exe = (lines, tags, pc, print) =>
     else if(line[0].includes(":") && line.length===1)
     {
         pc = pc+1
-    }
-    else if(line[0].includes(":") && line.length!=1)
-    {
-        [pc, print] = cornerCase.exe(lines, tags, pc, print);
-        //pc = pc+1
     }
     else if(line[0]==="add" || line[0]==="addu")
     {
