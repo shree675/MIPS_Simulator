@@ -11,7 +11,9 @@ input:hover, input:active {
 }
   
 .main-nav{
-    background-color: #2e2e2e;
+    /* background-color: #2e2e2e; */
+    /* background-color: transparent; */
+    /* opacity: 0; */
     width: 100%;
     /* width: 70%; */
     clear: both;
@@ -165,12 +167,14 @@ button:active {
 #dropdown-item-button {
     padding: 6px;
     margin: 0px;
-    /* z-index: 20; */
+    z-index: 1000;
+    background-color: tomato;
 }
 
 #help-dropdown {
     padding: 0px;
     z-index: 1000;
+    background-color: tomato;
 }
 
 Dropdown {

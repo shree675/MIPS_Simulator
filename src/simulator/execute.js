@@ -199,14 +199,14 @@ execute.exe = (lines, tags, pc, print) =>
     {
         //console.log("syscall detected")
         let code = processor.getRegister("v0")
-        code = 1
+        // code = 1
         console.log(code)
         switch(code)
         {
             case 1:
-                //const text = processor.getRegister("a0")
-                //const printNew = print + text + " "
-                print = print+"hi"//comment this out one registers are working
+                const text = processor.getRegister("a0")
+                print = print + text + " "
+                // print = print+"hi"//comment this out one registers are working
                 //console.log("case 1")
                 pc = pc+1
                 //print the integer stored in $a0 on the console
