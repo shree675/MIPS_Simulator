@@ -18,6 +18,7 @@ import { Editor } from 'brace';
 import AceEditor from "react-ace";
 // var Range = ace.require('ace/range').Range;
 import {Range} from 'ace-builds';
+import DropDownCard from './component/Card';
 
 var editor = ace.edit(document.getElementById("editor"));
 
@@ -239,6 +240,7 @@ class App extends Component {
     return (
       <div className="main-screen">
         <div className="App">
+        <DropDownCard />
           <div style={{width: '35%'}}>
             <SideBar
               registersmap={this.state.registers}
@@ -283,8 +285,11 @@ class App extends Component {
             toggleCacheSettings={this.onToggleCacheSettings}
             isShowing={this.state.showCacheConfig} */
           />
+          
         </div>
+        
           <div id="editor">
+          {/* <DropDownCard /> */}
             <IDE
               onCodeChange={this.onCodeChange}
               code={this.state.code}

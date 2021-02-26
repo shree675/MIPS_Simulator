@@ -1,7 +1,9 @@
 import React from 'react'
 import './Navbar.css';
+import '../Card.js';
 // import Dropdown from 'react-dropdown';
 import {Dropdown, DropdownButton} from 'react-bootstrap';
+import DropDownCard from '../Card.js';
 // import Button from 'react-button';
 // import CODE from '../code';
 // const fs = require('fs');
@@ -43,7 +45,12 @@ class Navbar extends React.Component{
     //     }
     // }
 
-    list=["abc", "hello", "aldfj"];
+    // state={
+    //     curdropdown: false
+    // }
+    curdropdown=false;
+
+    // list=["abc", "hello", "aldfj"];
 
     clicked() {
         console.log("hello");    
@@ -62,7 +69,17 @@ class Navbar extends React.Component{
     }
 
     help(){
-
+        // this.setState({
+            this.curdropdown= !this.curdropdown
+        // });
+        if(this.curdropdown && document.getElementById("dropdown")!=null){
+            document.getElementById("dropdown").style.display="block";
+        }
+        else{
+            if(document.getElementById("dropdown")!=null){
+                document.getElementById("dropdown").style.display="none";
+            }
+        }
         console.log("help");
     }
 
@@ -108,15 +125,26 @@ class Navbar extends React.Component{
                     <span className="navbar-buttons-right">
                     <button style={{borderLeft: `1px solid grey`}} onClick={this.props.step}>STEP</button>
                     <button style={{borderLeft: `1px solid grey`}} onClick={this.props.run}>RUN</button>
+
+                    {/* <DropDownCard /> */}
+
                     {/* <button onClick={this.help}> */}
-                    <button style={{zIndex: `1000`, borderLeft: `1px solid grey`}} onClick={this.help} id="help-dropdown">
-                    <DropdownButton id="dropdown-item-button" title="HELP">
+                    {/* <button style={{zIndex: `1000`, borderLeft: `1px solid grey`}} onClick={this.help} id="help-dropdown"> */}
+                        {/* HELP */}
+                    {/* <DropdownButton id="dropdown-item-button" title="HELP">
                         <Dropdown.ItemText>Dropdown item text</Dropdown.ItemText>
                         <Dropdown.Item as="button">Action</Dropdown.Item>
                         <Dropdown.Item as="button">Another action</Dropdown.Item>
                         <Dropdown.Item as="button">Something else</Dropdown.Item>
-                    </DropdownButton>
-                    </button>
+                    </DropdownButton> */}
+                    {/* <ul className="dropdown-menu" id="dropdown">
+                        <li><a href="#books">Books</a></li>
+                        <li><a href="#podcasts">Podcasts</a></li>
+                        <li><a href="#">Tech I Like</a></li>
+                        <li><a href="#">About me</a></li>
+                        <li><a href="#addBlog">Add a Blog</a></li> */}
+                    {/* </ul> */}
+                    {/* </button> */}
                     {/* </button> */}
 
                     {/* <button onClick={this.dropdown.showDropdownMenu}>HELP</button> */}
