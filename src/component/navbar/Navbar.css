@@ -27,6 +27,8 @@ input:hover, input:active {
     justify-content: space-between;
     /* height: 36px; */
     font-size: 18px;
+    overflow: visible;
+    z-index: 0;
 }
 
 .upload {
@@ -136,7 +138,7 @@ button:active {
 #navbar-right-id {
     clear: both;
     float: right;
-    overflow: auto;
+    overflow: visible;
 }
 
 .navbar-buttons-right {
@@ -169,6 +171,7 @@ button:active {
     margin: 0px;
     z-index: 1000;
     background-color: tomato;
+    overflow-y: visible;
 }
 
 #help-dropdown {

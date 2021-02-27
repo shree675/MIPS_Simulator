@@ -33,7 +33,7 @@ class App extends Component {
   }
 
   state = {
-		code: "",
+		code: '',
     //isRunning: false,
 		lines: null,
     tags: null,
@@ -79,6 +79,18 @@ class App extends Component {
     // prevRegisters: processor.registers
     // tempRegisters: processor.registers
 	}
+
+  setCode = (newCode)=>{
+    // console.log('here');
+    // console.log(newCode);
+    this.deleteFile();
+    this.setState({
+      code: newCode
+    });
+    this.state.code=newCode;
+    console.log(this.state.code);
+    this.render();
+  }
 
   run = () => {
 		processor.reset()
@@ -252,7 +264,9 @@ class App extends Component {
     return (
       <div className="main-screen">
         <div className="App">
-        <DropDownCard />
+          {/* <span style={{width: `2%`}}> */}
+            <DropDownCard setCode={this.setCode}/>
+          {/* </span> */}
           <div style={{width: '35%'}}>
             <SideBar
               registersmap={this.state.registers}
@@ -281,6 +295,7 @@ class App extends Component {
           </div> 
           <div style={{width: '65%', height: '722px'}}>
           <div>
+          {/* <DropDownCard /> */}
           <Navbar
             run={this.run}
             step={this.step}

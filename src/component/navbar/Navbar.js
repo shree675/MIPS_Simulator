@@ -48,7 +48,7 @@ class Navbar extends React.Component{
     // state={
     //     curdropdown: false
     // }
-    curdropdown=false;
+    // curdropdown=false;
 
     // list=["abc", "hello", "aldfj"];
 
@@ -70,16 +70,16 @@ class Navbar extends React.Component{
 
     help(){
         // this.setState({
-            this.curdropdown= !this.curdropdown
+            // this.curdropdown= !this.curdropdown
         // });
-        if(this.curdropdown && document.getElementById("dropdown")!=null){
-            document.getElementById("dropdown").style.display="block";
-        }
-        else{
-            if(document.getElementById("dropdown")!=null){
-                document.getElementById("dropdown").style.display="none";
-            }
-        }
+        // if(this.curdropdown && document.getElementById("dropdown")!=null){
+        //     document.getElementById("dropdown").style.display="block";
+        // }
+        // else{
+        //     if(document.getElementById("dropdown")!=null){
+        //         document.getElementById("dropdown").style.display="none";
+        //     }
+        // }
         console.log("help");
     }
 
@@ -110,6 +110,17 @@ class Navbar extends React.Component{
                     {/* <button className="file" onClick={this.props.deleteFile.bind(this)} style={{borderRight: `1px solid grey`, float: `left`}}>CLEAR ALL</button> */}
                 {/* </span> */}
                 <button className="file" onClick={this.props.deleteFile.bind(this)} style={{borderRight: `1px solid grey`, float: `left`, borderLeft: `1px solid grey`}}>CLEAR ALL</button>
+                
+                {/* <button style={{zIndex: `1000`, borderLeft: `1px solid grey`}} onClick={this.help} id="help-dropdown"> */}
+                {/* <div className="dropdown"> */}
+                {/* <DropdownButton id="dropdown-item-button" title="HELP">
+                        <Dropdown.ItemText style={{zIndex: `1000`}}>Dropdown item text</Dropdown.ItemText>
+                        <Dropdown.Item style={{zIndex: `1000`}} as="button">Action</Dropdown.Item>
+                        <Dropdown.Item as="button">Another action</Dropdown.Item>
+                        <Dropdown.Item as="button">Something else</Dropdown.Item>
+                    </DropdownButton> */}
+                    {/* </div> */}
+                    {/* </button> */}
             </div>
 
                 {/* <div>
@@ -131,12 +142,7 @@ class Navbar extends React.Component{
                     {/* <button onClick={this.help}> */}
                     {/* <button style={{zIndex: `1000`, borderLeft: `1px solid grey`}} onClick={this.help} id="help-dropdown"> */}
                         {/* HELP */}
-                    {/* <DropdownButton id="dropdown-item-button" title="HELP">
-                        <Dropdown.ItemText>Dropdown item text</Dropdown.ItemText>
-                        <Dropdown.Item as="button">Action</Dropdown.Item>
-                        <Dropdown.Item as="button">Another action</Dropdown.Item>
-                        <Dropdown.Item as="button">Something else</Dropdown.Item>
-                    </DropdownButton> */}
+                    
                     {/* <ul className="dropdown-menu" id="dropdown">
                         <li><a href="#books">Books</a></li>
                         <li><a href="#podcasts">Podcasts</a></li>
