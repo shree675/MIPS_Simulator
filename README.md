@@ -5,13 +5,13 @@ This project was developed as a part of the Computer Organization Lab course and
 ## Get Started
 This Simulator has been developed using React. To host it locally, run the following
 1. Download the zip file
-2. run npm install
-3. run npm start<br></br>
-*Node and npm are required to run Simulator locally
+2. run ```npm install```
+3. run ```npm start```
+<p>*Node and npm are required to run Simulator locally</p>
 
 ## How to use it
 1. Enter your MIPS assembly code in the integrated code editor provided either by typing or using the Upload option
-2. Click on RUN to process the entire code altogether 
+2. Click on RUN to process the entire code altogether
     or
    Click on STEP to execute each line of code step by step
 3. Observe the REGISTERS changing values in the panel on the left. 
