@@ -51,10 +51,9 @@
     padding-bottom: 5px;
 }
 
-button:hover {
-    /* color: white; */
+/* button:hover {
     background-color: #353535;
-}
+} */
 
 .non-button {
     padding: 21px;
@@ -68,4 +67,9 @@ button:hover {
 .a-button {
     /* color: tomato; */
     width: 158px;
+}
+
+#link-id {
+    text-decoration: none;
+    font-size: 14px;
 }

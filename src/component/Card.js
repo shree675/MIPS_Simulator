@@ -4,6 +4,7 @@ import '../App.js';
 import '../codes.js';
 import Codes from '../codes.js';
 // import '../../BubbleSort.asm';
+import {Link} from 'react-router-dom';
 
 class DropDownCard extends Component{
 
@@ -20,6 +21,7 @@ class DropDownCard extends Component{
         // this.app=this.app.bind(this);
         this.bubbleSort=this.bubbleSort.bind(this);
         this.testcodes=this.testcodes.bind(this);
+        this.fibonacci=this.fibonacci.bind(this);
       }
 
       
@@ -40,6 +42,14 @@ class DropDownCard extends Component{
         // const app = new App();
         const codes = new Codes();
         this.props.setCode(codes.testcode);
+        this.setState({
+            displayMenu: false,
+        });
+      }
+
+      fibonacci(){
+        const codes = new Codes();
+        this.props.setCode(codes.fibonacci);
         this.setState({
             displayMenu: false,
         });
@@ -70,9 +80,10 @@ class DropDownCard extends Component{
                 </button>
                 {this.state.displayMenu===true?(
                 <div>
-                    <button id="opened" className="a-button">Instructions</button>
+                    <Link id="link-id" to='/information'><button id="opened" className="a-button">Instructions</button></Link>
                     <span id="opened" className="non-button">Sample Programs</span>
                     <button onClick={this.bubbleSort} id="opened" className="ns a-button">BubbleSort.asm</button>
+                    <button onClick={this.fibonacci} id="opened" className="ns a-button">Fibonacci.asm</button>
                     <button onClick={this.testcodes} id="opened" className="ns a-button">test.asm</button>
                 </div>):(null)
                 }

@@ -7,5 +7,7 @@
  } */
  .replacement_marker {
     position: absolute;
-    background-color: #797d99;
+    /* background-color: #797d99; */
+    background-color: rgb(99, 108, 241);
+    opacity: 0.4;
  }

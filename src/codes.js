@@ -4,7 +4,8 @@ class Codes{
 
     testcode = 'li $v0, 4\nli $a0, 20\nsrl $a0, $a0, 1\nsll $a0, $a0, 1\nsyscall\nli $v0, 1\nli $a0, 5\nsyscall\nli $v0, 10\nli $a0, 5\nsyscall';
 
-    // return (bubbleSort);
+    fibonacci = '.data\n.word 6\n\n.text\n.globl main\n\nmain:\n\nli $t0, 0x10010000\nlw $s0, 0($t0)\n\naddi $s0, $s0, 1				# $s0=n+1\n\naddi $s1, $s1, 1				# $s1=1 always\n\naddi $t0, $zero, 1				# loop variable i=1\n\naddi $t1, $t1, 0				# prev1\naddi $t2, $t2, 0				# prev2\n\naddi $s2, $s2, 1				# result\n\nLoop:\n\nbeq $t0, $s0, Exit\n\nbeq $t0, $s1, One\nj Exitone\n\nOne:\naddi $t1, $t1, 1\naddi $t0, $t0, 1\nj Loop\n\nExitone:\nadd $s1, $t1, $t2\naddi $t0, $t0, 1\naddi $t2, $t1, 0\naddi $t1, $s1, 0\nj Loop\n\nExit:\n\nli $v0, 1\naddi $a0, $s1, 0\nsyscall\n\njr $ra\n';
+
 }
  
 export default Codes;
