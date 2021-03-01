@@ -1,11 +1,11 @@
-.IDE-wrapper{
+.Editor-wrapper{
     width: 100%
 }
 
 /* .replacement_marker {
     background-color: lightyellow
  } */
- .replacement_marker {
+ .highlight-marker {
     position: absolute;
     /* background-color: #797d99; */
     background-color: rgb(99, 108, 241);

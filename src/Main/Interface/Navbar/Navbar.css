@@ -179,7 +179,3 @@ button:active {
     z-index: 1000;
     background-color: tomato;
 }
-
-Dropdown {
-    z-index: 1000;
-}

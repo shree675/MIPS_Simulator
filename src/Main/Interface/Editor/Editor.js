@@ -2,10 +2,9 @@ import React, { Component } from 'react';
 import AceEditor from "react-ace";
 import 'brace/mode/mips_assembler';
 import 'brace/theme/dracula';
-import './ide.css'
-//import App from '.../App';
-let warning = []
-class IDE extends Component {
+import './Editor.css'
+
+class Editor extends Component {
 
   constructor(props) {
     super(props);
@@ -27,12 +26,12 @@ class IDE extends Component {
     {
       this.state.markers.pop();
     }
-    this.state.markers.push({startRow: pc, startCol: 0, endRow: (pc+1), endCol: -1, className: 'replacement_marker', type: 'fullline' });
+    this.state.markers.push({startRow: pc, startCol: 0, endRow: (pc+1), endCol: -1, className: 'highlight-marker', type: 'fullline' });
     console.log(this.state.markers)
     this.setState({
       markers: this.state.markers
     })
-    //this.state.markers.push({startRow: 3, startCol: 5, endRow: 5, endCol: 6, className: 'replacement_marker', type: 'text' });
+    
 
   }
   render() {
@@ -46,7 +45,7 @@ class IDE extends Component {
     {
       this.state.markers.pop();
     }
-    this.state.markers.push({startRow: pc, startCol: 0, endRow: (pc+1), endCol: -1, className: 'replacement_marker', type: 'text' });
+    this.state.markers.push({startRow: pc, startCol: 0, endRow: (pc+1), endCol: -1, className: 'highlight-marker', type: 'text' });
      *//* this.setState(
     {
       markers: this.state.markers
@@ -60,31 +59,31 @@ class IDE extends Component {
 markers.push({startRow: 0, startCol: 0, endRow: 1, endCol: 6, className: 'replacement_marker', type: 'text' });
  */
       return (
-          <div className={"IDE-wrapper"}>
+          <div className={"Editor-wrapper"}>
             <div id="editor">
               <AceEditor 
                   key={this.props.pc}
                   className={"IDE"}
-                  mode="mips_assembler" 
-                  theme="dracula"
                   placeholder="// Type your code here:"
                   fontSize={16} 
+                  showPrintMargin={false}
+                  value = {this.props.code}
+                  onChange={this.onChange.bind(this)}
+                  // annotations = {warning}
+                  highlight = {this.highlight.bind(this)}
                   style={{width: "100%", height: "470px"}}
                   name="mipsIDE" 
                   editorProps={{$blockScrolling: true}}
                   setOptions={{tabSize: 4, wrap: false}}
-                  showPrintMargin={false}
-                  value = {this.props.code}
-                  onChange={this.onChange.bind(this)}
-                  annotations = {warning}
-                  highlight = {this.highlight.bind(this)}
                   markers={this.state.markers}
                   enableBasicAutocompletion
                   autoScrollEditorIntoView
+                  mode="mips_assembler" 
+                  theme="dracula"
               />
               </div>
           </div>
       );
   }
 }
-export default IDE;
+export default Editor;
