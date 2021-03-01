@@ -1,9 +1,7 @@
 import React, {Component} from 'react';
 import './Card.css';
-import '../App.js';
-import '../codes.js';
-import Codes from '../codes.js';
-// import '../../BubbleSort.asm';
+// import '../../../App.js';
+import Codes from './Codes.js';
 import {Link} from 'react-router-dom';
 
 class DropDownCard extends Component{

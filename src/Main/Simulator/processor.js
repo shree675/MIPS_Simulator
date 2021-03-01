@@ -1,9 +1,5 @@
 var processor = {
-    //running: true,
     memory: new Array(1024).fill(0),
-    //instrLabels: {},
-    //dataLables: {},
-    // wordAddr: [],
     registers: new Map(
         [
             ["r0", 0],
@@ -40,8 +36,6 @@ var processor = {
             ["ra", 0]
         ]
     ),
-    //pc: 0,
-    //endOfInstr: false
 }
 
 processor.setRegister = (reg, num) => {
@@ -52,8 +46,7 @@ processor.setRegister = (reg, num) => {
 }
 
 processor.getRegister = (reg) => {
-    if(reg === "zero" || reg==='r0'){//what is this?
-        // console.log("getting zero")
+    if(reg === "zero" || reg==='r0'){
         return 0;
     }
     return processor.registers.get(reg)
@@ -70,19 +63,9 @@ processor.getMemory = (wordAddress) =>
     let index = (wordAddress-268500992)/4
     return processor.memory[index]
 } 
-processor.reset = () => {
-    //processor.running = true
-    
-    processor.memory = new Array(1024).fill(0)
-    // console.log('reset',processor.memory);
-    // for(var i=0;i<1024;i++){
-    //     processor.memory[i]=0;
-    // }
-    //processor.dataLables = {}
-    //processor.instrLabels = {}
+processor.reset = () => {    
+    processor.memory = new Array(1024).fill(0) 
     processor.pc = 0
-    //processor.endOfInstr = false
-    //processor.setRegister("sp", 1024*4)
     processor.registers = new Map(
         [
             ["r0", 0],

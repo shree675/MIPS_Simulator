@@ -1,3 +1,4 @@
+main:
 li $v0, 4
 li $a0, 20
 srl $a0, $a0, 1

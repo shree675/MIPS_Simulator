@@ -1,12 +1,6 @@
 import processor from "./processor";
 
-var parser = {
-  /* instruction: [],
-  pointer: new Map(),
-  dataAddr: new Map(),
-  ptrArray: [],
-  memPtr: 0 */
-};
+var parser = {};
 
 parser.parse = code => {
     processor.reset()
@@ -17,10 +11,6 @@ parser.parse = code => {
     code.split("\n").forEach(line => {
       var lineArr = line.trim().split(/[ ,]+/)
       lineWiseSplit.push(lineArr);
-      /* if(!(lineArr.length === 1 && lineArr[0] === "")) 
-      {
-          lineWiseSplit.push(lineArr);
-      } */
     });
     for(let i =0; i<lineWiseSplit.length; i++)
     {

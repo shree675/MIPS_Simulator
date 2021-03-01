@@ -1,6 +1,4 @@
 import processor from "./processor";
-import cornerCase from "./cornerCase";
-import App from "../App";
 
 //add $t1, $t2, $t3
 var execute = 
