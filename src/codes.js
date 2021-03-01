@@ -1,0 +1,11 @@
+class Codes{
+
+    bubbleSort = '#procedure:    bubbleSort\n# Objective:    sort an array of integer elements in nondecreasing order\n# Input:        an address of an array of integers\n# Output:       an array sorted in nondecreasing order\n# Please observe the data segment before and after running the program to observe the sorted array\n\n.data\narray:\n	.word 90, 67, 30, 1, 45, 50, 11, 33, 67, 19, 2\n.text.globl mainmain:\n\nbubbleSort:\n\n\nlui     $t0, 0x1001\nli      $t1, 0     # i = 0;\nli      $t2, 0      # j = 0;\nli      $s1, 10      # array length\nloop:\nbeq     $t1, $s1, exit       # exit if i == length of array -1\nlui     $t0, 0x1001\nli      $t2, 0      # j = 0;\nforLoop:\nbeq     $t2, $s1, exitForLoop   # exit loop if j==length of array -1\nlw      $a0, 0($t0)         # a0 = array[j]\nlw      $a1, 4($t0)         # a1 = array[j+1]\nble     $a0, $a1, update        # if array[j]<=array[j+1] skip\nsw      $a1, 0($t0)         # a[j+1] = a[j]\nsw      $a0, 4($t0)         # a[j] = a[j+1]\nupdate:\naddiu   $t2, $t2, 1         # j++\n#sll     $t3, $t2, 2         # t3 = j*4\naddiu    $t0, $t0, 4        # point to next element -->\nj       forLoop\nexitForLoop:\naddiu   $t1, $t1, 1  # i++;\nj   loop\nexit:\njr      $ra';
+
+    testcode = 'li $v0, 4\nli $a0, 20\nsrl $a0, $a0, 1\nsll $a0, $a0, 1\nsyscall\nli $v0, 1\nli $a0, 5\nsyscall\nli $v0, 10\nli $a0, 5\nsyscall';
+
+    fibonacci = '.data\n.word 6\n\n.text\n.globl main\n\nmain:\n\nli $t0, 0x10010000\nlw $s0, 0($t0)\n\naddi $s0, $s0, 1				# $s0=n+1\n\naddi $s1, $s1, 1				# $s1=1 always\n\naddi $t0, $zero, 1				# loop variable i=1\n\naddi $t1, $t1, 0				# prev1\naddi $t2, $t2, 0				# prev2\n\naddi $s2, $s2, 1				# result\n\nLoop:\n\nbeq $t0, $s0, Exit\n\nbeq $t0, $s1, One\nj Exitone\n\nOne:\naddi $t1, $t1, 1\naddi $t0, $t0, 1\nj Loop\n\nExitone:\nadd $s1, $t1, $t2\naddi $t0, $t0, 1\naddi $t2, $t1, 0\naddi $t1, $s1, 0\nj Loop\n\nExit:\n\nli $v0, 1\naddi $a0, $s1, 0\nsyscall\n\njr $ra\n';
+
+}
+ 
+export default Codes;
