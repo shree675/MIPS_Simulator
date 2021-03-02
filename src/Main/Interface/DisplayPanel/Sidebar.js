@@ -26,12 +26,28 @@ const Sidebar = props =>
   // console.log('currnent',registersmap);
 
   for(var [key,value] of registersmap){
+    if(document.getElementById(key+'hex')!=null){
+      if(prevRegisters.get(key)!=registersmap.get(key)){
+        document.getElementById(key+'hex').style.backgroundColor="#bd93f9";
+      }
+      else{
+        document.getElementById(key+'hex').style.backgroundColor="#383144";
+      }
+    }
     if(document.getElementById(key)!=null){
       if(prevRegisters.get(key)!=registersmap.get(key)){
         document.getElementById(key).style.backgroundColor="#bd93f9";
       }
       else{
         document.getElementById(key).style.backgroundColor="#383144";
+      }
+    }
+    if(document.getElementById(key+'bin')!=null){
+      if(prevRegisters.get(key)!=registersmap.get(key)){
+        document.getElementById(key+'bin').style.backgroundColor="#bd93f9";
+      }
+      else{
+        document.getElementById(key+'bin').style.backgroundColor="#383144";
       }
     }
   }
@@ -315,68 +331,68 @@ const Sidebar = props =>
                       <td></td>
                     </tr>
                     <tr>
-                      <td id="r0">R0 [r0]: {registersmaphex.get("r0")}</td>
-                      <td id="s0">R16 [s0]: {registersmaphex.get("s0")}</td>
+                      <td id="r0hex">R0 [r0]: {registersmaphex.get("r0")}</td>
+                      <td id="s0hex">R16 [s0]: {registersmaphex.get("s0")}</td>
                     </tr>
                     <tr>
-                      <td id="at">R1 [at]: {registersmaphex.get("at")}</td>
-                      <td id="s1">R17 [s1]: {registersmaphex.get("s1")}</td>
+                      <td id="athex">R1 [at]: {registersmaphex.get("at")}</td>
+                      <td id="s1hex">R17 [s1]: {registersmaphex.get("s1")}</td>
                     </tr>
                     <tr>
-                      <td id="v0">R2 [v0]: {registersmaphex.get("v0")}</td>
-                      <td id="s2">R18 [s2]: {registersmaphex.get("s2")}</td>
+                      <td id="v0hex">R2 [v0]: {registersmaphex.get("v0")}</td>
+                      <td id="s2hex">R18 [s2]: {registersmaphex.get("s2")}</td>
                     </tr>
                     <tr>
-                      <td id="v1">R3 [v1]: {registersmaphex.get("v1")}</td>
-                      <td id="s3">R19 [s3]: {registersmaphex.get("s3")}</td>
+                      <td id="v1hex">R3 [v1]: {registersmaphex.get("v1")}</td>
+                      <td id="s3hex">R19 [s3]: {registersmaphex.get("s3")}</td>
                     </tr>
                     <tr>
-                      <td id="a0">R4 [a0]: {registersmaphex.get("a0")}</td>
-                      <td id="s4">R20 [s4]: {registersmaphex.get("s4")}</td>
+                      <td id="a0hex">R4 [a0]: {registersmaphex.get("a0")}</td>
+                      <td id="s4hex">R20 [s4]: {registersmaphex.get("s4")}</td>
                     </tr>
                     <tr>
-                      <td id="a1">R5 [a1]: {registersmaphex.get("a1")}</td>
-                      <td id="s5">R21 [s5]: {registersmaphex.get("s5")}</td>
+                      <td id="a1hex">R5 [a1]: {registersmaphex.get("a1")}</td>
+                      <td id="s5hex">R21 [s5]: {registersmaphex.get("s5")}</td>
                     </tr>
                     <tr>
-                      <td id="a2">R6 [a2]: {registersmaphex.get("a2")}</td>
-                      <td id="s6">R22 [s6]: {registersmaphex.get("s6")}</td>
+                      <td id="a2hex">R6 [a2]: {registersmaphex.get("a2")}</td>
+                      <td id="s6hex">R22 [s6]: {registersmaphex.get("s6")}</td>
                     </tr>
                     <tr>
-                      <td id="a3">R7 [a3]: {registersmaphex.get("a3")}</td>
-                      <td id="s7">R23 [s7]: {registersmaphex.get("s7")}</td>
+                      <td id="a3hex">R7 [a3]: {registersmaphex.get("a3")}</td>
+                      <td id="s7hex">R23 [s7]: {registersmaphex.get("s7")}</td>
                     </tr>
                     <tr>
-                      <td id="t0">R8 [t0]: {registersmaphex.get("t0")}</td>
-                      <td id="t8">R24 [t8]: {registersmaphex.get("t8")}</td>
+                      <td id="t0hex">R8 [t0]: {registersmaphex.get("t0")}</td>
+                      <td id="t8hex">R24 [t8]: {registersmaphex.get("t8")}</td>
                     </tr>
                     <tr>
-                      <td id="t1">R9 [t1]: {registersmaphex.get("t1")}</td>
-                      <td id="t9">R25 [t9]: {registersmaphex.get("t9")}</td>
+                      <td id="t1hex">R9 [t1]: {registersmaphex.get("t1")}</td>
+                      <td id="t9hex">R25 [t9]: {registersmaphex.get("t9")}</td>
                     </tr>
                     <tr>
-                      <td id="t2">R10 [t2]: {registersmaphex.get("t2")}</td>
-                      <td id="k0">R26 [k0]: {registersmaphex.get("k0")}</td>
+                      <td id="t2hex">R10 [t2]: {registersmaphex.get("t2")}</td>
+                      <td id="k0hex">R26 [k0]: {registersmaphex.get("k0")}</td>
                     </tr>
                     <tr>
-                      <td id="t3">R11 [t3]: {registersmaphex.get("t3")}</td>
-                      <td id="k1">R27 [k1]: {registersmaphex.get("k1")}</td>
+                      <td id="t3hex">R11 [t3]: {registersmaphex.get("t3")}</td>
+                      <td id="k1hex">R27 [k1]: {registersmaphex.get("k1")}</td>
                     </tr>
                     <tr>
-                      <td id="t4">R12 [t4]: {registersmaphex.get("t4")}</td>
-                      <td id="gp">R28 [gp]: {registersmaphex.get("gp")}</td>
+                      <td id="t4hex">R12 [t4]: {registersmaphex.get("t4")}</td>
+                      <td id="gphex">R28 [gp]: {registersmaphex.get("gp")}</td>
                     </tr>
                     <tr>
-                      <td id="t5">R13 [t5]: {registersmaphex.get("t5")}</td>
-                      <td id="sp">R29 [sp]: {registersmaphex.get("sp")}</td>
+                      <td id="t5hex">R13 [t5]: {registersmaphex.get("t5")}</td>
+                      <td id="sphex">R29 [sp]: {registersmaphex.get("sp")}</td>
                     </tr>
                     <tr>
-                      <td id="t6">R14 [t6]: {registersmaphex.get("t6")}</td>
-                      <td id="s8">R30 [s8]: {registersmaphex.get("s8")}</td>
+                      <td id="t6hex">R14 [t6]: {registersmaphex.get("t6")}</td>
+                      <td id="s8hex">R30 [s8]: {registersmaphex.get("s8")}</td>
                     </tr>
                     <tr>
-                      <td id="t7">R15 [t7]: {registersmaphex.get("t7")}</td>
-                      <td id="ra">R31 [ra]: {registersmaphex.get("ra")}</td>
+                      <td id="t7hex">R15 [t7]: {registersmaphex.get("t7")}</td>
+                      <td id="rahex">R31 [ra]: {registersmaphex.get("ra")}</td>
                     </tr>
 
                   </table>
@@ -392,68 +408,68 @@ const Sidebar = props =>
                       <td></td>
                     </tr>
                     <tr>
-                      <td id="r0">R0 [r0]: {registersmapbin.get("r0")}</td>
-                      <td id="s0">R16 [s0]: {registersmapbin.get("s0")}</td>
+                      <td id="r0bin">R0 [r0]: {registersmapbin.get("r0")}</td>
+                      <td id="s0bin">R16 [s0]: {registersmapbin.get("s0")}</td>
                     </tr>
                     <tr>
-                      <td id="at">R1 [at]: {registersmapbin.get("at")}</td>
-                      <td id="s1">R17 [s1]: {registersmapbin.get("s1")}</td>
+                      <td id="atbin">R1 [at]: {registersmapbin.get("at")}</td>
+                      <td id="s1bin">R17 [s1]: {registersmapbin.get("s1")}</td>
                     </tr>
                     <tr>
-                      <td id="v0">R2 [v0]: {registersmapbin.get("v0")}</td>
-                      <td id="s2">R18 [s2]: {registersmapbin.get("s2")}</td>
+                      <td id="v0bin">R2 [v0]: {registersmapbin.get("v0")}</td>
+                      <td id="s2bin">R18 [s2]: {registersmapbin.get("s2")}</td>
                     </tr>
                     <tr>
-                      <td id="v1">R3 [v1]: {registersmapbin.get("v1")}</td>
-                      <td id="s3">R19 [s3]: {registersmapbin.get("s3")}</td>
+                      <td id="v1bin">R3 [v1]: {registersmapbin.get("v1")}</td>
+                      <td id="s3bin">R19 [s3]: {registersmapbin.get("s3")}</td>
                     </tr>
                     <tr>
-                      <td id="a0">R4 [a0]: {registersmapbin.get("a0")}</td>
-                      <td id="s4">R20 [s4]: {registersmapbin.get("s4")}</td>
+                      <td id="a0bin">R4 [a0]: {registersmapbin.get("a0")}</td>
+                      <td id="s4bin">R20 [s4]: {registersmapbin.get("s4")}</td>
                     </tr>
                     <tr>
-                      <td id="a1">R5 [a1]: {registersmapbin.get("a1")}</td>
-                      <td id="s5">R21 [s5]: {registersmapbin.get("s5")}</td>
+                      <td id="a1bin">R5 [a1]: {registersmapbin.get("a1")}</td>
+                      <td id="s5bin">R21 [s5]: {registersmapbin.get("s5")}</td>
                     </tr>
                     <tr>
-                      <td id="a2">R6 [a2]: {registersmapbin.get("a2")}</td>
-                      <td id="s6">R22 [s6]: {registersmapbin.get("s6")}</td>
+                      <td id="a2bin">R6 [a2]: {registersmapbin.get("a2")}</td>
+                      <td id="s6bin">R22 [s6]: {registersmapbin.get("s6")}</td>
                     </tr>
                     <tr>
-                      <td id="a3">R7 [a3]: {registersmapbin.get("a3")}</td>
-                      <td id="s7">R23 [s7]: {registersmapbin.get("s7")}</td>
+                      <td id="a3bin">R7 [a3]: {registersmapbin.get("a3")}</td>
+                      <td id="s7bin">R23 [s7]: {registersmapbin.get("s7")}</td>
                     </tr>
                     <tr>
-                      <td id="t0">R8 [t0]: {registersmapbin.get("t0")}</td>
-                      <td id="t8">R24 [t8]: {registersmapbin.get("t8")}</td>
+                      <td id="t0bin">R8 [t0]: {registersmapbin.get("t0")}</td>
+                      <td id="t8bin">R24 [t8]: {registersmapbin.get("t8")}</td>
                     </tr>
                     <tr>
-                      <td id="t1">R9 [t1]: {registersmapbin.get("t1")}</td>
-                      <td id="t9">R25 [t9]: {registersmapbin.get("t9")}</td>
+                      <td id="t1bin">R9 [t1]: {registersmapbin.get("t1")}</td>
+                      <td id="t9bin">R25 [t9]: {registersmapbin.get("t9")}</td>
                     </tr>
                     <tr>
-                      <td id="t2">R10 [t2]: {registersmapbin.get("t2")}</td>
-                      <td id="k0">R26 [k0]: {registersmapbin.get("k0")}</td>
+                      <td id="t2bin">R10 [t2]: {registersmapbin.get("t2")}</td>
+                      <td id="k0bin">R26 [k0]: {registersmapbin.get("k0")}</td>
                     </tr>
                     <tr>
-                      <td id="t3">R11 [t3]: {registersmapbin.get("t3")}</td>
-                      <td id="k1">R27 [k1]: {registersmapbin.get("k1")}</td>
+                      <td id="t3bin">R11 [t3]: {registersmapbin.get("t3")}</td>
+                      <td id="k1bin">R27 [k1]: {registersmapbin.get("k1")}</td>
                     </tr>
                     <tr>
-                      <td id="t4">R12 [t4]: {registersmapbin.get("t4")}</td>
-                      <td id="gp">R28 [gp]: {registersmapbin.get("gp")}</td>
+                      <td id="t4bin">R12 [t4]: {registersmapbin.get("t4")}</td>
+                      <td id="gpbin">R28 [gp]: {registersmapbin.get("gp")}</td>
                     </tr>
                     <tr>
-                      <td id="t5">R13 [t5]: {registersmapbin.get("t5")}</td>
-                      <td id="sp">R29 [sp]: {registersmapbin.get("sp")}</td>
+                      <td id="t5bin">R13 [t5]: {registersmapbin.get("t5")}</td>
+                      <td id="spbin">R29 [sp]: {registersmapbin.get("sp")}</td>
                     </tr>
                     <tr>
-                      <td id="t6">R14 [t6]: {registersmapbin.get("t6")}</td>
-                      <td id="s8">R30 [s8]: {registersmapbin.get("s8")}</td>
+                      <td id="t6bin">R14 [t6]: {registersmapbin.get("t6")}</td>
+                      <td id="s8bin">R30 [s8]: {registersmapbin.get("s8")}</td>
                     </tr>
                     <tr>
-                      <td id="t7">R15 [t7]: {registersmapbin.get("t7")}</td>
-                      <td id="ra">R31 [ra]: {registersmapbin.get("ra")}</td>
+                      <td id="t7bin">R15 [t7]: {registersmapbin.get("t7")}</td>
+                      <td id="rabin">R31 [ra]: {registersmapbin.get("ra")}</td>
                     </tr>
 
                   </table>
