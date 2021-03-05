@@ -254,7 +254,7 @@ class MainPage extends Component {
               pc={this.state.pc} 
             />
           </div>
-            <div style={{height: '1px', backgroundColor: 'white'}}></div>
+            <div style={{height: '1px', backgroundColor: '#bd93f9'}}></div>
             <Console
               console={this.state.print}
             />
