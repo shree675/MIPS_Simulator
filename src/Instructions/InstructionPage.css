@@ -32,3 +32,19 @@ html, body {
     height: 100%;
     /* margin: 0px; */
 }
+
+.nutshell {
+    font-size: 14px;
+}
+
+.svg-image {
+    /* width:fit-content; */
+    /* height:; */
+    margin: 20px;
+    /* margin-left: 100px; */
+    /* margin-right: 100px; */
+    /* object-fit: fill; */
+    padding: 10px;
+    max-width: 100%;
+    max-height: 100%;
+}
