@@ -20,6 +20,7 @@ class DropDownCard extends Component{
         this.bubbleSort=this.bubbleSort.bind(this);
         this.testcodes=this.testcodes.bind(this);
         this.fibonacci=this.fibonacci.bind(this);
+        this.arithmetic=this.arithmetic.bind(this);
       }
 
       
@@ -48,6 +49,14 @@ class DropDownCard extends Component{
       fibonacci(){
         const codes = new Codes();
         this.props.setCode(codes.fibonacci);
+        this.setState({
+            displayMenu: false,
+        });
+      }
+
+      arithmetic(){
+        const codes = new Codes();
+        this.props.setCode(codes.arithmetic);
         this.setState({
             displayMenu: false,
         });
@@ -82,7 +91,8 @@ class DropDownCard extends Component{
                     <span id="opened" className="non-button">Sample Programs</span>
                     <button onClick={this.bubbleSort} id="opened" className="ns a-button">BubbleSort.asm</button>
                     <button onClick={this.fibonacci} id="opened" className="ns a-button">Fibonacci.asm</button>
-                    <button onClick={this.testcodes} id="opened" className="ns a-button">test.asm</button>
+                    <button onClick={this.arithmetic} id="opened" className="ns a-button">Arithmetic.asm</button>
+                    <button onClick={this.testcodes} id="opened" className="ns a-button">Test.asm</button>
                 </div>):(null)
                 }
                 
