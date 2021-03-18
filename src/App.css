@@ -3,8 +3,14 @@
   src: url(./Fonts/Montserrat-Medium.ttf) format('truetype');
 }
 
+* {
+  box-sizing: border-box;
+}
+
 html, body {
   z-index: 0;
+  height: 100%;
+  width: 100%;
 }
 
 .main-screen{
