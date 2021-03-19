@@ -11,41 +11,6 @@
     padding-left: 10px;
 }
 
-.active{
-    opacity: 1;
-}
-
-.pipeline-screen{
-    height: 230px;
-    background-color: #1D1F21;
-    overflow: auto;
-}
-
-.num-cell{
-    opacity: 0.9;
-    width: 50px;
-    color: white;
-    text-align: center;
-}
-
-#num-cell-heading{
-    opacity: 1;
-    font-weight: bold;
-}
-
-.instr-cell{
-    opacity: 0.9;
-    width: 200px;
-    color: white;
-    padding-left: 20px;
-}
-
-#instr-cell-heading{
-    opacity: 1;
-    font-weight: bold;
-    padding-left: 0;
-}
-
 #console-btn {
     /* display: block; */
     cursor: pointer;
@@ -95,8 +60,7 @@
     width: 100%;
     color: white;
     overflow-y: unset;
-    overflow-x:scroll;
-    /* position: fixed; */
+    overflow-x: scroll;
 }
 
 .pipeline-table {
@@ -110,6 +74,7 @@
     padding-right: 5px;
     font-size: 16px;
     font-family: sans-serif;
+    text-align: center;
 }
 
 .inside-pip {

@@ -8,7 +8,6 @@ import Sidebar from './Interface/DisplayPanel/Sidebar';
 import processor from './Simulator/processor.js'
 import parser from './Simulator/parser.js'
 import execute from './Simulator/execute.js'
-
 import DropDownCard from './Interface/Help/Card.js';
 
 class MainPage extends Component {
@@ -258,13 +257,16 @@ class MainPage extends Component {
           </div>
             <div style={{height: '1px', backgroundColor: '#bd93f9'}}></div>
             <div style={{height: `100%`}}>
+            
             <Console
               console={this.state.print}
             />
+            
+            </div>
             </div>
           </div>
+          
         </div>
-      </div>
     )
   }
 }
