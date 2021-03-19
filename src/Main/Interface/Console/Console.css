@@ -67,7 +67,27 @@
     padding-right: 10px;
 }
 
+#pipeline-f {
+    cursor: pointer;
+    color: white;
+    padding: 5px;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
 #pipeline-area {
+    display: none;
+    transform: translate(0,0);
+    background-color: #282a36;
+    height: 180px;
+    width: 100%;
+    color: white;
+    overflow-y: unset;
+    overflow-x:scroll;
+    /* position: fixed; */
+}
+
+#pipeline-area-nf {
     display: none;
     transform: translate(0,0);
     background-color: #282a36;
