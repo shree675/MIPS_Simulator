@@ -1,5 +1,6 @@
 import '../App.css';
 import React, { Component } from 'react';
+import { matrix } from 'mathjs'
 // import ace from 'ace-builds/src-min-noconflict/ace';
 import Editor from './Interface/Editor/Editor.js';
 import Navbar from './Interface/Navbar/Navbar.js';
@@ -8,6 +9,7 @@ import Sidebar from './Interface/DisplayPanel/Sidebar';
 import processor from './Simulator/processor.js'
 import parser from './Simulator/parser.js'
 import execute from './Simulator/execute.js'
+import PWOF from './Simulator/PWOF.js'
 import DropDownCard from './Interface/Help/Card.js';
 
 class MainPage extends Component {
@@ -26,6 +28,7 @@ class MainPage extends Component {
 		registers: processor.registers,
     print: "*Read Only*\n",
 		pc: 0,
+    PWOFMatrix: null,
     memory: processor.memory,
     prevRegisters: new Map(
       [
@@ -74,7 +77,7 @@ class MainPage extends Component {
       code: newCode
     });
     this.state.code=newCode;
-    console.log(this.state.code);
+    //console.log(this.state.code);
     this.render();
   }
 
@@ -93,12 +96,16 @@ class MainPage extends Component {
     do
     {
       this.step()
-      console.log(this.state.pc);
+      //console.log(this.state.pc);
     }while(this.state.pc!=0);
     //this.state.lines = parser.parse(this.state.code)
     //[this.state.lines, this.state.tags] = parser.parse(this.state.code)
     //console.log(this.state.lines)
-		
+    //console.log("Calling PWOF.run")
+    //this.state.PWOFMatrix = PWOF.run(this.state.lines, this.state.tags)
+    
+    /* this.state.PWOFMatrix = PWOF.run(this.state.lines, this.state.tags)
+    console.log(this.state.PWOFMatrix) */
 	}
 
   step = () =>{
@@ -196,7 +203,7 @@ class MainPage extends Component {
       pc: 0,
       print: "*Read Only*\n"
 		})
-    console.log(this.state.print)
+    //console.log(this.state.print)
     
 	}
 
