@@ -64,12 +64,11 @@ markers.push({startRow: 0, startCol: 0, endRow: 1, endCol: 6, className: 'replac
               <AceEditor 
                   key={this.props.pc}
                   className={"IDE"}
-                  placeholder="// Type your code here:"
+                  placeholder="# Type your code here:"
                   fontSize={16} 
                   showPrintMargin={false}
                   value = {this.props.code}
                   onChange={this.onChange.bind(this)}
-                  // annotations = {warning}
                   highlight = {this.highlight.bind(this)}
                   style={{width: "100%", height: "470px"}}
                   name="mipsIDE" 

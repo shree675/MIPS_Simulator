@@ -8,7 +8,6 @@ import Sidebar from './Interface/DisplayPanel/Sidebar';
 import processor from './Simulator/processor.js'
 import parser from './Simulator/parser.js'
 import execute from './Simulator/execute.js'
-
 import DropDownCard from './Interface/Help/Card.js';
 
 class MainPage extends Component {
@@ -235,7 +234,8 @@ class MainPage extends Component {
               prevRegisters={this.state.prevRegisters}
             />
           </div> 
-          <div style={{width: '65%', height: '722px'}}>
+          {/* 722px */}
+          <div style={{width: '65%', height: '100%'}}>
           <div>
           {/* <DropDownCard /> */}
           <Navbar
@@ -246,7 +246,8 @@ class MainPage extends Component {
           />
           
         </div>
-        
+        {/* </div> */}
+        {/* <div style={{height: `30%`}}> */}
           <div id="editor">
             <Editor ref={this.ideMan}
               onCodeChange={this.onCodeChange}
@@ -255,12 +256,17 @@ class MainPage extends Component {
             />
           </div>
             <div style={{height: '1px', backgroundColor: '#bd93f9'}}></div>
+            <div style={{height: `100%`}}>
+            
             <Console
               console={this.state.print}
             />
+            
+            </div>
+            </div>
           </div>
+          
         </div>
-      </div>
     )
   }
 }
