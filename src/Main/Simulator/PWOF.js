@@ -129,7 +129,7 @@ PWOF.reset = () => {
 
 PWOF.isInst = (line)=>
 {
-    if(line=="")
+    if(line=="" || line[0]=="#")
         return false
     for(var i of instructions)
     {
@@ -226,9 +226,9 @@ PWOF.isDependent = (line1, line2) =>
             let dest = line1[1]
             if(dest===dep1 || dest===dep2)
             {
-                return false
+                return true
             }
-            return true           
+            return false          
         }
         else
         {//j 
@@ -238,8 +238,8 @@ PWOF.isDependent = (line1, line2) =>
     if(PWOF.isTwoSource(line2))
     {
         let dest = line1[1]
-        let dep1 = line2[1]
-        let dep2 = line2[2]
+        let dep1 = line2[2]
+        let dep2 = line2[3]
         if(dest===dep1 || dest===dep2)
         {
             return true
@@ -250,7 +250,7 @@ PWOF.isDependent = (line1, line2) =>
     if(PWOF.isOneSource(line2))
     {
         let dest = line1[1]
-        let dep1 = line2[1]
+        let dep1 = line2[2]
         if(dest===dep1)
         {
             return true
@@ -445,7 +445,10 @@ PWOF.RegisterFetch = (lines, pc) =>
 PWOF.Execute = (lines,pc) =>
 {
     if(PWOF.isDependent(lines[PWOF.prevPC], lines[pc]))
+    {
         console.log("dependent on prev")
+    }
+    //console.log("*")   
     //3 cases
     //if I-1 is dependent then after write back of I-1
     //else if I-2 is dependent then after write back of I-2
@@ -478,8 +481,20 @@ PWOF.Execute = (lines,pc) =>
     {
         while(PWOF.pipe.get([row-1,i])!=WB)
         {
+            if(i>=col)
+            {
+                PWOF.appendColumn()
+                PWOF.pipe.set([row,i], EXE)  
+                return
+            }
             PWOF.pipe.set([row,i], stall)
             i++
+        }
+        if(i>=col)
+        {
+            PWOF.appendColumn()
+            PWOF.pipe.set([row,i], EXE)  
+                return
         }
         PWOF.pipe.set([row,i], EXE)        
     }
@@ -487,8 +502,18 @@ PWOF.Execute = (lines,pc) =>
     {
         while(PWOF.pipe.get([row-1,i])!=MEM)
         {
+            if(i>=col)
+            {
+                PWOF.appendColumn()
+                PWOF.pipe.set([row,i], EXE)  
+                return
+            }
             PWOF.pipe.set([row,i], stall)
             i++
+        }
+        if(i>=col)
+        {
+            PWOF.appendColumn()
         }
         PWOF.pipe.set([row,i], EXE) 
     }
@@ -567,6 +592,7 @@ PWOF.updateMatrix = (lines, pc)=>
 
 PWOF.run = (lines, tags)=>
 {
+    console.log(lines)
     PWOF.reset()
     //console.log("PWOF.run")
     /*let a = matrix([["IF", "IDRF", "EXE", "MEM", "WB"]])
@@ -574,6 +600,10 @@ PWOF.run = (lines, tags)=>
     a.resize([2,6], " * ")
     a.set([1,1], "Stall")
     console.log(a) */
+    if(lines==null)
+        {
+            return PWOF.pipe
+        } 
     while(!PWOF.isInst(lines[PWOF.pc]))
     {
         PWOF.pc++
@@ -581,11 +611,12 @@ PWOF.run = (lines, tags)=>
         PWOF.prevprevPC++
         if(PWOF.pc===lines.length)//if pc has reached the end of the lines pf code, reinitialize to 0, ready for the next step or run
         {
-            PWOF.pc=0
+            /* PWOF.pc=0
             PWOF.prevPC=0
-            PWOF.prevprevPC=0
-            return 0
+            PWOF.prevprevPC=0 */
+            return PWOF.pipe
         }
+        //console.log("count")
     }
     do{
         if(lines==null)
@@ -597,9 +628,9 @@ PWOF.run = (lines, tags)=>
             PWOF.pc++
             if(PWOF.pc===lines.length)//if pc has reached the end of the lines pf code, reinitialize to 0, ready for the next step or run
             {
-            PWOF.pc=0
+            /* PWOF.pc=0
             PWOF.prevPC=0
-            PWOF.prevprevPC=0
+            PWOF.prevprevPC=0 */
             return PWOF.pipe
             }
             //console.log("instruction")
