@@ -1,5 +1,6 @@
 import { matrix } from 'mathjs'
 import local from './localEXE.js'
+import PWF from './PWF.js'
 
 const IF = "  IF "
 const IDRF = "IDRF "
@@ -13,6 +14,7 @@ const memInst = ["lw", "lui"]
 const branchInst = ["bne", "beq", "ble", "j"]
 const TwoSource = ["add", "addu", "sub", "subu"]
 const OneSource = ["addi", "addiu", "srl", "sll", "li"]
+const ExeWrite = ["add", "addu", "sub", "subu", "addi", "addiu", "srl", "sll", "li"]
 
 var PWOF = 
 {
@@ -174,12 +176,21 @@ PWOF.isOneSource = (line)=>
     }
     return false
 }
+PWOF.isExeWrite = (line)=>
+{
+    for(var i of ExeWrite)
+    {
+        if(line.includes(i))
+            return true
+    }
+    return false
+}
 PWOF.appendColumn = () =>
 {
     let row = PWOF.pipe.size()[0]
     let col = PWOF.pipe.size()[1]
     PWOF.pipe.resize([row, col+1], empty)
-    console.log(PWOF.pipe)
+    //console.log(PWOF.pipe)
 }
 PWOF.formatInst = (line)=>
 {
@@ -211,33 +222,17 @@ PWOF.isDependent = (line1, line2) =>
     if(line2.includes(":"))
         line2.splice(0,1)//removes the tag from the beginning hence extracting the instruction
 
-    //console.log(line1, line2)
-    //console.log("****")
+    if(PWOF.isBranchInst(line2))
+    {
+        return false
+    }
     if(PWOF.isBranchInst(line1)|| line1.includes("sw")|| line1.includes("syscall"))
     {
         return false
     }
-    if(PWOF.isBranchInst(line2))
-    {
-        if(line2.includes("bne")||line2.includes("ble")||line2.includes("beq"))
-        {
-            let dep1 = line2[1]
-            let dep2 = line2[2]
-            let dest = line1[1]
-            if(dest===dep1 || dest===dep2)
-            {
-                return true
-            }
-            return false          
-        }
-        else
-        {//j 
-            return false
-        }
-    }
+    let dest = line1[1]
     if(PWOF.isTwoSource(line2))
     {
-        let dest = line1[1]
         let dep1 = line2[2]
         let dep2 = line2[3]
         if(dest===dep1 || dest===dep2)
@@ -245,11 +240,9 @@ PWOF.isDependent = (line1, line2) =>
             return true
         }
         return false
-
     }
     if(PWOF.isOneSource(line2))
     {
-        let dest = line1[1]
         let dep1 = line2[2]
         if(dest===dep1)
         {
@@ -257,64 +250,118 @@ PWOF.isDependent = (line1, line2) =>
         }
         return false
     }
-}
-/* PWOF.isDependentBranch = (lines, pc) =>
-{
-    line1 = lines[PWOF.prevprevPC]
-    line2 = lines[PWOF.prevPC]
-    if(line1.includes(":"))
-        line1.splice(0,1)//removes the tag from the beginning hence extracting the instruction
-    if(line2.includes(":"))
-        line2.splice(0,1)//removes the tag from the beginning hence extracting the instruction
-
-    if(line1.isBranchInst()|| line1.includes("sw")|| line1.includes("syscall"))
+    if(line2.includes("lw")|| line2.includes("lui"))
     {
-        return false
-    }
-    if(line2.isBranchInst())
-    {
-        if(line2.includes("bne")||line2.includes("ble")||line2.includes("beq"))
-        {
-            let dep1 = line2[1]
-            let dep2 = line2[2]
-            let dest = line1[1]
-            if(dest===dep1 || dest===dep2)
-            {
-                return false
-            }
-            return true           
-        }
-        else
-        {//j 
-            return false
-        }
-    }
-    if(line2.isTwoSource())
-    {
-        let dest = line1[1]
-        let dep1 = line2[1]
-        let dep2 = line2[2]
-        if(dest===dep1 || dest===dep2)
-        {
-            return true
-        }
-        return false
-
-    }
-    if(line2.isOneSource())
-    {
-        let dest = line1[1]
-        let dep1 = line2[1]
+        let dep1 = line2[2].split("()")[1]
         if(dest===dep1)
         {
             return true
         }
         return false
     }
-} */
+    if(line2.includes("sw"))
+    {
+        let dep1 = line2[1]
+        let dep2 = line2[2].split("()")[1]
+        if(dest===dep1 || dest===dep2)
+        {
+            return true
+        }
+        return false
+    }
+    if(line2.includes("syscall"))
+    {
+        if(dest=="$a0"||dest=="$v0")
+        {
+            return true
+        }
+        return false
+    }
+}
+PWOF.isBranchDependent = (lines, pc) => //Here we check all cases that result in one stall, we check both previous and prev prev pc
+{
+    let line1 = lines[PWOF.prevprevPC]
+    let line2 = lines[PWOF.prevPC]
+    let line3 = lines[pc]
+    if(line1.includes(":"))
+        line1.splice(0,1)//removes the tag from the beginning hence extracting the instruction
+    if(line2.includes(":"))
+        line2.splice(0,1)//removes the tag from the beginning hence extracting the instruction
+    if(line3.includes(":"))
+        line3.splice(0,1)//removes the tag from the beginning hence extracting the instruction
+
+    let dep1 = line3[1]
+    let dep2 = line3[2]
+    //when line two is of Exe-write type
+    if(PWOF.isExeWrite(line2))
+    {
+        let dest = line2[1]
+        if(dest===dep1 || dest===dep2)
+        {
+            return true
+        }
+        return false           
+    }
+    else if(line1.includes("lw"))
+    {
+        let dest = line1[1]
+        if(dest===dep1 || dest===dep2)
+        {
+            return true
+        }
+        return false  
+    }
+    return false
+} 
+PWOF.isBranchMemDependent = (lines, pc) => //Here we check all cases that result in two stall i.e. when the previous instruction is an "lw"
+{
+    let line1 = lines[PWOF.prevPC]
+    let line2 = lines[pc]
+    if(line1.includes(":"))
+        line1.splice(0,1)//removes the tag from the beginning hence extracting the instruction
+    if(line2.includes(":"))
+        line2.splice(0,1)//removes the tag from the beginning hence extracting the instruction
+
+    let dep1 = line2[1]
+    let dep2 = line2[2]
+    //when line two is of Exe-write type
+    if(line1.includes("lw"))
+    {
+        let dest = line1[1]
+        if(dest===dep1 || dest===dep2)
+        {
+            return true
+        }
+        return false  
+    }
+    return false
+} 
 PWOF.InstructionFetch = (lines,pc) =>
 {
     let row = PWOF.pipe.size()[0]
+    let col = PWOF.pipe.size()[1]
+    //console.log(row, col)
+    row=row-1//row refers to index now
+    let i = row+1
+    if(!PWOF.isBranchInst(lines[PWOF.prevPC]))
+    {
+        while(PWOF.pipe.get([row-1,i])!=IDRF)
+        {
+            i++
+        }
+        PWOF.pipe.set([row,i], IF)
+    }
+    else
+    {
+        while(PWOF.pipe.get([row-1,i])!=EXE)
+        {
+            i++
+        }
+        PWOF.pipe.set([row,i], IF)   
+    }
+
+
+    /* let row = PWOF.pipe.size()[0]
     let col = PWOF.pipe.size()[1]
     //console.log(row, col)
     row=row-1//row refers to index now
@@ -371,11 +418,97 @@ PWOF.InstructionFetch = (lines,pc) =>
                 }
             }
 
-    }
+    } */
 }
 PWOF.RegisterFetch = (lines, pc) =>
 {
     let row = PWOF.pipe.size()[0]
+    let col = PWOF.pipe.size()[1]
+    //console.log(row, col)
+    row=row-1//row refers to index now
+    //console.log("register fetch")
+        let i = row+1
+        while(PWOF.pipe.get([row,i])!=IF)
+        {
+            i++
+        }
+        i++
+        let j = row+1
+        if(PWOF.isBranchInst(lines[pc]))
+        {
+            if(PWOF.isBranchMemDependent(lines, pc))//2 stalls case
+            {
+                while(PWOF.pipe.get([row-1,j])!=WB)
+                {
+                    j++
+                }
+            }
+            else if(PWOF.isBranchDependent(lines, pc))//1 stall case
+            {
+                while(PWOF.pipe.get([row-1,j])!=MEM)
+                {
+                    j++
+                }
+                if(j<i)
+                {
+                    while(PWOF.pipe.get([row-1,j])!=WB)
+                    {
+                        j++
+                    }
+                }  
+            }
+            else//no stall case
+            {
+                while(PWOF.pipe.get([row-1,j])!=EXE)
+                {
+                    j++
+                } 
+                if(j<i)
+                {
+                    while(PWOF.pipe.get([row-1,j])!=MEM)
+                    {
+                        j++
+                    }
+                }
+                if(j<i)
+                {
+                    while(PWOF.pipe.get([row-1,j])!=WB)
+                    {
+                        j++
+                    }
+                }                  
+            }
+        }
+        else//same as no stall case
+        {
+            while(PWOF.pipe.get([row-1,j])!=EXE)
+            {
+                j++
+            } 
+            if(j<i)
+            {
+                while(PWOF.pipe.get([row-1,j])!=MEM)
+                {
+                    j++
+                }
+            }
+            if(j<i)
+            {
+                while(PWOF.pipe.get([row-1,j])!=WB)
+                {
+                    j++
+                }
+            }  
+        }
+        while(i<j)
+        {
+            if(PWOF.pipe.get([row,i])==empty)
+                PWOF.pipe.set([row,i], stall)
+            i++
+        }
+        PWOF.pipe.set([row,i], IDRF)
+
+    /* let row = PWOF.pipe.size()[0]
     let col = PWOF.pipe.size()[1]
     //console.log(row, col)
     row=row-1//row refers to index now
@@ -411,7 +544,7 @@ PWOF.RegisterFetch = (lines, pc) =>
                 PWOF.pipe.set([row,i], stall)
             i++
         }
-        PWOF.pipe.set([row,i], IDRF)
+        PWOF.pipe.set([row,i], IDRF) */
         /* while(true)
             {
                 if(PWOF.pipe.get([row-1,i])==EXE)
@@ -444,14 +577,6 @@ PWOF.RegisterFetch = (lines, pc) =>
 }
 PWOF.Execute = (lines,pc) =>
 {
-    if(PWOF.isDependent(lines[PWOF.prevPC], lines[pc]))
-    {
-        console.log("dependent on prev")
-    }
-    //console.log("*")   
-    //3 cases
-    //if I-1 is dependent then after write back of I-1
-    //else if I-2 is dependent then after write back of I-2
     //else next to IDRF under MEM
     let row = PWOF.pipe.size()[0]
     let col = PWOF.pipe.size()[1]
@@ -464,7 +589,70 @@ PWOF.Execute = (lines,pc) =>
         i++
     }
     i++
-    if(i>=col || PWOF.isDependent(lines[PWOF.prevPC], lines[pc]))
+    let j = row+1
+    if(PWOF.isDependent(PWOF.prevPC!=pc && lines[PWOF.prevPC], lines[pc]))//dependent on previous
+    {   
+        //console.log("dependent on previous")     
+        while(PWOF.pipe.get([row-1,j])!=WB)
+        {
+            j++
+        }
+        j++
+        while(i<j)
+        {
+            PWOF.pipe.set([row,i], stall)
+            i++
+        }
+        PWOF.appendColumn()
+        PWOF.pipe.set([row,i], EXE)  
+        return
+
+    }
+    if(PWOF.prevprevPC!=PWOF.prevPC && PWOF.isDependent(lines[PWOF.prevprevPC], lines[pc]))//if prev prev exists and this inst is dependent on prev prev
+    {
+        //console.log("dependent on previous previous")
+        while(PWOF.pipe.get([row-2,j])!=WB)
+        {
+            j++
+        }
+        j++
+        while(PWOF.pipe.get([row-1,j])==stall)
+        {
+            j++
+        }
+        while(i<j)
+        {
+            PWOF.pipe.set([row,i], stall)
+            i++
+        }
+        if(i>=col)
+        {
+            PWOF.appendColumn()
+        }
+        PWOF.pipe.set([row,i], EXE)  
+        return
+    }
+    //not dependent on either
+    while(PWOF.pipe.get([row-1,j])!=MEM)
+    {
+        j++
+    }
+    if(i>j)
+    {
+        while(PWOF.pipe.get([row-1,j])!=MEM)
+        {
+            j++
+        }
+    }
+    while(i<j)
+    {
+        PWOF.pipe.set([row,i], stall)
+        i++
+    }
+    PWOF.pipe.set([row,i], EXE)  
+    return
+
+    /* if(i>=col || PWOF.isDependent(lines[PWOF.prevPC], lines[pc]))
     {
         while(i<col)
         {
@@ -516,7 +704,7 @@ PWOF.Execute = (lines,pc) =>
             PWOF.appendColumn()
         }
         PWOF.pipe.set([row,i], EXE) 
-    }
+    } */
 }
 PWOF.Memory = (line, pc) =>
 {
@@ -525,14 +713,23 @@ PWOF.Memory = (line, pc) =>
     //console.log(row, col)
     row=row-1//row refers to index now
     //console.log("memory")
-    //find EXE of the current line, put this immediately after it to the right
     let i = row+1
     while(PWOF.pipe.get([row,i])!=EXE)
     {
         i++
     }
     i++
-    if(i>=col)
+    let j = row+1
+    while(PWOF.pipe.get([row-1,j])!=WB)
+    {
+        j++
+    }
+    while(i<j)
+    {
+        PWOF.pipe.set([row,i], stall)
+        i++
+    }
+    if(i>j)
     {
         PWOF.appendColumn()
     }
@@ -546,17 +743,19 @@ PWOF.WriteBack = (line,pc) =>
     //console.log(row, col)
     row=row-1//row refers to index now
     //console.log("write-back")
-    //find MEM of the current line, put this immediately after it to the right
+    //find MEM of the current line, if there are any remaining column, fill them with stalls, then append a column and enter WB
     let i = row+1
     while(PWOF.pipe.get([row,i])!=MEM)
     {
         i++
     }
     i++
-    if(i>=col)
+    while(i<col)
     {
-        PWOF.appendColumn()
+        PWOF.pipe.set([row,i], stall)
+        i++
     }
+    PWOF.appendColumn()
     PWOF.pipe.set([row,i], WB)
 }
 PWOF.updateMatrix = (lines, pc)=>
@@ -592,7 +791,7 @@ PWOF.updateMatrix = (lines, pc)=>
 
 PWOF.run = (lines, tags)=>
 {
-    console.log(lines)
+    //console.log(lines)
     PWOF.reset()
     //console.log("PWOF.run")
     /*let a = matrix([["IF", "IDRF", "EXE", "MEM", "WB"]])
