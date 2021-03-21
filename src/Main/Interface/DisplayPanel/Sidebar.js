@@ -56,8 +56,8 @@ const Sidebar = props =>
   var strdec="";
   var strbin="";
 
-  var start=0;
-  var prev=0;
+  var start=-1;
+  var prev=-1;
   var c=0;
   var lastSeen=0;
 
@@ -92,6 +92,7 @@ const Sidebar = props =>
   }
 
   if(c===0){
+    prev=0;
     str+=("[0x" + (4*prev+268500992).toString(16) + "...<br/>...0x" + (4*(1024)+268500992).toString(16) + "]: 0<br/>");
     strdec+=("[0x" + (4*prev+268500992).toString(16) + "...<br/>...0x" + (4*(1024)+268500992).toString(16) + "]: 0<br/>");
     strbin+=("[0x" + (4*prev+268500992).toString(16) + "...<br/>...0x" + (4*(1024)+268500992).toString(16) + "]: 0<br/>");
@@ -146,10 +147,11 @@ const Sidebar = props =>
     // registersmaphex.set(key,(value).toString(16));
     // console.log(value);
     // registersmap[key]=value.toString(16);
-    
+    // if(value!=null)
     registersmaphex.set(key,value.toString(16));
     // console.log(value.toString(16));
     // console.log(registersmaphex.get(key));
+    // if(value!=null)
     registersmapbin.set(key,value.toString(2));
     // console.log(registermapbin.get(key));
   }

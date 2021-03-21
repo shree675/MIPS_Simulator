@@ -105,17 +105,19 @@ class MainPage extends Component {
     //console.log(this.state.lines)
     //console.log("Calling PWOF.run")
     // this.state.PWOFMatrix = PWOF.run(this.state.lines, this.state.tags)
+
     this.state.PWOFMatrix = PWOF.run(this.state.lines, this.state.tags)
     this.state.PWFMatrix = PWF.run(this.state.lines, this.state.tags)
     this.setState({
       PWOFMatrix: this.state.PWOFMatrix,
       PWFMatrix: this.state.PWFMatrix
     });
+    
     // this.state.PWOFMatrix = PWOF.run(this.state.lines, this.state.tags)
-    console.log(this.state.PWOFMatrix)
+    // console.log('PWOF :',this.state.PWOFMatrix)
 
-    /* this.state.PWFMatrix = PWF.run(this.state.lines, this.state.tags)
-    console.log(this.state.PWFMatrix)  */
+    // this.state.PWFMatrix = PWF.run(this.state.lines, this.state.tags)
+    // console.log('PWF: ',this.state.PWFMatrix)
 	}
 
   step = () =>{
