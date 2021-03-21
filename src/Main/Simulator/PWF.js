@@ -15,6 +15,8 @@ const TwoSource = ["add", "addu", "sub", "subu"]
 const OneSource = ["addi", "addiu", "srl", "sll", "li"]
 const ExeWrite = ["add", "addu", "sub", "subu", "addi", "addiu", "srl", "sll", "li"]
 
+var line1, line2, line3;
+
 var PWF = 
 {
     pc:0,

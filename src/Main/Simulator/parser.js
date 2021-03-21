@@ -9,10 +9,10 @@ parser.parse = code => {
     //const tags=[];
   
     code.split("\n").forEach(line => {
-      var lineArr = line.trim().split(/[ ,]+/)
+      var lineArr = line.trim().split(/[ ,\t]+/)
       lineWiseSplit.push(lineArr);
     });
-    for(let i =0; i<lineWiseSplit.length; i++)
+    for(let i=0; i<lineWiseSplit.length; i++)
     {
         if(lineWiseSplit[i][0].includes(":"))
         {

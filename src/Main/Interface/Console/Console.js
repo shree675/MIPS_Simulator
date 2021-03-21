@@ -33,20 +33,121 @@ const Console = props => {
         document.getElementById("pipeline-f").style.backgroundColor="#2e2e2e";
     }
 
-    var array=['CC1','CC2','CC3','CC4','CC5','CC1','CC2','CC3','CC4','CC5','CC1','CC2','CC3','CC4','CC5','CC1','CC2','CC3','CC4','CC5','CC1','CC2','CC3','CC4','CC5']
-    var ar2=[array,array,array,array,array,array,array,array];
+    // var array=['CC1','CC2','CC3','CC4','CC5','CC1','CC2','CC3','CC4','CC5','CC1','CC2','CC3','CC4','CC5','CC1','CC2','CC3','CC4','CC5','CC1','CC2','CC3','CC4','CC5']
+    // var ar2=[array,array,array,array,array,array,array,array];
 
-    function generateTable(rows,columns){
+    const pwofarr = props.pwofmatrix;
+    const pwfarr = props.pwfmatrix;
+    // console.log(pwofarr);
+    // console.log(pwfarr);
+
+    function generateNoForwardTable(){
+
+        var cycles, stalls;
+
+        var tablex=null;
+
+        if(pwofarr!=null){
+            cycles=pwofarr._data[0].length-1;
+            stalls=cycles-(pwofarr._data.length+4);
+
+            var initrow=new Array();
+            initrow.push('');
+
+            tablex=[];
+
+            for(var i=0;i<cycles;i++){
+                if((i+1)<10)
+                    initrow.push('CC-0'+(i+1));
+                else
+                    initrow.push('CC-'+(i+1));
+            }
+
+            tablex.push(initrow);
+
+            for(var i=0;i<pwofarr._data.length;i++){
+                tablex.push(pwofarr._data[i]);
+            }
+
+            // console.log(table);
+
+        }
+
         return (
-            <div className="inside-pip">
-                <div>Cycles, Stalls</div>
+            (pwofarr!=null?
+            
+                (<div className="inside-pip">
+                <div>Number of Cycles: {cycles} | Number of Stalls: {stalls}</div>
+                {/* <hr></hr> */}
                 <table className="pipeline-table">
-                    {ar2.map((eh)=>(<tr className="pip">
-                        {eh.map((e)=>(<td className="pip">{e}</td>))}
+                    {tablex.map((eh)=>(<tr>
+                        {eh.map((e)=>((e===eh[0])?(<td style={{width: `0px`, textAlign: `left`}} id="pip">{e}</td>):(
+                            <td style={{width: `0px`}} id="pip">{e}</td>
+                        )))}
                     </tr>))}
                     
                 </table>
-            </div>
+            </div>):
+            (<div className="write-code">
+                ⚠ <span id="normal-text">Write some code to generate the pipeline</span>
+            </div>)   
+            )
+            
+        );
+    }
+
+    function generateForwardTable(){
+
+        var cycles, stalls;
+
+        var tablex=null;
+
+        if(pwfarr!=null){
+            cycles=pwfarr._data[0].length-1;
+            stalls=cycles-(pwfarr._data.length+4);
+
+            var initrow=new Array();
+            initrow.push('');
+
+            tablex=[];
+
+            for(var i=0;i<cycles;i++){
+                if((i+1)<10)
+                    initrow.push('CC-0'+(i+1));
+                else
+                    initrow.push('CC-'+(i+1));
+            }
+
+            tablex.push(initrow);
+
+            for(var i=0;i<pwfarr._data.length;i++){
+                tablex.push(pwfarr._data[i]);
+            }
+
+            // console.log(table);
+
+        }
+
+        return (
+            (pwfarr!=null?
+            
+                (<div className="inside-pip">
+                <div>Number of Cycles: {cycles} | Number of Stalls: {stalls}</div>
+                {/* <hr></hr> */}
+                <table className="pipeline-table">
+                    {tablex.map((eh)=>(<tr>
+                        {eh.map((e)=>((e===eh[0])?(<td style={{width: `0px`, textAlign: `left`}} id="pip">{e}</td>):(
+                            <td style={{width: `0px`}} id="pip">{e}</td>
+                        )))}
+                    </tr>))}
+                    
+                </table>
+            </div>):
+            (<div className="write-code">
+                ⚠ <span id="normal-text">Write some code to generate the pipeline</span>
+            </div>)   
+            )
+            
         );
     }
 
@@ -74,10 +175,10 @@ const Console = props => {
                 />
             </div>
             <div id="pipeline-area">
-                {generateTable(1,5)}
+                {generateForwardTable()}
             </div>
             <div id="pipeline-area-nf">
-                {generateTable(1,5)}
+                {generateNoForwardTable()}
             </div>
         </div>
     );

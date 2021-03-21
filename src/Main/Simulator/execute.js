@@ -173,12 +173,22 @@ execute.exe = (lines, tags, pc, print) =>
     else if(line[0]==="lw")
     {
         let src = line[2].split("(")
+        // console.log(src);
         let offset = parseInt(src[0])
         let src1 = src[1].replace("$", "").replace(")", "")
+        // if(src1.length>3){
+        //     var s=src1.split('#');
+        //     // console.log('s',s[0]);
+        //     src1=s[0].trim();
+        // }
         let src2 = offset + processor.getRegister(src1)
         let dest = line[1].replace("$", "")
         //console.log(processor.registers)
+        
+        // console.log('src1:',src1);
+        // console.log('src2:',src2);
         let value = processor.getMemory(src2)
+        // console.log(value);
         processor.setRegister(dest, value)
         pc = pc+1
     }
@@ -229,6 +239,7 @@ execute.exe = (lines, tags, pc, print) =>
     }
     else
     {
+        // console.log('else line: ',line[0]);
         pc=pc+1
     }
     if(pc===lines.length)//if pc has reached the end of the lines pf code, reinitialize to 0, ready for the next step or run
