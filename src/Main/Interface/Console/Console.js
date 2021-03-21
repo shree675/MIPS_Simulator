@@ -77,11 +77,11 @@ const Console = props => {
             (pwofarr!=null?
             
                 (<div className="inside-pip">
-                <div>Number of Cycles: {cycles} | Number of Stalls: {stalls}</div>
+                <div style={{color: `#acacac`}}>Number of Cycles: <span style={{color: `white`}}>{cycles} |</span> Number of Stalls: <span style={{color: `white`}}>{stalls}</span></div>
                 {/* <hr></hr> */}
                 <table className="pipeline-table">
                     {tablex.map((eh)=>(<tr>
-                        {eh.map((e)=>((e===eh[0])?(<td style={{width: `0px`, textAlign: `left`}} id="pip">{e}</td>):(
+                        {eh.map((e)=>((e===eh[0])?(<td style={{color: `orange`, width: `0px`, textAlign: `left`}} id="pip">{e}</td>):(
                             <td style={{width: `0px`}} id="pip">{e}</td>
                         )))}
                     </tr>))}
@@ -132,11 +132,11 @@ const Console = props => {
             (pwfarr!=null?
             
                 (<div className="inside-pip">
-                <div>Number of Cycles: {cycles} | Number of Stalls: {stalls}</div>
+                <div style={{color: `#acacac`}}>Number of Cycles: <span style={{color: `white`}}>{cycles} |</span> Number of Stalls: <span style={{color: `white`}}>{stalls}</span></div>
                 {/* <hr></hr> */}
                 <table className="pipeline-table">
                     {tablex.map((eh)=>(<tr>
-                        {eh.map((e)=>((e===eh[0])?(<td style={{width: `0px`, textAlign: `left`}} id="pip">{e}</td>):(
+                        {eh.map((e)=>((e===eh[0])?(<td style={{color: `orange`, width: `0px`, textAlign: `left`}} id="pip">{e}</td>):(
                             <td style={{width: `0px`}} id="pip">{e}</td>
                         )))}
                     </tr>))}
