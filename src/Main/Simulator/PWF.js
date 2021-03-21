@@ -191,7 +191,7 @@ PWF.appendColumn = () =>
     let row = PWF.pipe.size()[0]
     let col = PWF.pipe.size()[1]
     PWF.pipe.resize([row, col+1], empty)
-    console.log(PWF.pipe)
+    //console.log(PWF.pipe)
 }
 PWF.formatInst = (line)=>
 {
@@ -638,7 +638,7 @@ PWF.updateMatrix = (lines, pc)=>
 
 PWF.run = (lines, tags)=>
 {
-    console.log(lines)
+    //console.log(lines)
     PWF.reset()
     //console.log("PWOF.run")
     /*let a = matrix([["IF", "IDRF", "EXE", "MEM", "WB"]])
