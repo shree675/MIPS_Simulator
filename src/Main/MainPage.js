@@ -1,6 +1,6 @@
 import '../App.css';
 import React, { Component } from 'react';
-import { matrix } from 'mathjs'
+// import { matrix, null } from 'mathjs'
 // import ace from 'ace-builds/src-min-noconflict/ace';
 import Editor from './Interface/Editor/Editor.js';
 import Navbar from './Interface/Navbar/Navbar.js';
@@ -104,13 +104,18 @@ class MainPage extends Component {
     //[this.state.lines, this.state.tags] = parser.parse(this.state.code)
     //console.log(this.state.lines)
     //console.log("Calling PWOF.run")
-    //this.state.PWOFMatrix = PWOF.run(this.state.lines, this.state.tags)
+    // this.state.PWOFMatrix = PWOF.run(this.state.lines, this.state.tags)
+    this.state.PWOFMatrix = PWOF.run(this.state.lines, this.state.tags)
+    this.state.PWFMatrix = PWF.run(this.state.lines, this.state.tags)
+    this.setState({
+      PWOFMatrix: this.state.PWOFMatrix,
+      PWFMatrix: this.state.PWFMatrix
+    });
+    // this.state.PWOFMatrix = PWOF.run(this.state.lines, this.state.tags)
+    console.log(this.state.PWOFMatrix)
 
-    /* this.state.PWOFMatrix = PWOF.run(this.state.lines, this.state.tags)
-    console.log(this.state.PWOFMatrix) */
-
-    /* this.state.PWFMatrix = PWF.run(this.state.lines, this.state.tags)
-    console.log(this.state.PWFMatrix) */
+    // this.state.PWFMatrix = PWF.run(this.state.lines, this.state.tags)
+    console.log(this.state.PWFMatrix)
 	}
 
   step = () =>{
@@ -206,7 +211,9 @@ class MainPage extends Component {
       memory: processor.memory,
       registers: processor.registers,
       pc: 0,
-      print: "*Read Only*\n"
+      print: "*Read Only*\n",
+      PWFMatrix: null,
+      PWOFMatrix: null
 		})
     //console.log(this.state.print)
     
@@ -272,6 +279,8 @@ class MainPage extends Component {
             
             <Console
               console={this.state.print}
+              pwfmatrix={this.state.PWFMatrix}
+              pwofmatrix={this.state.PWOFMatrix}
             />
             
             </div>
