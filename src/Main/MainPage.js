@@ -110,7 +110,7 @@ class MainPage extends Component {
     console.log(this.state.PWOFMatrix) */
 
     /* this.state.PWFMatrix = PWF.run(this.state.lines, this.state.tags)
-    console.log(this.state.PWFMatrix) */
+    console.log(this.state.PWFMatrix)  */
 	}
 
   step = () =>{
