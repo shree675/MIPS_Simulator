@@ -10,6 +10,7 @@ import processor from './Simulator/processor.js'
 import parser from './Simulator/parser.js'
 import execute from './Simulator/execute.js'
 import PWOF from './Simulator/PWOF.js'
+import PWF from './Simulator/PWF.js'
 import DropDownCard from './Interface/Help/Card.js';
 
 class MainPage extends Component {
@@ -29,6 +30,7 @@ class MainPage extends Component {
     print: "*Read Only*\n",
 		pc: 0,
     PWOFMatrix: null,
+    PWFMatrix: null,
     memory: processor.memory,
     prevRegisters: new Map(
       [
@@ -106,6 +108,9 @@ class MainPage extends Component {
 
     /* this.state.PWOFMatrix = PWOF.run(this.state.lines, this.state.tags)
     console.log(this.state.PWOFMatrix) */
+
+    /* this.state.PWFMatrix = PWF.run(this.state.lines, this.state.tags)
+    console.log(this.state.PWFMatrix) */
 	}
 
   step = () =>{
