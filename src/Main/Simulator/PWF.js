@@ -215,7 +215,7 @@ PWF.formatInst = (line)=>
     //console.log(output)
     return output
 }
-PWF.isDependent = (line1, line2) =>
+/* PWF.isDependent = (line1, line2) =>
 {
     //console.log("****")
     if(line1.includes(":"))
@@ -269,12 +269,12 @@ PWF.isDependent = (line1, line2) =>
         }
         return false
     }
-}
+} */
 PWF.isBranchDependent = (lines, pc) => //Here we check all cases that result in one stall, we check both previous and prev prev pc
 {
-    line1 = lines[PWF.prevprevPC]
-    line2 = lines[PWF.prevPC]
-    line3 = lines[pc]
+    let line1 = lines[PWF.prevprevPC]
+    let line2 = lines[PWF.prevPC]
+    let line3 = lines[pc]
     if(line1.includes(":"))
         line1.splice(0,1)//removes the tag from the beginning hence extracting the instruction
     if(line2.includes(":"))
@@ -285,7 +285,7 @@ PWF.isBranchDependent = (lines, pc) => //Here we check all cases that result in 
     let dep1 = line3[1]
     let dep2 = line3[2]
     //when line two is of Exe-write type
-    if(PWF.ExeWrite(line2))
+    if(PWF.isExeWrite(line2))
     {
         let dest = line2[1]
         if(dest===dep1 || dest===dep2)
@@ -307,8 +307,8 @@ PWF.isBranchDependent = (lines, pc) => //Here we check all cases that result in 
 } 
 PWF.isBranchMemDependent = (lines, pc) => //Here we check all cases that result in two stall i.e. when the previous instruction is an "lw"
 {
-    line1 = lines[PWF.prevPC]
-    line2 = lines[pc]
+    let line1 = lines[PWF.prevPC]
+    let line2 = lines[pc]
     if(line1.includes(":"))
         line1.splice(0,1)//removes the tag from the beginning hence extracting the instruction
     if(line2.includes(":"))
@@ -328,6 +328,62 @@ PWF.isBranchMemDependent = (lines, pc) => //Here we check all cases that result 
     }
     return false
 } 
+PWF.isMemDependent = (lines, pc) =>//Here we check if the previous instruction is a lw which makes the exe stage of the current line wait till MEM is completed
+{
+    let line1 = lines[PWF.prevPC]
+    let line2 = lines[pc]
+    if(line1.includes(":"))
+        line1.splice(0,1)//removes the tag from the beginning hence extracting the instruction
+    if(line2.includes(":"))
+        line2.splice(0,1)//removes the tag from the beginning hence extracting the instruction
+    if(!line1.includes("lw"))
+    {
+        return false
+    }
+    if(PWF.isBranchInst(line2))
+    {
+        return false
+    }
+    let dest = line1[1]
+    if(PWF.isOneSource(line2))
+    {
+        let dep1 = line2[2]
+        if(dest===dep1)
+        {
+            return true
+        }
+        return false   
+    }
+    if(PWF.isTwoSource(line2))
+    {
+        let dep1 = line2[2]
+        let dep2 = line2[3]
+        if(dest===dep1 || dest===dep2)
+        {
+            return true
+        }
+        return false 
+    }
+    if(line2.includes("lw")||line2.includes("lui"))
+    {
+        let dep1 = line2[2].split("()")[1]
+        if(dest===dep1)
+        {
+            return true
+        }
+        return false  
+    }
+    if(line2.includes("sw"))
+    {
+        let dep1 = line2[1]
+        let dep2 = line2[2].split("()")[1]
+        if(dest===dep1 || dest===dep2)
+        {
+            return true
+        }
+        return false 
+    }
+}
 PWF.InstructionFetch = (lines,pc) =>
 {
     let row = PWF.pipe.size()[0]
@@ -443,15 +499,6 @@ PWF.RegisterFetch = (lines, pc) =>
 }
 PWF.Execute = (lines,pc) =>
 {
-    if(PWF.isDependent(lines[PWF.prevPC], lines[pc]))
-    {
-        console.log("dependent on prev")
-    }
-    //console.log("*")   
-    //3 cases
-    //if I-1 is dependent then after write back of I-1
-    //else if I-2 is dependent then after write back of I-2
-    //else next to IDRF under MEM
     let row = PWF.pipe.size()[0]
     let col = PWF.pipe.size()[1]
     //console.log(row, col)
@@ -463,58 +510,48 @@ PWF.Execute = (lines,pc) =>
         i++
     }
     i++
-    if(i>=col || PWF.isDependent(lines[PWF.prevPC], lines[pc]))
+    if(PWF.isMemDependent(lines, pc))
     {
-        while(i<col)
+        let j = row+1
+        while(PWF.pipe.get([row-1,j])!=WB)
         {
-            if(PWF.pipe.get([row,i])==empty)
-            {
-                PWF.pipe.set([row,i], stall)
-            }
-            i++
+            j++
         }
-        PWF.appendColumn()
-        PWF.pipe.set([row,i], EXE)
-    }
-    else if(PWF.isDependent(lines[PWF.prevprevPC], lines[pc]))
-    {
-        while(PWF.pipe.get([row-1,i])!=WB)
+        while(i<j)
         {
-            if(i>=col)
-            {
-                PWF.appendColumn()
-                PWF.pipe.set([row,i], EXE)  
-                return
-            }
             PWF.pipe.set([row,i], stall)
             i++
         }
-        if(i>=col)
+        if(i>j)
         {
             PWF.appendColumn()
-            PWF.pipe.set([row,i], EXE)  
-                return
         }
-        PWF.pipe.set([row,i], EXE)        
+        PWF.pipe.set([row,i], EXE)
     }
     else
     {
-        while(PWF.pipe.get([row-1,i])!=MEM)
+        let j = row+1
+        while(PWF.pipe.get([row-1,j])!=MEM)
         {
-            if(i>=col)
+            j++
+        }
+        if(i>j)
+        {
+            while(PWF.pipe.get([row-1,j])!=WB)
             {
-                PWF.appendColumn()
-                PWF.pipe.set([row,i], EXE)  
-                return
-            }
+                j++
+            }   
+        }
+        while(i<j)
+        {
             PWF.pipe.set([row,i], stall)
             i++
         }
-        if(i>=col)
+        if(i>j)
         {
             PWF.appendColumn()
         }
-        PWF.pipe.set([row,i], EXE) 
+        PWF.pipe.set([row,i], EXE)
     }
 }
 PWF.Memory = (line, pc) =>
@@ -524,19 +561,27 @@ PWF.Memory = (line, pc) =>
     //console.log(row, col)
     row=row-1//row refers to index now
     //console.log("memory")
-    //find EXE of the current line, put this immediately after it to the right
     let i = row+1
     while(PWF.pipe.get([row,i])!=EXE)
     {
         i++
     }
     i++
-    if(i>=col)
+    let j = row+1
+    while(PWF.pipe.get([row-1,j])!=WB)
+    {
+        j++
+    }
+    while(i<j)
+    {
+        PWF.pipe.set([row,i], stall)
+        i++
+    }
+    if(i>j)
     {
         PWF.appendColumn()
     }
     PWF.pipe.set([row,i], MEM)
-
 }
 PWF.WriteBack = (line,pc) =>
 {
