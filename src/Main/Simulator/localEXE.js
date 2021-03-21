@@ -1,13 +1,9 @@
-import processor from "./processor";
-
-//add $t1, $t2, $t3
-var execute = 
+var local = 
 {
-    //temp:4//dummy check
 };
 //this function takes all the non empty lines of code as an array named lines, all the jump tags in a map named tags 
 //and pc which is the index of the instruction to execute in the lines array
-execute.exe = (lines, tags, pc, print) =>
+local.exe = (lines, tags, pc, processor) =>
 {
     if(lines==null)
     {
@@ -17,7 +13,7 @@ execute.exe = (lines, tags, pc, print) =>
     let line = lines[pc]
     if(line[0].includes(":") && line.length!=1)
     {
-        line.splice(0,1)//removes the tag from the beginning hence extracting the instruction
+        line.splice(0,1)//removes the tag from the beginning hence s=extracting the instruction
         //[pc, print] = cornerCase.exe(lines, tags, pc, print);
         //pc = pc+1
     }
@@ -205,7 +201,7 @@ execute.exe = (lines, tags, pc, print) =>
         {
             case 1:
                 const text = processor.getRegister("a0")
-                print = print + text + " "
+                //print = print + text + " "
                 // print = print+"hi"//comment this out one registers are working
                 //console.log("case 1")
                 pc = pc+1
@@ -235,8 +231,8 @@ execute.exe = (lines, tags, pc, print) =>
     {
         pc=0
     }
-    return [pc, print]
-    //console.log(pc)
+    return pc
+    console.log(pc)
     //console.log(lines)
     
     //console.log(processor.registers)
@@ -248,4 +244,4 @@ execute.exe = (lines, tags, pc, print) =>
     console.log(line) */
 }
 
-export default execute
+export default local

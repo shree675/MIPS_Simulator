@@ -27,7 +27,7 @@ class Editor extends Component {
       this.state.markers.pop();
     }
     this.state.markers.push({startRow: pc, startCol: 0, endRow: (pc+1), endCol: -1, className: 'highlight-marker', type: 'fullline' });
-    console.log(this.state.markers)
+    //console.log(this.state.markers)
     this.setState({
       markers: this.state.markers
     })
