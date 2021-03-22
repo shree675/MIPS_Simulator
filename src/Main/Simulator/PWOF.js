@@ -252,7 +252,7 @@ PWOF.isDependent = (line1, line2) =>
     }
     if(line2.includes("lw")|| line2.includes("lui"))
     {
-        let dep1 = line2[2].split("()")[1]
+        let dep1 = line2[2].split(/[\(\)]+/)[1]
         if(dest===dep1)
         {
             return true
@@ -262,7 +262,7 @@ PWOF.isDependent = (line1, line2) =>
     if(line2.includes("sw"))
     {
         let dep1 = line2[1]
-        let dep2 = line2[2].split("()")[1]
+        let dep2 = line2[2].split(/[\(\)]+/)[1]
         if(dest===dep1 || dest===dep2)
         {
             return true
@@ -277,6 +277,28 @@ PWOF.isDependent = (line1, line2) =>
         }
         return false
     }
+}
+PWOF.isBranchDependent2 = (line1, line2) =>
+{
+    //console.log("****")
+    if(line1.includes(":"))
+        line1.splice(0,1)//removes the tag from the beginning hence extracting the instruction
+    if(line2.includes(":"))
+        line2.splice(0,1)//removes the tag from the beginning hence extracting the instruction
+
+    if(PWOF.isBranchInst(line1)|| line1.includes("sw")|| line1.includes("syscall"))
+    {
+        return false
+    }
+    let dest = line1[1]
+    let dep1 = line2[1]
+    let dep2 = line2[2]
+    if(dest===dep1 || dest===dep2)
+    {
+        return true
+    }
+    return false
+   
 }
 PWOF.isBranchDependent = (lines, pc) => //Here we check all cases that result in one stall, we check both previous and prev prev pc
 {
@@ -420,6 +442,94 @@ PWOF.InstructionFetch = (lines,pc) =>
 
     } */
 }
+PWOF.RegisterFetch2 = (lines, pc) =>
+{
+    let row = PWOF.pipe.size()[0]
+    let col = PWOF.pipe.size()[1]
+    //console.log(row, col)
+    row=row-1//row refers to index now
+    //console.log("register fetch")
+        let i = row+1
+        while(PWOF.pipe.get([row,i])!=IF)
+        {
+            i++
+        }
+        i++
+        let j = row+1
+        if(PWOF.isBranchInst(lines[pc]) && PWOF.prevPC!=pc && PWOF.isBranchDependent2(lines[PWOF.prevPC], lines[pc]))//dependent on previous
+        {   
+            //console.log("dependent on previous")     
+            while(PWOF.pipe.get([row-1,j])!=WB)
+            {
+                j++
+            }
+            j++
+            while(i<j)
+            {
+                PWOF.pipe.set([row,i], stall)
+                i++
+            }
+            PWOF.appendColumn()
+            PWOF.pipe.set([row,i], IDRF)  
+            return
+    
+        }
+        if(PWOF.isBranchInst(lines[pc]) && PWOF.prevprevPC!=PWOF.prevPC && PWOF.isBranchDependent2(lines[PWOF.prevprevPC], lines[pc]))
+        {
+            //console.log("dependent on previous previous")
+            while(PWOF.pipe.get([row-2,j])!=WB)
+            {
+                j++
+            }
+            j++
+            while(PWOF.pipe.get([row-1,j])==stall)
+            {
+                j++
+            }
+            while(i<j)
+            {
+                PWOF.pipe.set([row,i], stall)
+                i++
+            }
+            if(i>=col)
+            {
+                PWOF.appendColumn()
+            }
+            PWOF.pipe.set([row,i], IDRF)  
+            return
+        }
+        //not dependent on either
+        while(PWOF.pipe.get([row-1,j])!=EXE)
+        {
+            j++
+        }
+        if(i>j)
+        {
+            while(PWOF.pipe.get([row-1,j])!=MEM)
+            {
+                j++
+            }
+        }
+        if(i>j)
+        {
+            while(PWOF.pipe.get([row-1,j])!=WB)
+            {
+                j++
+            }
+        }
+        while(i<j)
+        {
+            PWOF.pipe.set([row,i], stall)
+            i++
+        }
+        if(i>=col)
+        {
+            PWOF.appendColumn()
+        }
+        PWOF.pipe.set([row,i], IDRF)  
+        return
+}
+
 PWOF.RegisterFetch = (lines, pc) =>
 {
     let row = PWOF.pipe.size()[0]
@@ -590,7 +700,7 @@ PWOF.Execute = (lines,pc) =>
     }
     i++
     let j = row+1
-    if(PWOF.isDependent(PWOF.prevPC!=pc && lines[PWOF.prevPC], lines[pc]))//dependent on previous
+    if(PWOF.prevPC!=pc && PWOF.isDependent(lines[PWOF.prevPC], lines[pc]))//dependent on previous
     {   
         //console.log("dependent on previous")     
         while(PWOF.pipe.get([row-1,j])!=WB)
@@ -648,6 +758,10 @@ PWOF.Execute = (lines,pc) =>
     {
         PWOF.pipe.set([row,i], stall)
         i++
+    }
+    if(i>=col)
+    {
+        PWOF.appendColumn()
     }
     PWOF.pipe.set([row,i], EXE)  
     return
@@ -782,7 +896,8 @@ PWOF.updateMatrix = (lines, pc)=>
         PWOF.pipe.resize([row+1, col], empty)
         PWOF.pipe.set([row,0], PWOF.formatInst(line))
         PWOF.InstructionFetch(lines,pc)
-        PWOF.RegisterFetch(lines, pc)
+        //PWOF.RegisterFetch(lines, pc)
+        PWOF.RegisterFetch2(lines, pc)
         PWOF.Execute(lines,pc)
         PWOF.Memory(lines,pc)
         PWOF.WriteBack(line,pc) 

@@ -366,7 +366,8 @@ PWF.isMemDependent = (lines, pc) =>//Here we check if the previous instruction i
     }
     if(line2.includes("lw")||line2.includes("lui"))
     {
-        let dep1 = line2[2].split("()")[1]
+        let dep1 = line2[2].split(/[\(\)]+/)[1]
+        //console.log(dest, dep1)
         if(dest===dep1)
         {
             return true
@@ -376,7 +377,7 @@ PWF.isMemDependent = (lines, pc) =>//Here we check if the previous instruction i
     if(line2.includes("sw"))
     {
         let dep1 = line2[1]
-        let dep2 = line2[2].split("()")[1]
+        let dep2 = line2[2].split(/[\(\)]+/)[1]
         if(dest===dep1 || dest===dep2)
         {
             return true
