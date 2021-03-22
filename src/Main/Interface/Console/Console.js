@@ -43,8 +43,8 @@ const Console = props => {
 
     function generateNoForwardTable(){
 
-        var cycles, stalls;
-
+        let cycles;
+        let stalls;
         var tablex=null;
 
         if(pwofarr!=null){
@@ -67,6 +67,18 @@ const Console = props => {
 
             for(var i=0;i<pwofarr._data.length;i++){
                 tablex.push(pwofarr._data[i]);
+            }
+
+            if(tablex.length>100){
+                // tablex.length=100;
+                tablex=tablex.slice(0,100);
+            }
+
+            if(tablex[0].length>200){
+                for(var i=0;i<tablex.length;i++){
+                    // tablex[i].length=2;
+                    tablex[i]=tablex[i].slice(0,200);
+                }
             }
 
             // console.log(table);
@@ -130,6 +142,18 @@ const Console = props => {
 
             for(var i=0;i<pwfarr._data.length;i++){
                 tablex.push(pwfarr._data[i]);
+            }
+
+            if(tablex.length>100){
+                // tablex.length=100;
+                tablex=tablex.slice(0,100);
+            }
+
+            if(tablex[0].length>200){
+                for(var i=0;i<tablex.length;i++){
+                    // tablex[i].length=200;
+                    tablex[i]=tablex[i].slice(0,200);
+                }
             }
 
             // console.log(table);

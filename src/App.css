@@ -47,10 +47,11 @@ html, body {
 }
 
 .myMarker {
-  position: absolute; /* without this positions will be erong */
+  position: absolute; /* without this positions will be wrong */
   background: #abc; /* color */ 
   z-index: 1000; /* in front of all other markers */ 
 }
+
 #editor {
   /* position: absolute;
   top: 0;
@@ -59,4 +60,7 @@ html, body {
   left: 0; */
   font-size: 16px;
   z-index: 0;
+  /* width: 500px; */
+  /* height: 100%; */
+  /* overflow: hidden; */
 }

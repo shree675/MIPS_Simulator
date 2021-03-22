@@ -260,31 +260,35 @@ class MainPage extends Component {
             />
           </div> 
           {/* 722px */}
-          <div style={{width: '65%', height: '100%'}}>
+          <div style={{width: '65%', height: `100%`}}>
           <div>
           {/* <DropDownCard /> */}
+          {/* <ResizePanel direction="s"> */}
           <Navbar
             run={this.run}
             step={this.step}
             setFile={this.setFile}
             deleteFile={this.deleteFile}
           />
-          
+          {/* </ResizePanel> */}
         </div>
-        {/* </div> */}
-        {/* <div style={{height: `30%`}}> */}
-        {/* <ResizePanel direction="n"> */}
-          {/* <div> */}
-          <div id="editor">
+
+          <div id="editor" style={{height: `100%`, zIndex: `-5`}}>
+            
             <Editor ref={this.ideMan}
               onCodeChange={this.onCodeChange}
               code={this.state.code}
               pc={this.state.pc} 
             />
+            
           </div>
+          {/* </ResizePanel> */}
+          <div style={{zIndex: `5`}}>
+            <div style={{height: '100%', overflow: `hidden`}}>
             <div style={{height: '1px', backgroundColor: '#bd93f9'}}></div>
-            <div style={{height: `100%`}}>
-            {/* <ResizePanel direction="n"> */}
+            {/* </ResizePanel> */}
+            {/* <div style={{height: `100%`}}> */}
+
               <Console
                 console={this.state.print}
                 pwfmatrix={this.state.PWFMatrix}
@@ -292,11 +296,10 @@ class MainPage extends Component {
               />
             {/* </ResizePanel> */}
             
-            </div>
             {/* </div> */}
-            {/* </ResizePanel> */}
             </div>
-            
+            </div>
+            </div>
           </div>
           
         </div>
