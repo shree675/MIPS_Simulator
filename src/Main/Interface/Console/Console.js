@@ -74,22 +74,30 @@ const Console = props => {
         }
 
         return (
-            (pwofarr!=null?
+            (pwfarr!=null?
             
                 (<div className="inside-pip">
                 <div style={{color: `#acacac`}}>Number of Cycles: <span style={{color: `white`}}>{cycles} |</span> Number of Stalls: <span style={{color: `white`}}>{stalls}</span></div>
                 {/* <hr></hr> */}
-                <table className="pipeline-table">
-                    {tablex.map((eh)=>(<tr>
-                        {eh.map((e)=>((e===eh[0])?(<td style={{color: `orange`, width: `0px`, textAlign: `left`}} id="pip">{e}</td>):(
-                            <td style={{width: `0px`}} id="pip">{e}</td>
+                <table  className="pipeline-table" style={{borderColor: `#8be9fd`}}>
+                    {tablex.map((eh)=>(eh!=tablex[0]?(<tr>
+                        {eh.map((e)=>((e===eh[0])?(<td  id="pip" style={{backgroundColor: `#343434`, color: `#abcdef`, width: `0px`, textAlign: `left`}}>{e}</td>):(
+                            (e.trim()==='STALL')?(<td style={{width: `0px`, color: `#797d99`}} id="pip">{e}</td>):
+                            (<td style={{width: `0px`}} id="pip">{e}</td>)
                         )))}
-                    </tr>))}
+                    </tr>):
+                    (
+                        (<tr>
+                            {eh.map((e)=>((e===eh[0])?(<td  id="pip" style={{backgroundColor: `#343434`, width: `0px`, textAlign: `left`}}>{e}</td>):(
+                                <td style={{backgroundColor: `#343434`, width: `0px`, color: `#abcdef`}} id="pip">{e}</td>
+                            )))}
+                        </tr>)
+                    )))}
                     
                 </table>
             </div>):
             (<div className="write-code">
-                ⚠ <span id="normal-text">Write some code to generate the pipeline</span>
+                ⚠ <span id="normal-text">Write some code and click 'RUN' to generate the pipeline</span>
             </div>)   
             )
             
@@ -134,17 +142,25 @@ const Console = props => {
                 (<div className="inside-pip">
                 <div style={{color: `#acacac`}}>Number of Cycles: <span style={{color: `white`}}>{cycles} |</span> Number of Stalls: <span style={{color: `white`}}>{stalls}</span></div>
                 {/* <hr></hr> */}
-                <table className="pipeline-table">
-                    {tablex.map((eh)=>(<tr>
-                        {eh.map((e)=>((e===eh[0])?(<td style={{color: `orange`, width: `0px`, textAlign: `left`}} id="pip">{e}</td>):(
-                            <td style={{width: `0px`}} id="pip">{e}</td>
+                <table  className="pipeline-table" style={{borderColor: `#8be9fd`}}>
+                    {tablex.map((eh)=>(eh!=tablex[0]?(<tr>
+                        {eh.map((e)=>((e===eh[0])?(<td  id="pip" style={{backgroundColor: `#343434`, color: `#abcdef`, width: `0px`, textAlign: `left`}}>{e}</td>):(
+                            (e.trim()==='STALL')?(<td style={{width: `0px`, color: `#797d99`}} id="pip">{e}</td>):
+                            (<td style={{width: `0px`}} id="pip">{e}</td>)
                         )))}
-                    </tr>))}
+                    </tr>):
+                    (
+                        (<tr>
+                            {eh.map((e)=>((e===eh[0])?(<td  id="pip" style={{backgroundColor: `#343434`, width: `0px`, textAlign: `left`}}>{e}</td>):(
+                                <td style={{backgroundColor: `#343434`, width: `0px`, color: `#abcdef`}} id="pip">{e}</td>
+                            )))}
+                        </tr>)
+                    )))}
                     
                 </table>
             </div>):
             (<div className="write-code">
-                ⚠ <span id="normal-text">Write some code to generate the pipeline</span>
+                ⚠ <span id="normal-text">Write some code and click 'RUN' to generate the pipeline</span>
             </div>)   
             )
             

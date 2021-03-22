@@ -12,6 +12,7 @@ import execute from './Simulator/execute.js'
 import PWOF from './Simulator/PWOF.js'
 import PWF from './Simulator/PWF.js'
 import DropDownCard from './Interface/Help/Card.js';
+import ResizePanel from "react-resize-panel";
 
 class MainPage extends Component {
 
@@ -272,6 +273,8 @@ class MainPage extends Component {
         </div>
         {/* </div> */}
         {/* <div style={{height: `30%`}}> */}
+        {/* <ResizePanel direction="n"> */}
+          {/* <div> */}
           <div id="editor">
             <Editor ref={this.ideMan}
               onCodeChange={this.onCodeChange}
@@ -281,15 +284,19 @@ class MainPage extends Component {
           </div>
             <div style={{height: '1px', backgroundColor: '#bd93f9'}}></div>
             <div style={{height: `100%`}}>
-            
-            <Console
-              console={this.state.print}
-              pwfmatrix={this.state.PWFMatrix}
-              pwofmatrix={this.state.PWOFMatrix}
-            />
+            {/* <ResizePanel direction="n"> */}
+              <Console
+                console={this.state.print}
+                pwfmatrix={this.state.PWFMatrix}
+                pwofmatrix={this.state.PWOFMatrix}
+              />
+            {/* </ResizePanel> */}
             
             </div>
+            {/* </div> */}
+            {/* </ResizePanel> */}
             </div>
+            
           </div>
           
         </div>
