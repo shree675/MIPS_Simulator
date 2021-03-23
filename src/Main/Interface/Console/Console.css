@@ -65,7 +65,7 @@
 
 .pipeline-table {
     /* width: fit-content; */
-    width: 3000px;
+    width: 100000px;
     box-sizing: border-box;
     table-layout: fixed;
     display: inline-block;
@@ -73,7 +73,7 @@
 }
 
 #pip {
-    width: 3000px;
+    width: 100000px;
     padding: 3px;
     padding-left: 5px;
     padding-right: 5px;
