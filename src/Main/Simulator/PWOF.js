@@ -133,6 +133,8 @@ PWOF.isInst = (line)=>
 {
     if(line=="" || line[0]=="#")
         return false
+    if(line.indexOf("#")>=0)
+        line.length = line.indexOf("#")
     for(var i of instructions)
     {
         if(line.includes(i))
@@ -142,6 +144,8 @@ PWOF.isInst = (line)=>
 }
 PWOF.isMemInst = (line)=>
 {
+    if(line.indexOf("#")>=0)
+        line.length = line.indexOf("#")
     for(var i of memInst)
     {
         if(line.includes(i))
@@ -151,6 +155,10 @@ PWOF.isMemInst = (line)=>
 }
 PWOF.isBranchInst = (line)=>
 {
+    if(line.indexOf("#")>=0)
+        line.length = line.indexOf("#")
+    if(line.indexOf("#")>=0)
+        line.length = line.indexOf("#")
     for(var i of branchInst)
     {
         if(line.includes(i))
@@ -160,6 +168,8 @@ PWOF.isBranchInst = (line)=>
 }
 PWOF.isTwoSource = (line)=>
 {
+    if(line.indexOf("#")>=0)
+        line.length = line.indexOf("#")
     for(var i of TwoSource)
     {
         if(line.includes(i))
@@ -169,6 +179,8 @@ PWOF.isTwoSource = (line)=>
 }
 PWOF.isOneSource = (line)=>
 {
+    if(line.indexOf("#")>=0)
+        line.length = line.indexOf("#")
     for(var i of OneSource)
     {
         if(line.includes(i))
@@ -178,6 +190,8 @@ PWOF.isOneSource = (line)=>
 }
 PWOF.isExeWrite = (line)=>
 {
+    if(line.indexOf("#")>=0)
+        line.length = line.indexOf("#")
     for(var i of ExeWrite)
     {
         if(line.includes(i))
@@ -217,6 +231,10 @@ PWOF.formatInst = (line)=>
 PWOF.isDependent = (line1, line2) =>
 {
     //console.log("****")
+    if(line1.indexOf("#")>=0)
+        line1.length = line1.indexOf("#")
+    if(line2.indexOf("#")>=0)
+        line2.length = line2.indexOf("#")
     if(line1.includes(":"))
         line1.splice(0,1)//removes the tag from the beginning hence extracting the instruction
     if(line2.includes(":"))
@@ -281,6 +299,10 @@ PWOF.isDependent = (line1, line2) =>
 PWOF.isBranchDependent2 = (line1, line2) =>
 {
     //console.log("****")
+    if(line1.indexOf("#")>=0)
+        line1.length = line1.indexOf("#")
+    if(line2.indexOf("#")>=0)
+        line2.length = line2.indexOf("#")
     if(line1.includes(":"))
         line1.splice(0,1)//removes the tag from the beginning hence extracting the instruction
     if(line2.includes(":"))
@@ -305,6 +327,12 @@ PWOF.isBranchDependent = (lines, pc) => //Here we check all cases that result in
     let line1 = lines[PWOF.prevprevPC]
     let line2 = lines[PWOF.prevPC]
     let line3 = lines[pc]
+    if(line1.indexOf("#")>=0)
+        line1.length = line1.indexOf("#")
+    if(line2.indexOf("#")>=0)
+        line2.length = line2.indexOf("#")
+    if(line3.indexOf("#")>=0)
+        line3.length = line3.indexOf("#")
     if(line1.includes(":"))
         line1.splice(0,1)//removes the tag from the beginning hence extracting the instruction
     if(line2.includes(":"))
@@ -339,6 +367,10 @@ PWOF.isBranchMemDependent = (lines, pc) => //Here we check all cases that result
 {
     let line1 = lines[PWOF.prevPC]
     let line2 = lines[pc]
+    if(line1.indexOf("#")>=0)
+        line1.length = line1.indexOf("#")
+    if(line2.indexOf("#")>=0)
+        line2.length = line2.indexOf("#")
     if(line1.includes(":"))
         line1.splice(0,1)//removes the tag from the beginning hence extracting the instruction
     if(line2.includes(":"))
@@ -365,6 +397,9 @@ PWOF.InstructionFetch = (lines,pc) =>
     //console.log(row, col)
     row=row-1//row refers to index now
     let i = row+1
+    //console.log(lines[PWOF.prevPC])
+    //console.log(lines[pc])
+    //console.log("*")
     if(!PWOF.isBranchInst(lines[PWOF.prevPC]))
     {
         while(PWOF.pipe.get([row-1,i])!=IDRF)

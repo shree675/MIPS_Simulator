@@ -134,6 +134,8 @@ PWF.isInst = (line)=>
 {
     if(line=="" || line[0]=="#")
         return false
+    if(line.indexOf("#")>=0)
+        line.length = line.indexOf("#")
     for(var i of instructions)
     {
         if(line.includes(i))
@@ -143,6 +145,8 @@ PWF.isInst = (line)=>
 }
 PWF.isMemInst = (line)=>
 {
+    if(line.indexOf("#")>=0)
+        line.length = line.indexOf("#")
     for(var i of memInst)
     {
         if(line.includes(i))
@@ -152,6 +156,8 @@ PWF.isMemInst = (line)=>
 }
 PWF.isBranchInst = (line)=>
 {
+    if(line.indexOf("#")>=0)
+        line.length = line.indexOf("#")
     for(var i of branchInst)
     {
         if(line.includes(i))
@@ -161,6 +167,8 @@ PWF.isBranchInst = (line)=>
 }
 PWF.isTwoSource = (line)=>
 {
+    if(line.indexOf("#")>=0)
+        line.length = line.indexOf("#")
     for(var i of TwoSource)
     {
         if(line.includes(i))
@@ -170,6 +178,8 @@ PWF.isTwoSource = (line)=>
 }
 PWF.isOneSource = (line)=>
 {
+    if(line.indexOf("#")>=0)
+        line.length = line.indexOf("#")
     for(var i of OneSource)
     {
         if(line.includes(i))
@@ -179,6 +189,8 @@ PWF.isOneSource = (line)=>
 }
 PWF.isExeWrite = (line)=>
 {
+    if(line.indexOf("#")>=0)
+        line.length = line.indexOf("#")
     for(var i of ExeWrite)
     {
         if(line.includes(i))
@@ -275,6 +287,12 @@ PWF.isBranchDependent = (lines, pc) => //Here we check all cases that result in 
     let line1 = lines[PWF.prevprevPC]
     let line2 = lines[PWF.prevPC]
     let line3 = lines[pc]
+    if(line1.indexOf("#")>=0)
+        line1.length = line1.indexOf("#")
+    if(line2.indexOf("#")>=0)
+        line2.length = line2.indexOf("#")
+    if(line3.indexOf("#")>=0)
+        line3.length = line3.indexOf("#")
     if(line1.includes(":"))
         line1.splice(0,1)//removes the tag from the beginning hence extracting the instruction
     if(line2.includes(":"))
@@ -309,6 +327,10 @@ PWF.isBranchMemDependent = (lines, pc) => //Here we check all cases that result 
 {
     let line1 = lines[PWF.prevPC]
     let line2 = lines[pc]
+    if(line1.indexOf("#")>=0)
+        line1.length = line1.indexOf("#")
+    if(line2.indexOf("#")>=0)
+        line2.length = line2.indexOf("#")
     if(line1.includes(":"))
         line1.splice(0,1)//removes the tag from the beginning hence extracting the instruction
     if(line2.includes(":"))
@@ -332,6 +354,10 @@ PWF.isMemDependent = (lines, pc) =>//Here we check if the previous instruction i
 {
     let line1 = lines[PWF.prevPC]
     let line2 = lines[pc]
+    if(line1.indexOf("#")>=0)
+        line1.length = line1.indexOf("#")
+    if(line2.indexOf("#")>=0)
+        line2.length = line2.indexOf("#")
     if(line1.includes(":"))
         line1.splice(0,1)//removes the tag from the beginning hence extracting the instruction
     if(line2.includes(":"))
