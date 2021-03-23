@@ -463,7 +463,7 @@ PWOF.RegisterFetch2 = (lines, pc) =>
             {
                 j++
             }
-            j++
+            //j++
             while(i<j)
             {
                 PWOF.pipe.set([row,i], stall)
@@ -481,7 +481,7 @@ PWOF.RegisterFetch2 = (lines, pc) =>
             {
                 j++
             }
-            j++
+            //j++
             while(PWOF.pipe.get([row-1,j])==stall)
             {
                 j++
@@ -498,7 +498,7 @@ PWOF.RegisterFetch2 = (lines, pc) =>
             PWOF.pipe.set([row,i], IDRF)  
             return
         }
-        //not dependent on either
+        //not a branch instruction or non dependent branch instruction
         while(PWOF.pipe.get([row-1,j])!=EXE)
         {
             j++
