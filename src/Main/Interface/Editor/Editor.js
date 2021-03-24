@@ -70,8 +70,9 @@ markers.push({startRow: 0, startCol: 0, endRow: 1, endCol: 6, className: 'replac
                   value = {this.props.code}
                   onChange={this.onChange.bind(this)}
                   highlight = {this.highlight.bind(this)}
-                  style={{width: "100%", height: "470px"}}
+                  style={{width: "100%", zIndex: `0`, height: `440px`}}    /* 440px act*/ /* 470px */
                   name="mipsIDE" 
+                  // maxLines={Infinity}
                   editorProps={{$blockScrolling: true}}
                   setOptions={{tabSize: 4, wrap: false}}
                   markers={this.state.markers}
