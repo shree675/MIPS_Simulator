@@ -87,9 +87,11 @@ class MainPage extends Component {
   run = () => {
 		processor.reset()
     this.state.print = "*Read Only*\n"
+    this.state.pc = 0
     //console.log(this.state.print)
     this.setState({
       // print: "*Read Only*\n"
+      pc:0,
       print: this.state.print
     });
     //console.log(this.state.print);
