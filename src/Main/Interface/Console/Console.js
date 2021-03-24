@@ -194,7 +194,7 @@ const Console = props => {
     return (
         <div className="console-wrapper">
         
-            <div className="console-nav">
+            <div style={{zIndex: `0`}} className="console-nav">
                 <span id="console-btn" onClick={() => openConsole()}>Console</span>
                 <span id="pipeline-f" onClick={() => openPipelinef()}>Pipeline-Forwarding</span>
                 <span id="pipeline-nf" onClick={() => openPipelinenf()}>Pipeline-NoForwarding</span>
@@ -205,7 +205,7 @@ const Console = props => {
                     className={"console"}
                     theme="dracula"
                     fontSize={14}
-                    style={{ width: "100%", height: "180px" }}
+                    style={{ width: "100%", zIndex: `0`, height: `210px`}}/* 210px*/
                     name="console"
                     editorProps={{ $blockScrolling: true }}
                     setOptions={{ tabSize: 4, wrap: false }}
