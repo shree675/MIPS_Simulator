@@ -3,6 +3,7 @@
     /* height: 550px; */
     /* height: 100%; */
     /* min-height: 100%; */
+    /* height: auto; */
 }
 
 .console-nav{
@@ -44,7 +45,7 @@
     display: none;
     transform: translate(0,0);
     background-color: #282a36;
-    min-height: 180px;
+    min-height: 210px;              /*180px*/
     width: 100%;
     color: white;
     overflow-y: unset;
@@ -56,7 +57,8 @@
     display: none;
     transform: translate(0,0);
     background-color: #282a36;
-    min-height: 180px;
+    min-height: 210px;
+    height: 100%;
     width: 100%;
     color: white;
     overflow-y: unset;             /* unset*/

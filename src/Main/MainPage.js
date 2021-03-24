@@ -12,7 +12,9 @@ import execute from './Simulator/execute.js'
 import PWOF from './Simulator/PWOF.js'
 import PWF from './Simulator/PWF.js'
 import DropDownCard from './Interface/Help/Card.js';
-import ResizePanel from "react-resize-panel";
+// import ResizePanel from "react-resize-panel";
+// import SplitPane from 'react-split-pane';
+// import {Resizable} from 're-resizable';
 
 class MainPage extends Component {
 
@@ -250,6 +252,7 @@ class MainPage extends Component {
     return (
       <div className="main-screen">
         <div className="App">
+          {/* <div style={{height: }} */}
             <DropDownCard setCode={this.setCode}/>
           <div style={{width: '35%'}}>
             <Sidebar
@@ -272,8 +275,11 @@ class MainPage extends Component {
           />
           {/* </ResizePanel> */}
         </div>
-
-          <div id="editor" style={{height: `100%`, zIndex: `-5`}}>
+        {/* <Resizable
+            minHeight={300}
+            maxHeight={539}
+            enable={{top: false, bottom: true, left: false, right: false, bottomLeft:false, topLeft: false, topRight: false, bottomRight: false}}> */}
+          <div id="editor" style={{height: ``, zIndex: `-20`}}>
             
             <Editor ref={this.ideMan}
               onCodeChange={this.onCodeChange}
@@ -282,12 +288,18 @@ class MainPage extends Component {
             />
             
           </div>
+          {/* </Resizable> */}
           {/* </ResizePanel> */}
-          <div style={{zIndex: `5`}}>
-            <div style={{height: '100%', overflow: `hidden`}}>
+          {/* <Resizable
+            defaultSize={{height: 210}}
+            enable={{top: true, bottom: false, left: false, right: false, bottomLeft:false, topLeft: false, topRight: false, bottomRight: false}}> */}
+          <div>
+            {/* <div style={{height: '100%', overflow: `hidden`}}> */}
             <div style={{height: '1px', backgroundColor: '#bd93f9'}}></div>
             {/* </ResizePanel> */}
-            {/* <div style={{height: `100%`}}> */}
+            {/* <SplitPane split="horizontal" defaultSize={210}> */}
+            
+            <div style={{zIndex: `0`, height: `100%`}}>
 
               <Console
                 console={this.state.print}
@@ -296,9 +308,12 @@ class MainPage extends Component {
               />
             {/* </ResizePanel> */}
             
+            </div>
+            {/* </SplitPane> */}
+            
             {/* </div> */}
             </div>
-            </div>
+            {/* </Resizable> */}
             </div>
           </div>
           
