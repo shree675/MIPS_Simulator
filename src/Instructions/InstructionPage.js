@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import './InstructionPage.css';
 // import {Link} from 'react-router-dom';
 import svg1 from '../Assets/InstructionsPhase1.svg';
+import svg2 from '../Assets/InstructionsPhase2.svg';
 
 class InfoPage extends Component {
 
@@ -18,7 +19,7 @@ class InfoPage extends Component {
                         {/* <Link className="link" to='\'><button onClick={this.return} className="return-button">HOME</button></Link> */}
                     {/* </div> */}
                 </nav>
-                <div className="svg-image"><img style={{height: `100%`, width: `100%`, objectFit: `cover`}} src={svg1}></img></div>
+                <div className="svg-image"><img style={{height: `100%`, width: `100%`, objectFit: `cover`}} src={svg2}></img></div>
             </div>
         );
     }

@@ -7,11 +7,13 @@ class Codes{
     fibonacci = '.data\n.word 6\n\n.text\n.globl main\n\nmain:\n\nli $t0, 0x10010000\nlw $s0, 0($t0)\n\naddi $s0, $s0, 1				# $s0=n+1\n\naddi $s1, $s1, 1				# $s1=1 always\n\naddi $t0, $zero, 1				# loop variable i=1\n\naddi $t1, $t1, 0				# prev1\naddi $t2, $t2, 0				# prev2\n\naddi $s2, $s2, 1				# result\n\nLoop:\n\nbeq $t0, $s0, Exit\n\nbeq $t0, $s1, One\nj Exitone\n\nOne:\naddi $t1, $t1, 1\naddi $t0, $t0, 1\nj Loop\n\nExitone:\nadd $s1, $t1, $t2\naddi $t0, $t0, 1\naddi $t2, $t1, 0\naddi $t1, $s1, 0\nj Loop\n\nExit:\n\nli $v0, 1\naddi $a0, $s1, 0\nsyscall\n\njr $ra\n';
 
     arithmetic = '# addition and subtraction of two numbers\n.data\n\n.text\naddi $t0, $t0, 5        # load 5\naddi $t1, $t1, 10       # load 10\n\nadd $t2, $t0, $t1       # 5+10\nsub $t3, $t0, $t1       # 5-10\n\nli $v0, 1               # print results\naddi $a0, $t2, 0\nsyscall\naddi $a0, $t3, 0\nsyscall';
-piptest1 = '.data\n.word 12, 14, 16, 15\n\n.text\n.globl main\n\n\n\nmain:\nli $t2, 0x10010000\naddi $t3, $t3, 12\n\nlw $t1, 0($t2)\nbeq $t1, $t3, Address\nAddress:\nadd $t1, $t2, $t3\nsub $t3, $t1, $t2\nsub $t4, $t1, $t3\n\nli $t3, 0x10010004\n\nlw $t4, 0($t3)\nadd $t1, $t4, $t2\nsw $t1, 0($t3)\nlw $t2, 0($t3)\naddi $t3, $t3, 4				# add $t3, $t4, $t5\nlw $t6, 0($t3)\nsub $t5, $t6, $t3\nbeq $t1, $t2, Loop\nLoop:\nsw $t5, 0($t3)\njr $ra';
 
-piptest2 = '.data\n\t	.word 12\n\n.text\n.globl main\n\nmain:\n\n\t	li $t4, 0x10010000\n\n\t	add $t1, $t2, $t3\n\t	sub $t3, $t1, $t2\n\t	sub $t2, $t1, $t2\n\t	lw $t1, 0($t4)\n\t	add $t2, $t1, $zero\n\t	sw $t2, 0($t4)\n\t	lw $t3, 0($t4)\n\t	add $t1, $t2, $t1\n\t	lw $t5, 0($t4)\n\t	sw $t5, 4($t4)\n\n\t	jr $ra\n';
+    piptest1 = '.data\n\t.word 12, 14, 16, 15\n\n.text\n.globl main\n\nmain:\n\tli $t2, 0x10010000\n\taddi $t3, $t3, 12\n\n\tlw $t1, 0($t2)\n\tbeq $t1, $t3, Address\nAddress:\n\tadd $t1, $t2, $t3\n\tsub $t3, $t1, $t2\n\tsub $t4, $t1, $t3\n\n\tli $t3, 0x10010004\n\n\tlw $t4, 0($t3)\n\tadd $t1, $t4, $t2\n\tsw $t1, 0($t3)\n\tlw $t2, 0($t3)\n\taddi $t3, $t3, 4\n\t# add $t3, $t4, $t5\n\tlw $t6, 0($t3)\n\tsub $t5, $t6, $t3\n\tbeq $t1, $t2, Loop\nLoop:\n\tsw $t5, 0($t3)\n\tjr $ra';
 
-piptest3 = '.data\n.word 268500996, 8\n\n.text\n.globl main\n\nmain:\n\n\tli $t3, 0x10010000\n\n\t	add $t1, $t2, $zero\n\t	beq $t1, $zero, Next\n\nNext:\n\t	sub $t2, $t1, $t2\n\t	lw $t1, 0($t3)\n\t	lw $t2, 0($t1)						# not considering MEM-WB to EX-MEM forwarding\n\t	bne $t1, $t2, Next2\n\nNext2:\n\t	addi $t1, $zero, 0\n\t	beq $zero, $zero, Next3\n\nNext3: sw $t1, 0($t3)\n\n\t	jr $ra';
+    piptest2 = '.data\n\t	.word 12\n\n.text\n.globl main\n\nmain:\n\n\t	li $t4, 0x10010000\n\n\t	add $t1, $t2, $t3\n\t	sub $t3, $t1, $t2\n\t	sub $t2, $t1, $t2\n\t	lw $t1, 0($t4)\n\t	add $t2, $t1, $zero\n\t	sw $t2, 0($t4)\n\t	lw $t3, 0($t4)\n\t	add $t1, $t2, $t1\n\t	lw $t5, 0($t4)\n\t	sw $t5, 4($t4)\n\n\t	jr $ra\n';
+
+    piptest3 = '.data\n.word 268500996, 8\n\n.text\n.globl main\n\nmain:\n\n\t\t    li $t3, 0x10010000\n\n\t	add $t1, $t2, $zero\n\t	beq $t1, $zero, Next\n\nNext:\n\t	sub $t2, $t1, $t2\n\t	lw $t1, 0($t3)\n\t	lw $t2, 0($t1)\n\t	bne $t1, $t2, Next2\n\nNext2:\n\t	addi $t1, $zero, 0\n\t	beq $zero, $zero, Next3\n\nNext3: sw $t1, 0($t3)\n\n\t	jr $ra';
+
 }
  
 export default Codes;

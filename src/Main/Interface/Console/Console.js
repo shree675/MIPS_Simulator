@@ -45,11 +45,13 @@ const Console = props => {
 
         let cycles;
         let stalls;
+        let ipc;
         var tablex=null;
 
         if(pwofarr!=null){
             cycles=pwofarr._data[0].length-1;
             stalls=cycles-(pwofarr._data.length+4);
+            ipc=(pwofarr._data.length/cycles).toFixed(2);
 
             var initrow=new Array();
             initrow.push('');
@@ -89,7 +91,7 @@ const Console = props => {
             (pwfarr!=null?
             
                 (<div className="inside-pip">
-                <div style={{color: `#acacac`}}>Number of Cycles: <span style={{color: `white`}}>{cycles} |</span> Number of Stalls: <span style={{color: `white`}}>{stalls}</span></div>
+                <div style={{color: `#acacac`}}>Number of Cycles: <span style={{color: `white`}}>{cycles} |</span> Number of Stalls: <span style={{color: `white`}}>{stalls} |</span> IPC: <span style={{color: `white`}}>{ipc}</span></div>
                 {/* <hr></hr> */}
                 <table  className="pipeline-table" style={{borderColor: `#8be9fd`}}>
                     {tablex.map((eh)=>(eh!=tablex[0]?(<tr>
@@ -118,13 +120,14 @@ const Console = props => {
 
     function generateForwardTable(){
 
-        var cycles, stalls;
+        var cycles, stalls, ipc;
 
         var tablex=null;
 
         if(pwfarr!=null){
             cycles=pwfarr._data[0].length-1;
             stalls=cycles-(pwfarr._data.length+4);
+            ipc=(pwfarr._data.length/cycles).toFixed(2);
 
             var initrow=new Array();
             initrow.push('');
@@ -164,7 +167,7 @@ const Console = props => {
             (pwfarr!=null?
             
                 (<div className="inside-pip">
-                <div style={{color: `#acacac`}}>Number of Cycles: <span style={{color: `white`}}>{cycles} |</span> Number of Stalls: <span style={{color: `white`}}>{stalls}</span></div>
+                <div style={{color: `#acacac`}}>Number of Cycles: <span style={{color: `white`}}>{cycles} |</span> Number of Stalls: <span style={{color: `white`}}>{stalls} |</span> IPC: <span style={{color: `white`}}>{ipc}</span></div>
                 {/* <hr></hr> */}
                 <table  className="pipeline-table" style={{borderColor: `#8be9fd`}}>
                     {tablex.map((eh)=>(eh!=tablex[0]?(<tr>

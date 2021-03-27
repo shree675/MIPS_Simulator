@@ -10,20 +10,19 @@ class DropDownCard extends Component{
         super();
         
         this.state = {
-          displayMenu: false,
-        //   app: new App(),
-          
+          displayMenu: false,          
         }
         
         this.displayMenu = this.displayMenu.bind(this);
-        // this.app=this.app.bind(this);
         this.bubbleSort=this.bubbleSort.bind(this);
         this.testcodes=this.testcodes.bind(this);
         this.fibonacci=this.fibonacci.bind(this);
         this.arithmetic=this.arithmetic.bind(this);
-      }
+        this.piptest1=this.piptest1.bind(this);
+        this.piptest2=this.piptest2.bind(this);
+        this.piptest3=this.piptest3.bind(this);
 
-      
+      }
 
       bubbleSort(){
         //   console.log('hello');
@@ -61,6 +60,30 @@ class DropDownCard extends Component{
             displayMenu: false,
         });
       }
+
+      piptest1(){
+        const codes = new Codes();
+        this.props.setCode(codes.piptest1);
+        this.setState({
+            displayMenu: false,
+        });
+      }
+
+      piptest2(){
+        const codes = new Codes();
+        this.props.setCode(codes.piptest2);
+        this.setState({
+            displayMenu: false,
+        });
+      }
+
+      piptest3(){
+        const codes = new Codes();
+        this.props.setCode(codes.piptest3);
+        this.setState({
+            displayMenu: false,
+        });
+      }
       
       displayMenu(event) {
         event.preventDefault();
@@ -86,13 +109,16 @@ class DropDownCard extends Component{
                     <p id="help-menu-button"> HELP </p>
                 </button>
                 {this.state.displayMenu===true?(
-                <div>
+                <div style={{textAlign: `center`}}>
                     <Link id="link-id" to='/information'><button id="opened" className="a-button">Instructions</button></Link>
                     <span id="opened" className="non-button">Sample Programs</span>
                     <button onClick={this.bubbleSort} id="opened" className="ns a-button">BubbleSort.asm</button>
                     <button onClick={this.fibonacci} id="opened" className="ns a-button">Fibonacci.asm</button>
-                    <button onClick={this.arithmetic} id="opened" className="ns a-button">Arithmetic.asm</button>
-                    <button onClick={this.testcodes} id="opened" className="ns a-button">Test.asm</button>
+                    <button onClick={this.arithmetic} id="opened" className="ns a-button">SimpleOps.asm</button>
+                    <button onClick={this.testcodes} id="opened" className="ns a-button">LogiCall.asm</button>
+                    <button onClick={this.piptest2} id="opened" className="ns a-button">PipeLD/ST.asm</button>
+                    <button onClick={this.piptest3} id="opened" className="ns a-button">PipeBranch.asm</button>
+                    <button onClick={this.piptest1} id="opened" className="ns a-button">PipeUnited.asm</button>
                 </div>):(null)
                 }
                 
