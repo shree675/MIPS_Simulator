@@ -221,7 +221,7 @@ const Console = props => {
                 {generateForwardTable()}
             </div>
             <div id="pipeline-area-nf">
-                {generateNoForwardTable()}
+               {generateNoForwardTable()}
             </div>
         </div>
     );

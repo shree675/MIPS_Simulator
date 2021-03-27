@@ -950,9 +950,27 @@ PWOF.run = (lines, tags)=>
     a.set([1,1], "Stall")
     console.log(a) */
     if(lines==null)
+    {
+        return PWOF.pipe
+    } 
+    let index = 268500992
+    for(let i=0; i<lines.length; i++)
+    {
+        let line = lines[i]
+        if(line.includes(":"))
         {
-            return PWOF.pipe
-        } 
+            line.splice(0,1)
+        }
+        if(line!="" && line.includes(".word"))//only for storing integers
+        {
+            //tags.set(lines[i][0], i)
+            for(let j=1; j<line.length; j++, index=index+4)
+            {
+                let value = parseInt(lines[i][j])
+                PWOF.setMemory(index, value)
+            }
+        }
+    }
     while(!PWOF.isInst(lines[PWOF.pc]))
     {
         PWOF.pc++
