@@ -10,14 +10,16 @@ This Simulator has been developed using React. To host it locally, run the follo
 <p>*Node and npm are required to run Simulator locally</p>
 
 ## How to use it
-1. Enter your MIPS assembly code in the integrated code editor provided either by typing or using the Upload option
-2. Click on RUN to process the entire code altogether
+1. Enter your MIPS assembly code in the integrated code editor provided either by typing or using the Upload option.
+2. Click on RUN to process the entire code altogether and generate the pipeline
     or
-   Click on STEP to execute each line of code step by step
+   Click on STEP to execute each line of code step by step.
 3. Observe the REGISTERS changing values in the panel on the left. 
 4. Switch to the MEMORY display to observe the contents of the data segment.
 5. Print outputs appear on the read-only console present at the bottom.
-5. Click on CLEAR ALL to clear the editor, console, registers and memory.
+6. On clicking on RUN, two versions of the pipeline are generated - with forwarding and without forwarding.
+7. The two pipeline tables along with the IPC and the number of stalls are displayed in the console region. Navigate to the two versions by clicking on either 'Pipeline-Forwarding' or 'Pipeline-NoForwarding' buttons next to 'Console' button.
+8. Click on CLEAR ALL to clear the editor, console, pipeline, registers and memory.
 
 ## Instructions supported by MIPSploration.asm
 
@@ -35,11 +37,11 @@ This Simulator has been developed using React. To host it locally, run the follo
 ><p>ble $1,$2,100</p>
 ><p>addiu $1,$2,100</p>
 ><p>addu $1,$2,$3</p>
-><p>j loop:</p>
+><p>j loop</p>
 ><p>srl $a0,$a0,1</p>
 ><p>sll $a0,$a0,1</p>
 ><p>syscall</p>
 
 ## Note
 1. It is recommended to strictly follow the syntax and formatting conventions of MIPS to avoid unforseen errors. Avoid using registers that are not allowed for user such as the $at register.
-2. Refreshing the page will result in loss of contents of the editor, registers and memory.
+2. Refreshing the page or navigating to the instructions page will result in loss of contents of the editor, registers and memory.
