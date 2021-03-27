@@ -94,7 +94,7 @@ class MainPage extends Component {
     this.setState({
       // print: "*Read Only*\n"
       pc:0,
-      print: this.state.print
+      print: "*Read Only*\n"
     });
     //console.log(this.state.print);
 		//parser.reset()
@@ -117,6 +117,8 @@ class MainPage extends Component {
       PWOFMatrix: this.state.PWOFMatrix,
       PWFMatrix: this.state.PWFMatrix
     });
+    //console.log('PWOF :',this.state.PWOFMatrix)
+    //console.log('PWF: ',this.state.PWFMatrix)
     /* let a = PWOF.run(this.state.lines, this.state.tags)
     console.log(a) */
     /* let b = PWF.run(this.state.lines, this.state.tags)

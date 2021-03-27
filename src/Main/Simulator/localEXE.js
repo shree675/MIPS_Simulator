@@ -5,6 +5,8 @@ var local =
 //and pc which is the index of the instruction to execute in the lines array
 local.exe = (lines, tags, pc, processor) =>
 {
+    console.log(lines[pc])
+    //console.log(processor.memory)
     if(lines==null)
     {
         pc = 0;
@@ -231,6 +233,7 @@ local.exe = (lines, tags, pc, processor) =>
     {
         pc=0
     }
+    //console.log(processor.registers)
     return pc
     console.log(pc)
     //console.log(lines)
