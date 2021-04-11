@@ -35,7 +35,7 @@ var processor = {
             ["s8", 0],
             ["ra", 0]
         ]
-    ),
+    ), 
 }
 
 processor.setRegister = (reg, num) => {
@@ -105,3 +105,8 @@ processor.reset = () => {
 }
 
 export default processor 
+
+/*
+* three arrays -> all arrays sizes=cache size/block size ; data, tag, priority = [0,associativity-1]
+* example: cache size=32, block size=8, k=2
+*/ 
