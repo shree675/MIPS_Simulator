@@ -674,7 +674,7 @@ const Sidebar = props =>
                     <hr style={{padding: `0px`, margin: `1px`}}></hr>
                     <div className="query">
 
-                      <span style={{textAlign: `left`}}>Cache Size:</span>
+                      <span style={{textAlign: `left`}}>Cache Size</span>
                       <span style={{float: `right`, color: `black`, fontSize: '12px', padding: `3px`}}>
                       <Dropdown
                         name="16 bytes"
@@ -685,8 +685,8 @@ const Sidebar = props =>
                         styles={{
                           list: {fontWeight: `bold`, fontSize: `12px`, padding: `0px`, margin: `0px`},
                           listItem: {fontWeight: `bold`, fontSize: `12px`, padding: `3px`},
-                          headerTitle: {fontWeight: `bold`, fontSize: `12px`, padding: `0px`},
-                          wrapper: {height: `20px`, paddingLeft: `0px`, margin: `0px`, width: `auto`},
+                          headerTitle: {fontWeight: `bold`, fontSize: `11px`, padding: `0px`},
+                          wrapper: {height: `20px`, paddingLeft: `0px`, margin: `0px`, paddingRight: `-20px`, width: `auto`},
                           headerArrowUpIcon: {display: `none`, fontSize: `0px`},
                           headerArrowDownIcon: {fontSize: `0px`, display: `none`,},
                           scrollList: {width: `auto`}
@@ -698,7 +698,7 @@ const Sidebar = props =>
 
                       <div className="query">
 
-                        <span style={{textAlign: `left`}}>Block Size:</span>
+                        <span style={{textAlign: `left`}}>Block Size</span>
                         <span style={{float: `right`, color: `black`, fontSize: '12px', padding: `3px`}}>
                         <Dropdown
                           name="4 bytes"
@@ -710,7 +710,7 @@ const Sidebar = props =>
                           styles={{
                             list: {fontWeight: `bold`, fontSize: `12px`, padding: `0px`, margin: `0px`},
                             listItem: {fontWeight: `bold`, fontSize: `12px`, padding: `3px`},
-                            headerTitle: {fontWeight: `bold`, fontSize: `12px`, padding: `0px`},
+                            headerTitle: {fontWeight: `bold`, fontSize: `11px`, padding: `0px`},
                             wrapper: {height: `20px`, paddingLeft: `-5px`, margin: `0px`, width: `auto`},
                             headerArrowUpIcon: {display: `none`, fontSize: `0px`},
                             headerArrowDownIcon: {fontSize: `0px`, display: `none`,},
@@ -724,19 +724,18 @@ const Sidebar = props =>
 
                       <div className="query">
 
-                        <span style={{textAlign: `left`, width: `auto`}}>Associativity:</span>
+                        <span style={{textAlign: `left`, width: `auto`}}>Associativity</span>
                         <span style={{float: `right`, color: `black`, fontSize: '12px', padding: `3px`}}>
                         <Dropdown
                           name="Direct Mapped"
                           title="Direct Mapped"
                           list={assocl1}
                           onChange={changeAssocl1}
-                          fontSize="12px"
                           color="black"
                           styles={{
                             list: {fontWeight: `bold`, fontSize: `12px`, padding: `0px`, margin: `0px`},
                             listItem: {fontWeight: `bold`, fontSize: `12px`, padding: `3px`},
-                            headerTitle: {fontWeight: `bold`, fontSize: `12px`, padding: `0px`},
+                            headerTitle: {fontWeight: `bold`, fontSize: `11px`, padding: `0px`},
                             wrapper: {height: `20px`, paddingLeft: `-5px`, margin: `0px`, width: `auto`},
                             headerArrowUpIcon: {display: `none`, fontSize: `0px`},
                             headerArrowDownIcon: {fontSize: `0px`, display: `none`,},
@@ -750,19 +749,18 @@ const Sidebar = props =>
 
                       <div className="query" style={{paddingBottom: `0px`}}>
 
-                        <span style={{textAlign: `left`, width: `auto`}}>Latency:</span>
+                        <span style={{textAlign: `left`, width: `auto`}}>Latency</span>
                         <span style={{float: `right`, color: `black`, fontSize: '12px', padding: `3px`}}>
                         <Dropdown
                           name="1 cycle"
                           title="1 cycle"
                           list={latencyl1}
                           onChange={changeLatl1}
-                          fontSize="12px"
                           color="black"
                           styles={{
                             list: {fontWeight: `bold`, fontSize: `12px`, padding: `0px`, margin: `0px`},
                             listItem: {fontWeight: `bold`, fontSize: `12px`, padding: `3px`},
-                            headerTitle: {fontWeight: `bold`, fontSize: `12px`, padding: `0px`},
+                            headerTitle: {fontWeight: `bold`, fontSize: `11px`, padding: `0px`},
                             wrapper: {height: `20px`, paddingLeft: `-5px`, margin: `0px`, width: `auto`},
                             headerArrowUpIcon: {display: `none`, fontSize: `0px`},
                             headerArrowDownIcon: {fontSize: `0px`, display: `none`,},
@@ -782,19 +780,18 @@ const Sidebar = props =>
                   <hr style={{padding: `0px`, margin: `1px`}}></hr>
                     <div className="query">
 
-                      <span style={{textAlign: `left`}}>Cache Size:</span>
+                      <span style={{textAlign: `left`}}>Cache Size</span>
                       <span style={{float: `right`, color: `black`, fontSize: '12px', padding: `3px`}}>
                       <Dropdown
                         name="64 bytes"
                         title="64 bytes"
                         list={cachesizesl2}
                         onChange={changeCacheSizel2}
-                        fontSize="12px"
                         color="black"
                         styles={{
                           list: {fontWeight: `bold`, fontSize: `12px`, padding: `0px`, margin: `0px`},
                           listItem: {fontWeight: `bold`, fontSize: `12px`, padding: `3px`},
-                          headerTitle: {fontWeight: `bold`, fontSize: `12px`, padding: `0px`},
+                          headerTitle: {fontWeight: `bold`, fontSize: `11px`, padding: `0px`},
                           wrapper: {height: `20px`, paddingLeft: `0px`, margin: `0px`, width: `auto`},
                           headerArrowUpIcon: {display: `none`, fontSize: `0px`},
                           headerArrowDownIcon: {fontSize: `0px`, display: `none`,},
@@ -807,19 +804,18 @@ const Sidebar = props =>
 
                       <div className="query">
 
-                        <span style={{textAlign: `left`}}>Block Size:</span>
+                        <span style={{textAlign: `left`}}>Block Size</span>
                         <span style={{float: `right`, color: `black`, fontSize: '12px', padding: `3px`}}>
                         <Dropdown
                           name="4 bytes"
                           title="4 bytes"
                           list={blocksizes}
                           onChange={changeBlockSize}
-                          fontSize="12px"
                           color="black"
                           styles={{
                             list: {fontWeight: `bold`, fontSize: `12px`, padding: `0px`, margin: `0px`},
                             listItem: {fontWeight: `bold`, fontSize: `12px`, padding: `3px`},
-                            headerTitle: {fontWeight: `bold`, fontSize: `12px`, padding: `0px`},
+                            headerTitle: {fontWeight: `bold`, fontSize: `11px`, padding: `0px`},
                             wrapper: {height: `20px`, paddingLeft: `-5px`, margin: `0px`, width: `auto`},
                             headerArrowUpIcon: {display: `none`, fontSize: `0px`},
                             headerArrowDownIcon: {fontSize: `0px`, display: `none`,},
@@ -833,19 +829,18 @@ const Sidebar = props =>
 
                       <div className="query">
 
-                        <span style={{textAlign: `left`, width: `auto`}}>Associativity:</span>
+                        <span style={{textAlign: `left`, width: `auto`}}>Associativity</span>
                         <span style={{float: `right`, color: `black`, fontSize: '12px', padding: `3px`}}>
                         <Dropdown
                           name="Direct Mapped"
                           title="Direct Mapped"
                           list={assocl2}
                           onChange={changeAssocl2}
-                          fontSize="12px"
                           color="black"
                           styles={{
                             list: {fontWeight: `bold`, fontSize: `12px`, padding: `0px`, margin: `0px`},
                             listItem: {fontWeight: `bold`, fontSize: `12px`, padding: `3px`},
-                            headerTitle: {fontWeight: `bold`, fontSize: `12px`, padding: `0px`},
+                            headerTitle: {fontWeight: `bold`, fontSize: `11px`, padding: `0px`},
                             wrapper: {height: `20px`, paddingLeft: `-5px`, margin: `0px`, width: `auto`},
                             headerArrowUpIcon: {display: `none`, fontSize: `0px`},
                             headerArrowDownIcon: {fontSize: `0px`, display: `none`,},
@@ -859,19 +854,18 @@ const Sidebar = props =>
 
                       <div className="query" style={{paddingBottom: `0px`}}>
 
-                        <span style={{textAlign: `left`, width: `auto`}}>Latency:</span>
+                        <span style={{textAlign: `left`, width: `auto`}}>Latency</span>
                         <span style={{float: `right`, color: `black`, fontSize: '12px', padding: `3px`}}>
                         <Dropdown
                           name="2 cycles"
                           title="2 cycles"
                           list={latencyl2}
                           onChange={changeLatl2}
-                          fontSize="12px"
                           color="black"
                           styles={{
                             list: {fontWeight: `bold`, fontSize: `12px`, padding: `0px`, margin: `0px`},
                             listItem: {fontWeight: `bold`, fontSize: `12px`, padding: `3px`},
-                            headerTitle: {fontWeight: `bold`, fontSize: `12px`, padding: `0px`},
+                            headerTitle: {fontWeight: `bold`, fontSize: `11px`, padding: `0px`},
                             wrapper: {height: `20px`, paddingLeft: `-5px`, margin: `0px`, width: `auto`},
                             headerArrowUpIcon: {display: `none`, fontSize: `0px`},
                             headerArrowDownIcon: {fontSize: `0px`, display: `none`,},
@@ -897,7 +891,7 @@ const Sidebar = props =>
                       
                   <div className="query" style={{paddingBottom: `0px`}}>
 
-                      <span style={{textAlign: `left`, width: `auto`}}>Memory Latency:</span>
+                      <span style={{textAlign: `left`, width: `auto`}}>Memory Latency</span>
                       <span style={{float: `right`, color: `black`, fontSize: '12px', padding: `3px`}}>
                       <Dropdown
                         name="10 cycles"
