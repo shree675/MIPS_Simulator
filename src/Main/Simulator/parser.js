@@ -30,7 +30,7 @@ parser.parse = code => {
             for(let j=1; j<line.length; j++, index=index+4)
             {
                 let value = parseInt(line[j])
-                processor.setMemory(index, value)
+                processor.setInitialMemory(index, value)
             }
         }
         else if(lineWiseSplit[i][0].includes(".word"))//only for storing integers
@@ -39,7 +39,7 @@ parser.parse = code => {
             for(let j=1; j<lineWiseSplit[i].length; j++, index=index+4)
             {
                 let value = parseInt(lineWiseSplit[i][j])
-                processor.setMemory(index, value)
+                processor.setInitialMemory(index, value)
             }
         }
         else if(lineWiseSplit[i][0].includes(".ascii"))//will deal with this later
