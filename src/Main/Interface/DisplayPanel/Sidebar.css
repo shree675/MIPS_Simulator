@@ -35,10 +35,16 @@
 
 #b1 {
     background-color: gray;
+    /* background-color: #333333; */
 }
 
 #b2 {
     background-color: #333333;
+}
+
+#b3 {
+    background-color: #333333;
+    /* background-color: gray; */
 }
 
 #regs {
@@ -50,6 +56,10 @@
     border: 1px solid #bd93f9;
     margin: 5px;
     padding: 5px;
+}
+
+#cache-display {
+    display: none;
 }
 
 .sidebar-options {
@@ -125,4 +135,21 @@ td {
 
 #r0, #at, #v0, #v1, #a0, #a1, #a2, #a3, #t0, #t1, #t2, #t2, #t3, #t4, #t5, #t6, #t7, #s0, #s1, #s2, #s3, #s4, #s5, #s6, #s7, #t8, #t9, #k0, #k1, #gp, #sp, #s8, #ra {
     background-color: #383144;
+}
+
+.cache-settings-table {
+    color: white;
+    padding: 0px;
+    width: 100%;
+}
+
+.table-row {
+    padding: 3px;
+    width: 100%;
+}
+
+.query {
+    margin: 0px;
+    padding-bottom: 5px;
+    /* font-size: 14px; */
 }

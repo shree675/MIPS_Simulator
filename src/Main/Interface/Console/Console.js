@@ -93,6 +93,7 @@ const Console = props => {
                 (<div className="inside-pip">
                 <div style={{color: `#acacac`}}>Number of Cycles: <span style={{color: `white`}}>{cycles} |</span> Number of Stalls: <span style={{color: `white`}}>{stalls} |</span> IPC: <span style={{color: `white`}}>{ipc}</span></div>
                 {/* <hr></hr> */}
+                
                 <table  className="pipeline-table" style={{borderColor: `#8be9fd`}}>
                     {tablex.map((eh)=>(eh!=tablex[0]?(<tr>
                         {eh.map((e)=>((e===eh[0])?(<td  id="pip" style={{backgroundColor: `#343434`, color: `#abcdef`, width: `0px`, textAlign: `left`}}>{e}</td>):(
@@ -112,7 +113,10 @@ const Console = props => {
             </div>):
             (<div className="write-code">
                 ⚠ <span id="normal-text">Write some code and click 'RUN' to generate the pipeline</span>
-            </div>)   
+                <p>
+                <div style={{color: `#acacac`}}>Note: Large codes may take around a minute to execute.</div>
+                <div style={{color: `#acacac`}}>In case the page is unresponsive, please click on 'Wait' until it finishes executing.</div>
+                            </p></div>)  
             )
             
         );
@@ -187,8 +191,11 @@ const Console = props => {
                 </table>
             </div>):
             (<div className="write-code">
-                ⚠ <span id="normal-text">Write some code and click 'RUN' to generate the pipeline</span>
-            </div>)   
+            ⚠ <span id="normal-text">Write some code and click 'RUN' to generate the pipeline</span>
+            <p>
+            <div style={{color: `#acacac`}}>Note: Large codes may take around a minute to execute.</div>
+            <div style={{color: `#acacac`}}>In case the page is unresponsive, please click on 'Wait' until it finishes executing.</div>
+                        </p></div>)  
             )
             
         );

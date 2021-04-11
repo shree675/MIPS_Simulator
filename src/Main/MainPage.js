@@ -310,7 +310,6 @@ class MainPage extends Component {
                 pwfmatrix={this.state.PWFMatrix}
                 pwofmatrix={this.state.PWOFMatrix}
               />
-            {/* </ResizePanel> */}
             
             </div>
             {/* </SplitPane> */}

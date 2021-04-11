@@ -1,18 +1,14 @@
 import React, {useState} from "react";
+import { ListGroupItem } from "react-bootstrap";
+import { Dropdown } from "reactjs-dropdown-component";
 import "./Sidebar.css";
 
 const Sidebar = props =>
 {
-
-  // var d=0;
-  // var h=0;
-  // var b=0;
   const [b,setB] = useState(false);
   const [h,setH] = useState(false);
   const [d,setD] = useState(true);
 
-  // const [registersmap, setRegisters] = useState(props.registersmap);
-  // const [pc, setPC] = useState(props.programCounter); 
   var pc=props.programCounter;
   var registersmap=props.registersmap;
 
@@ -22,8 +18,6 @@ const Sidebar = props =>
   var memoryArr=props.memoryArray;
 
   var prevRegisters=props.prevRegisters;
-  // console.log('prev',prevRegisters);
-  // console.log('currnent',registersmap);
 
   for(var [key,value] of registersmap){
     if(document.getElementById(key+'hex')!=null){
@@ -72,23 +66,14 @@ const Sidebar = props =>
         prev=i;
       }
       else{
-        // if(i==(prev+2)){
-        //   str+=(4*(prev+1)+268500992).toString(16) + ": 0" + "<br/>";
-        //   prev=i;
-        // }
-        // else{
         str+=(start==prev?("[0x" + (4*i+268500992).toString(16) + "]: " + memoryArr[i].toString(16) + "<br/>"):("<br>" + "[0x" + (4*(prev+1)+268500992).toString(16) + "...<br/>..." + "0x" + (4*(i)+268500992).toString(16) + "]: 0<br></br>" + "[0x" + (4*i+268500992).toString(16) + "]: " + memoryArr[i].toString(16) + "<br/>"));
         strdec+=(start==prev?("[0x" + (4*i+268500992).toString(16) + "]: " + memoryArr[i].toString(10) + "<br/>"):("<br>" + "[0x" + (4*(prev+1)+268500992).toString(16) + "...<br/>..." + "0x" + (4*(i)+268500992).toString(16) + "]: 0<br></br>" + "[0x" + (4*i+268500992).toString(16) + "]: " + memoryArr[i].toString(10) + "<br/>"));
         strbin+=(start==prev?("[0x" + (4*i+268500992).toString(16) + "]: " + memoryArr[i].toString(2) + "<br/>"):("<br>" + "[0x" + (4*(prev+1)+268500992).toString(16) + "...<br/>..." + "0x" + (4*(i)+268500992).toString(16) + "]: 0<br></br>" + "[0x" + (4*i+268500992).toString(16) + "]: " + memoryArr[i].toString(2) + "<br/>"));
-        // strdec+=(start==prev?((4*i+268500992).toString(16) + ": " + memoryArr[i].toString(10) + "<br/>"):("<br>" + (4*(prev+1)+268500992).toString(16) + "...<br/>..." + (4*(i)+268500992).toString(16) + ": 0<br></br>" + (4*i+268500992).toString(16) + ": " + memoryArr[i].toString(10) + "<br/>"));
-        // strbin+=(start==prev?((4*i+268500992).toString(16) + ": " + memoryArr[i].toString(2) + "<br/>"):("<br>" + (4*(prev+1)+268500992).toString(16) + "...<br/>..." + (4*(i)+268500992).toString(16) + ": 0<br></br>" + (4*i+268500992).toString(16) + ": " + memoryArr[i].toString(2) + "<br/>"));
-        prev=i;
-        // }
-        // setString(s+((4*start+268500992).toString(16) + "..." + (4*(i-1)+268500992).toString(16) + ": 0\n" + memoryArr[i].toString(16) + "\n" + (4*i+268500992).toString(16) + ": " + memoryArr[i].toString(16) + "\n"));
+        
+        prev=i;        
       }
     }
     start=i;
-    // prev=start;
   }
 
   if(c===0){
@@ -119,57 +104,48 @@ const Sidebar = props =>
     document.getElementById("memory-tablebin").innerHTML=strbin;
   }
 
-  // setString(str);
-
-  // console.log(str);
-
-  // if(pc!=0){
-  //   // console.log("hello");
-  //   for(var [key,value] of registersmap){
-  //     // console.log(parseInt(registersmaphex.get(key)));
-  //     console.log(registersmaphex);
-  //     if(registersmap.get(key)!=parseInt(registersmaphex.get(key),16)){
-  //       console.log(parseInt(registersmaphex.get(key),16));
-  //       document.getElementById(key).style.backgroundColor="yellowgreen";
-  //       for(var [key2,value2] of registersmap){
-  //         if(key2!=key){
-  //           document.getElementById(key2).style.backgroundColor="";
-  //         }
-  //       }
-  //     }
-  //   }
-  // }
-
-  // console.log(registersmap);
-
   for(var [key,value] of registersmap){
-    // console.log(key," ",value);
-    // registersmaphex.set(key,(value).toString(16));
-    // console.log(value);
-    // registersmap[key]=value.toString(16);
-    // if(value!=null)
     registersmaphex.set(key,value.toString(16));
-    // console.log(value.toString(16));
-    // console.log(registersmaphex.get(key));
-    // if(value!=null)
-    registersmapbin.set(key,value.toString(2));
-    // console.log(registermapbin.get(key));
+    registersmapbin.set(key,value.toString(2));    
   }
 
   function reg() {
     {document.getElementById("mem").style.display="none";}
     {document.getElementById("regs").style.display="block";}
+    {document.getElementById("cache-display").style.display="none";}
+    {document.getElementById("b3").style.backgroundColor="#333333"}
     {document.getElementById("b1").style.backgroundColor="gray"}
     {document.getElementById("b2").style.backgroundColor="#333333"}
-    console.log("registers");
+    document.getElementById("sb1").style.opacity="1";
+    document.getElementById("sb2").style.opacity="1";
+    document.getElementById("sb3").style.opacity="1";
+    // console.log("registers");
   }
 
   function memory() {
     {document.getElementById("regs").style.display="none";}
     {document.getElementById("mem").style.display="block";}
+    {document.getElementById("cache-display").style.display="none";}
+    {document.getElementById("b3").style.backgroundColor="#333333"}
     {document.getElementById("b1").style.backgroundColor="#333333"}
     {document.getElementById("b2").style.backgroundColor="gray"}
-    console.log("memory");
+    document.getElementById("sb1").style.opacity="1";
+    document.getElementById("sb2").style.opacity="1";
+    document.getElementById("sb3").style.opacity="1";
+    // console.log("memory");
+  }
+
+  function cache() {
+    {document.getElementById("regs").style.display="none";}
+    {document.getElementById("mem").style.display="none";}
+    {document.getElementById("cache-display").style.display="block";}
+    {document.getElementById("b3").style.backgroundColor="gray"}
+    {document.getElementById("b1").style.backgroundColor="#333333"}
+    {document.getElementById("b2").style.backgroundColor="#333333"}
+    document.getElementById("sb1").style.opacity="0.5";
+    document.getElementById("sb2").style.opacity="0.5";
+    document.getElementById("sb3").style.opacity="0.5";
+    // console.log("memory");
   }
 
   function dec() {
@@ -220,12 +196,184 @@ const Sidebar = props =>
     console.log("binary");
   }
 
+  var l1cachesize=16;
+  var l2cachesize=64;
+  var blocksize=4;
+  var l1assoc=1;
+  var l2assoc=1;
+  var l1latency=1;
+  var l2latency=2;
+  var memlatency=10;
+
+  function changeCacheSizel1(item,value) {
+    l1cachesize=parseInt(item.value);
+  }
+
+  function changeCacheSizel2(item,value) {
+    l2cachesize=parseInt(item.value);
+  }
+
+  function changeBlockSize(item,value) {
+    blocksize=parseInt(item.value);
+  }
+
+  function changeAssocl1(item,value) {
+    if(item.value==="Direct Mapped"){
+      l1assoc=1;
+    }
+    else if(item.value==="Fully Associative"){
+      l1assoc=l1cachesize/blocksize;
+    }
+    else{
+      l1assoc=parseInt(item.value);
+    }
+  }
+
+  function changeAssocl2(item,value) {
+    if(item.value==="Direct Mapped"){
+      l2assoc=1;
+    }
+    else if(item.value==="Fully Associative"){
+      l2assoc=l2cachesize/blocksize;
+    }
+    l2assoc=parseInt(item.value);
+  }
+
+  function changeLatl1(item,value) {
+    l1latency=parseInt(item.value);
+  }
+
+  function changeLatl2(item,value) {
+    l2latency=parseInt(item.value);
+  }
+
+  function changeLatMem(item,value) {
+    memlatency=parseInt(item.value);
+  }
+
+  let cachesizesl1=[
+    {
+      label: '16 bytes',
+      value: '16'
+    },
+    {
+      label: '32 bytes',
+      value: '32'
+    }
+  ];
+
+  let cachesizesl2=[
+    {
+      label: '64 bytes',
+      value: '64'
+    },
+    {
+      label: '128 bytes',
+      value: '128'
+    }
+  ];
+
+  let blocksizes=[
+    {
+      label: '4 bytes',
+      value: '4'
+    },
+    {
+      label: '8 bytes',
+      value: '8'
+    }
+  ];
+
+  let assocl1=[
+    {
+      label: 'Direct Mapped',
+      value: 'Direct Mapped'
+    },
+    {
+      label: '2 way',
+      value: '2'
+    },
+    {
+      label: '4 way',
+      value: '4'
+    },
+    {
+      label: 'Fully Associative',
+      value: 'Fully Associative'
+    }
+  ];
+
+  let assocl2=[
+    {
+      label: 'Direct Mapped',
+      value: 'Direct Mapped'
+    },
+    {
+      label: '2 way',
+      value: '2'
+    },
+    {
+      label: '4 way',
+      value: '4'
+    },
+    {
+      label: '8 way',
+      value: '8'
+    },
+    {
+      label: 'Fully Associative',
+      value: 'Fully Associative'
+    }
+  ];
+
+  let latencyl1=[
+    {
+      label: '1 cycle',
+      value: '1'
+    },
+    {
+      label: '2 cycles',
+      value: '2'
+    }
+  ];
+
+  let latencyl2=[
+    {
+      label: '2 cycles',
+      value: '2'
+    },
+    {
+      label: '3 cycles',
+      value: '3'
+    },
+    {
+      label: '4 cycles',
+      value: '4'
+    }
+  ];
+
+  let latencymem=[
+    {
+      label: '10 cycles',
+      value: '10'
+    },
+    {
+      label: '20 cycles',
+      value: '20'
+    },
+    {
+      label: '30 cycles',
+      value: '30'
+    }
+  ];
+
   return (
     <div className="sidebar">
       
       <div className="sidebar-menu">
         <button id="b1" onClick={reg}>REGISTERS</button>
         <button id="b2" onClick={memory}>MEMORY</button>
+        <button id="b3" onClick={cache}>CACHE</button>
       </div>
       
       <br></br>
@@ -514,35 +662,273 @@ const Sidebar = props =>
             {/* Memory segment */}
           </li>
 
-          {/* <li id="decimal">
-            Decimal
+          <li id="cache-display">
             <div>
-              <ul>
-                <li id="regs">REGISTERS</li>
-                <li id="mem">MEMORY</li>
-              </ul>
-            </div>
-          </li>
+              <table className="cache-settings-table">
 
-          <li id="hexadecimal">
-            Hexadecimal
-            <div>
-              <ul>
-                <li id="regs">REGISTERS</li>
-                <li id="mem">MEMORY</li>
-              </ul>
-            </div>
-          </li>
+                <tr className="table-row">
 
-          <li id="binary">
-            Binary
-            <div>
-              <ul>
-                <li id="regs">REGISTERS</li>
-                <li id="mem">MEMORY</li>
-              </ul>
+                  <td className="table-row" style={{width: `50%`}}>
+
+                    <div style={{fontWeight: `bold`, textAlign: `center`, fontSize: `20px`}}>L1</div>
+                    <hr style={{padding: `0px`, margin: `1px`}}></hr>
+                    <div className="query">
+
+                      <span style={{textAlign: `left`}}>Cache Size:</span>
+                      <span style={{float: `right`, color: `black`, fontSize: '12px', padding: `3px`}}>
+                      <Dropdown
+                        name="16 bytes"
+                        title="16 bytes"
+                        list={cachesizesl1}
+                        onChange={changeCacheSizel1}
+                        fontSize="12px"
+                        color="black"
+                        styles={{
+                          list: {fontWeight: `bold`, fontSize: `12px`, padding: `0px`, margin: `0px`},
+                          listItem: {fontWeight: `bold`, fontSize: `12px`, padding: `3px`},
+                          headerTitle: {fontWeight: `bold`, fontSize: `12px`, padding: `0px`},
+                          wrapper: {height: `20px`, paddingLeft: `0px`, margin: `0px`, width: `auto`},
+                          headerArrowUpIcon: {display: `none`, fontSize: `0px`},
+                          headerArrowDownIcon: {fontSize: `0px`, display: `none`,},
+                          scrollList: {width: `auto`}
+                        }}
+                      />
+                      </span>
+
+                      </div>
+
+                      <div className="query">
+
+                        <span style={{textAlign: `left`}}>Block Size:</span>
+                        <span style={{float: `right`, color: `black`, fontSize: '12px', padding: `3px`}}>
+                        <Dropdown
+                          name="4 bytes"
+                          title="4 bytes"
+                          list={blocksizes}
+                          onChange={changeBlockSize}
+                          fontSize="12px"
+                          color="black"
+                          styles={{
+                            list: {fontWeight: `bold`, fontSize: `12px`, padding: `0px`, margin: `0px`},
+                            listItem: {fontWeight: `bold`, fontSize: `12px`, padding: `3px`},
+                            headerTitle: {fontWeight: `bold`, fontSize: `12px`, padding: `0px`},
+                            wrapper: {height: `20px`, paddingLeft: `-5px`, margin: `0px`, width: `auto`},
+                            headerArrowUpIcon: {display: `none`, fontSize: `0px`},
+                            headerArrowDownIcon: {fontSize: `0px`, display: `none`,},
+                            scrollList: {width: `auto`}
+                          }}
+                        />
+
+                        </span>
+
+                      </div>
+
+                      <div className="query">
+
+                        <span style={{textAlign: `left`, width: `auto`}}>Associativity:</span>
+                        <span style={{float: `right`, color: `black`, fontSize: '12px', padding: `3px`}}>
+                        <Dropdown
+                          name="Direct Mapped"
+                          title="Direct Mapped"
+                          list={assocl1}
+                          onChange={changeAssocl1}
+                          fontSize="12px"
+                          color="black"
+                          styles={{
+                            list: {fontWeight: `bold`, fontSize: `12px`, padding: `0px`, margin: `0px`},
+                            listItem: {fontWeight: `bold`, fontSize: `12px`, padding: `3px`},
+                            headerTitle: {fontWeight: `bold`, fontSize: `12px`, padding: `0px`},
+                            wrapper: {height: `20px`, paddingLeft: `-5px`, margin: `0px`, width: `auto`},
+                            headerArrowUpIcon: {display: `none`, fontSize: `0px`},
+                            headerArrowDownIcon: {fontSize: `0px`, display: `none`,},
+                            scrollList: {width: `auto`}
+                          }}
+                        />
+
+                        </span>
+
+                      </div>
+
+                      <div className="query">
+
+                        <span style={{textAlign: `left`, width: `auto`}}>Latency:</span>
+                        <span style={{float: `right`, color: `black`, fontSize: '12px', padding: `3px`}}>
+                        <Dropdown
+                          name="1 cycle"
+                          title="1 cycle"
+                          list={latencyl1}
+                          onChange={changeLatl1}
+                          fontSize="12px"
+                          color="black"
+                          styles={{
+                            list: {fontWeight: `bold`, fontSize: `12px`, padding: `0px`, margin: `0px`},
+                            listItem: {fontWeight: `bold`, fontSize: `12px`, padding: `3px`},
+                            headerTitle: {fontWeight: `bold`, fontSize: `12px`, padding: `0px`},
+                            wrapper: {height: `20px`, paddingLeft: `-5px`, margin: `0px`, width: `auto`},
+                            headerArrowUpIcon: {display: `none`, fontSize: `0px`},
+                            headerArrowDownIcon: {fontSize: `0px`, display: `none`,},
+                            scrollList: {width: `auto`}
+                          }}
+                        />
+
+                        </span>
+
+                      </div>
+
+                  </td>
+
+                  <td className="table-row" style={{width: `50%`}}>
+
+                  <div style={{fontWeight: `bold`, textAlign: `center`, fontSize: `20px`}}>L2</div>
+                  <hr style={{padding: `0px`, margin: `1px`}}></hr>
+                    <div className="query">
+
+                      <span style={{textAlign: `left`}}>Cache Size:</span>
+                      <span style={{float: `right`, color: `black`, fontSize: '12px', padding: `3px`}}>
+                      <Dropdown
+                        name="64 bytes"
+                        title="64 bytes"
+                        list={cachesizesl2}
+                        onChange={changeCacheSizel2}
+                        fontSize="12px"
+                        color="black"
+                        styles={{
+                          list: {fontWeight: `bold`, fontSize: `12px`, padding: `0px`, margin: `0px`},
+                          listItem: {fontWeight: `bold`, fontSize: `12px`, padding: `3px`},
+                          headerTitle: {fontWeight: `bold`, fontSize: `12px`, padding: `0px`},
+                          wrapper: {height: `20px`, paddingLeft: `0px`, margin: `0px`, width: `auto`},
+                          headerArrowUpIcon: {display: `none`, fontSize: `0px`},
+                          headerArrowDownIcon: {fontSize: `0px`, display: `none`,},
+                          scrollList: {width: `auto`}
+                        }}
+                      />
+                      </span>
+
+                      </div>
+
+                      <div className="query">
+
+                        <span style={{textAlign: `left`}}>Block Size:</span>
+                        <span style={{float: `right`, color: `black`, fontSize: '12px', padding: `3px`}}>
+                        <Dropdown
+                          name="4 bytes"
+                          title="4 bytes"
+                          list={blocksizes}
+                          onChange={changeBlockSize}
+                          fontSize="12px"
+                          color="black"
+                          styles={{
+                            list: {fontWeight: `bold`, fontSize: `12px`, padding: `0px`, margin: `0px`},
+                            listItem: {fontWeight: `bold`, fontSize: `12px`, padding: `3px`},
+                            headerTitle: {fontWeight: `bold`, fontSize: `12px`, padding: `0px`},
+                            wrapper: {height: `20px`, paddingLeft: `-5px`, margin: `0px`, width: `auto`},
+                            headerArrowUpIcon: {display: `none`, fontSize: `0px`},
+                            headerArrowDownIcon: {fontSize: `0px`, display: `none`,},
+                            scrollList: {width: `auto`}
+                          }}
+                        />
+
+                        </span>
+
+                      </div>
+
+                      <div className="query">
+
+                        <span style={{textAlign: `left`, width: `auto`}}>Associativity:</span>
+                        <span style={{float: `right`, color: `black`, fontSize: '12px', padding: `3px`}}>
+                        <Dropdown
+                          name="Direct Mapped"
+                          title="Direct Mapped"
+                          list={assocl2}
+                          onChange={changeAssocl2}
+                          fontSize="12px"
+                          color="black"
+                          styles={{
+                            list: {fontWeight: `bold`, fontSize: `12px`, padding: `0px`, margin: `0px`},
+                            listItem: {fontWeight: `bold`, fontSize: `12px`, padding: `3px`},
+                            headerTitle: {fontWeight: `bold`, fontSize: `12px`, padding: `0px`},
+                            wrapper: {height: `20px`, paddingLeft: `-5px`, margin: `0px`, width: `auto`},
+                            headerArrowUpIcon: {display: `none`, fontSize: `0px`},
+                            headerArrowDownIcon: {fontSize: `0px`, display: `none`,},
+                            scrollList: {width: `auto`}
+                          }}
+                        />
+
+                        </span>
+
+                      </div>
+
+                      <div className="query">
+
+                        <span style={{textAlign: `left`, width: `auto`}}>Latency:</span>
+                        <span style={{float: `right`, color: `black`, fontSize: '12px', padding: `3px`}}>
+                        <Dropdown
+                          name="2 cycles"
+                          title="2 cycles"
+                          list={latencyl2}
+                          onChange={changeLatl2}
+                          fontSize="12px"
+                          color="black"
+                          styles={{
+                            list: {fontWeight: `bold`, fontSize: `12px`, padding: `0px`, margin: `0px`},
+                            listItem: {fontWeight: `bold`, fontSize: `12px`, padding: `3px`},
+                            headerTitle: {fontWeight: `bold`, fontSize: `12px`, padding: `0px`},
+                            wrapper: {height: `20px`, paddingLeft: `-5px`, margin: `0px`, width: `auto`},
+                            headerArrowUpIcon: {display: `none`, fontSize: `0px`},
+                            headerArrowDownIcon: {fontSize: `0px`, display: `none`,},
+                            scrollList: {width: `auto`}
+                          }}
+                        />
+
+                        </span>
+
+                      </div>
+
+                  </td>
+
+                </tr>
+                
+                </table>
+
+                <table className="cache-settings-table">
+
+                <tr className="table-row">
+
+                  <td className="table-row" style={{textAlign: `left`}}>
+                      
+                  <div className="query">
+
+                      <span style={{textAlign: `left`, width: `auto`}}>Memory Latency:</span>
+                      <span style={{float: `right`, color: `black`, fontSize: '12px', padding: `3px`}}>
+                      <Dropdown
+                        name="10 cycles"
+                        title="10 cycles"
+                        list={latencymem}
+                        onChange={changeLatMem}
+                        fontSize="12px"
+                        color="black"
+                        styles={{
+                          list: {fontWeight: `bold`, fontSize: `12px`, padding: `0px`, margin: `0px`},
+                          listItem: {fontWeight: `bold`, fontSize: `12px`, padding: `3px`},
+                          headerTitle: {fontWeight: `bold`, fontSize: `12px`, padding: `0px`},
+                          wrapper: {height: `20px`, paddingLeft: `-5px`, margin: `0px`, width: `auto`},
+                          headerArrowUpIcon: {display: `none`, fontSize: `0px`},
+                          headerArrowDownIcon: {fontSize: `0px`, display: `none`,},
+                          scrollList: {width: `auto`}
+                        }}
+                      />
+
+                      </span>
+
+                    </div>
+
+                  </td>
+
+                </tr>
+
+              </table>
             </div>
-          </li>*/}
+          </li>          
 
         </ul>
       </div> 
