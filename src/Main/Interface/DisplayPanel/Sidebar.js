@@ -681,7 +681,6 @@ const Sidebar = props =>
                         title="16 bytes"
                         list={cachesizesl1}
                         onChange={changeCacheSizel1}
-                        fontSize="12px"
                         color="black"
                         styles={{
                           list: {fontWeight: `bold`, fontSize: `12px`, padding: `0px`, margin: `0px`},
@@ -749,7 +748,7 @@ const Sidebar = props =>
 
                       </div>
 
-                      <div className="query">
+                      <div className="query" style={{paddingBottom: `0px`}}>
 
                         <span style={{textAlign: `left`, width: `auto`}}>Latency:</span>
                         <span style={{float: `right`, color: `black`, fontSize: '12px', padding: `3px`}}>
@@ -858,7 +857,7 @@ const Sidebar = props =>
 
                       </div>
 
-                      <div className="query">
+                      <div className="query" style={{paddingBottom: `0px`}}>
 
                         <span style={{textAlign: `left`, width: `auto`}}>Latency:</span>
                         <span style={{float: `right`, color: `black`, fontSize: '12px', padding: `3px`}}>
@@ -896,7 +895,7 @@ const Sidebar = props =>
 
                   <td className="table-row" style={{textAlign: `left`}}>
                       
-                  <div className="query">
+                  <div className="query" style={{paddingBottom: `0px`}}>
 
                       <span style={{textAlign: `left`, width: `auto`}}>Memory Latency:</span>
                       <span style={{float: `right`, color: `black`, fontSize: '12px', padding: `3px`}}>
