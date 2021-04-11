@@ -130,8 +130,7 @@ class MainPage extends Component {
     console.log('PWF: ',this.state.PWFMatrix) */
 	}
 
-  step = () =>{
-    
+  step = () =>{   
     if(this.state.pc===0)
     { 
       this.state.print = "*Read Only*\n"  
