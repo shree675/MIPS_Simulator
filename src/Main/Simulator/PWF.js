@@ -691,7 +691,7 @@ PWF.run = (lines, tags)=>
             for(let j=1; j<line.length; j++, index=index+4)
             {
                 let value = parseInt(lines[i][j])
-                PWF.setMemory(index, value)
+                PWF.setInitialMemory(index, value)
             }
         }
     }
