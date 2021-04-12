@@ -9,7 +9,7 @@ const WB = "  WB "
 const stall = "STALL"
 const empty = "     "
 const instructions = ["add", "addu", "sub", "subu", "addi", "addiu", "srl", "sll", "bne", "beq", "ble", "j", "li", "lui", "lw", "sw", "syscall"]
-const memInst = ["lw", "sw"]
+const memInst = ["lw", "lui"]
 const branchInst = ["bne", "beq", "ble", "j"]
 const TwoSource = ["add", "addu", "sub", "subu"]
 const OneSource = ["addi", "addiu", "srl", "sll", "li"]
@@ -60,262 +60,7 @@ var PWF =
             ["ra", 0]
         ]
     ),
-    L1: new Array(8).fill(0), //3D array[set][block][offset]
-    L2: new Array(32).fill(0), //3D array[set][block][offset]
-    L1Tags: new Array(4).fill(0), //2D array[set][block]
-    L2Tags: new Array(8).fill(0), //2D array[set][block]
-    L1Priority: new Array(4).fill(0), //2D array[set][block]
-    L2Priority: new Array(8).fill(0), //2D array[set][block]
-    L1Size: 16,
-    L1BlockSize: 4,
-    L1Associativity: 1,
-    L2Size: 128,
-    L2BlockSize: 8,
-    L2Associativity: 8,
-    L1Latency: 1,
-    L2Latency: 2,
-    MMLatency: 10,
 };
-PWF.updateCacheSettings = (l1_size, l1_block, l1_asso, l2_size, l2_block, l2_asso, l1_latency, l2_latency, mm_latency) => {
-    PWF.L1Size = l1_size
-    PWF.L1BlockSize = l1_block
-    PWF.L1Associativity = l1_asso
-    PWF.L2Size = l2_size
-    PWF.L2BlockSize = l2_block
-    PWF.L2Associativity = l2_asso
-    PWF.L1Latency = l1_latency
-    PWF.L2Latency = l2_latency
-    PWF.MMLatency = mm_latency
-}
-
-PWF.initializeCache = () => {
-    //initializing data array for L1
-    let l1_block_size = PWF.L1BlockSize/4 //no of words in a block
-    let l1_blocks = PWF.L1Associativity   //no of blocks in a set
-    let l1_sets = PWF.L1Size/(PWF.L1Associativity*PWF.L1BlockSize) //total number of sets in the cache
-    PWF.L1 = matrix().resize([l1_sets,l1_blocks,l1_block_size])
-
-    //initializing tags and priority for L1
-    PWF.L1Tags = matrix().resize([l1_sets,l1_blocks], -1)
-    PWF.L1Priority = matrix().resize([l1_sets,l1_blocks], -1)
-
-    //initializing data array for L2
-    let l2_block_size = PWF.L2BlockSize/4 //no of words in a block
-    let l2_blocks = PWF.L2Associativity   //no of blocks in a set
-    let l2_sets = PWF.L2Size/(PWF.L2Associativity*PWF.L2BlockSize) //total number of sets in the cache
-    PWF.L2 = matrix().resize([l2_sets,l2_blocks,l2_block_size])
-
-    //initializing tags and priority for L2
-    PWF.L2Tags = matrix().resize([l2_sets,l2_blocks], -1)
-    PWF.L2Priority = matrix().resize([l2_sets,l2_blocks], -1)
-}
-PWF.updateCache = (wordAddress) =>
-{
-    //most recently used will have priority value 0, least recently used will have priority value [no of blocks in a set-1]
-    let index = (wordAddress-268500992)/4
-    let data = PWF.memory[index]
-    //******************************************************* */
-    //search L1, if there, change priority of all elements in the set, else find lowest priority position in the set and overwrite in L1
-    let l1_block_size = PWF.L1BlockSize/4 //no of words in a block
-    let l1_blocks = PWF.L1Associativity   //no of blocks in a set
-    let l1_sets = PWF.L1Size/(PWF.L1Associativity*PWF.L1BlockSize) //total number of sets in the cache
-    
-    let l1block_index = Math.floor(index/l1_block_size) //this is the value of address to be searched/stored in the tag array
-    let l1set_index = l1block_index%l1_sets  //this is the set number which this address belongs to
-    let l1_flag = 0
-    //console.log("set index ", l1set_index)
-    //console.log("block index ", l1block_index)
-    for(let i=0; i<l1_blocks; i++)//parsing through the blocks in the corresponding set
-    {
-        if(PWF.L1Tags.get([l1set_index,i]) == l1block_index)
-        {
-            //search successful, found in this set
-            //console.log("block found")
-            l1_flag=1
-            if(PWF.L1Priority.get([l1set_index,i]) != 0)
-            {
-                for(let j=0; j<l1_blocks; j++)//parsing through the blocks in the corresponding set and updating priority
-                {
-                    if(PWF.L1Priority.get([l1set_index,j]) != -1)
-                    {
-                        let t = PWF.L1Priority.get([l1set_index,j])
-                        PWF.L1Priority.set([l1set_index,j], t+1)
-                    }
-                }
-                PWF.L1Priority.set([l1set_index,i],0)
-                break
-            }
-            else
-            {
-                //no need to update priorities because it is already the most recently used
-            }
-        }
-    }
-    if(!l1_flag)//if the search was unsuccessful, need to write/overwrite
-    {
-        //console.log("not found in l1")
-        for(let i=0; i<l1_blocks; i++)//parsing through the blocks in the corresponding set to update remaining priorities
-        {
-            if(PWF.L1Priority.get([l1set_index,i]) != -1)
-            {
-                let t = PWF.L1Priority.get([l1set_index,i])
-                PWF.L1Priority.set([l1set_index,i], t+1)
-                //processor.L1Priority[l1set_index][i]++
-            }                
-        }
-        for(let i=0; i<l1_blocks; i++)//parsing through the blocks in the corresponding set
-        {
-            if(PWF.L1Priority.get([l1set_index,i]) == -1 || PWF.L1Priority.get([l1set_index,i]) > l1_blocks-1)
-            {
-                PWF.L1Priority.set([l1set_index,i], 0)
-                PWF.L1Tags.set([l1set_index,i], l1block_index)
-                for(let j=0; j<l1_block_size; j++)//parsing through the block
-                {
-                    let t = l1block_index*l1_block_size
-                    PWF.L1.set([l1set_index, i, j], PWF.memory[t+j])
-                    //console.log(PWF.L1.get([l1set_index, i, j]))
-                }
-                //console.log("*")
-                break
-            }    
-            //console.log("check")        
-        }
-    }
-    //processor.L1[0][0][0] = 50
-    //console.log("L1 data", PWF.L1)
-    //processor.L1Tags[0][1] = -3
-    //console.log("L1 Tags", PWF.L1Tags)
-    //console.log("L1 Priority", PWF.L1Priority)
-    //************************************************************************************* */
-    //search L2, if there, change priority of all elements in the set, else find lowest priority position in the set and overwrite in L2
-    let l2_block_size = PWF.L2BlockSize/4 //no of words in a block
-    let l2_blocks = PWF.L2Associativity   //no of blocks in a set
-    let l2_sets = PWF.L2Size/(PWF.L2Associativity*PWF.L2BlockSize) //total number of sets in the cache
-    
-    let l2block_index = Math.floor(index/l2_block_size) //this is the value of address to be searched/stored in the tag array
-    let l2set_index = l2block_index%l2_sets  //this is the set number which this address belongs to
-    let l2_flag = 0
-    //console.log("set index ", l2set_index)
-    //console.log("block index ", l2block_index)
-    for(let i=0; i<l2_blocks; i++)//parsing through the blocks in the corresponding set
-    {
-        if(PWF.L2Tags.get([l2set_index,i]) == l2block_index)
-        {
-            //search successful, found in this set
-            //console.log("block found")
-            l2_flag=1
-            if(PWF.L2Priority.get([l2set_index,i]) != 0)
-            {
-                for(let j=0; j<l2_blocks; j++)//parsing through the blocks in the corresponding set and updating priority
-                {
-                    if(PWF.L2Priority.get([l2set_index,j]) != -1)
-                    {
-                        let t = PWF.L2Priority.get([l2set_index,j])
-                        PWF.L2Priority.set([l2set_index,j], t+1)
-                    }
-                }
-                PWF.L2Priority.set([l2set_index,i],0)
-                break
-            }
-            else
-            {
-                //no need to update priorities because it is already the most recently used
-            }
-        }
-    }
-    if(!l2_flag)//if the search was unsuccessful, need to write/overwrite
-    {
-        //console.log("not found in l2")
-        for(let i=0; i<l2_blocks; i++)//parsing through the blocks in the corresponding set to update remaining priorities
-        {
-            if(PWF.L2Priority.get([l2set_index,i]) != -1)
-            {
-                let t = PWF.L2Priority.get([l2set_index,i])
-                PWF.L2Priority.set([l2set_index,i], t+1)
-                //processor.L1Priority[l1set_index][i]++
-            }                
-        }
-        for(let i=0; i<l2_blocks; i++)//parsing through the blocks in the corresponding set
-        {
-            if(PWF.L2Priority.get([l2set_index,i]) == -1 || PWF.L2Priority.get([l2set_index,i]) > l2_blocks-1)
-            {
-                PWF.L2Priority.set([l2set_index,i], 0)
-                PWF.L2Tags.set([l2set_index,i], l2block_index)
-                for(let j=0; j<l2_block_size; j++)//parsing through the block
-                {
-                    let t = l2block_index*l2_block_size
-                    PWF.L2.set([l2set_index, i, j], PWF.memory[t+j])
-                    //console.log(PWF.L2.get([l2set_index, i, j]))
-                }
-                //console.log("*")
-                break
-            }    
-            //console.log("check")        
-        }
-    }
-    //console.log("L2 data", PWF.L2)
-    //console.log("L2 Tags", PWF.L2Tags)
-    //console.log("L2 Priority", PWF.L2Priority)
-    //************************************************************************************* */
-} 
-PWF.stallTime = (wordAddress) =>
-{
-    //this function takes an address, check L1, L2 and returns number of stall cycles accordingly
-    //if hit in L1, return L1Latency
-    //else if hit in L2, return L2Latency
-    //else return MMLatency
-    let index = (wordAddress-268500992)/4
-    let l1_block_size = PWF.L1BlockSize/4 //no of words in a block
-    let l1_blocks = PWF.L1Associativity   //no of blocks in a set
-    let l1_sets = PWF.L1Size/(PWF.L1Associativity*PWF.L1BlockSize) //total number of sets in the cache
-    let l1block_index = Math.floor(index/l1_block_size) //this is the value of address to be searched/stored in the tag array
-    let l1set_index = l1block_index%l1_sets  //this is the set number which this address belongs to
-    for(let i=0; i<l1_blocks; i++)//parsing through the blocks in the corresponding set
-    {
-        if(PWF.L1Tags.get([l1set_index,i]) == l1block_index)
-        {
-            //search successful, found in this set
-            //console.log("L1 Hit")
-            return PWF.L1Latency
-        }
-    }
-    let l2_block_size = PWF.L2BlockSize/4 //no of words in a block
-    let l2_blocks = PWF.L2Associativity   //no of blocks in a set
-    let l2_sets = PWF.L2Size/(PWF.L2Associativity*PWF.L2BlockSize) //total number of sets in the cache
-    let l2block_index = Math.floor(index/l2_block_size) //this is the value of address to be searched/stored in the tag array
-    let l2set_index = l2block_index%l2_sets  //this is the set number which this address belongs to
-    for(let i=0; i<l2_blocks; i++)//parsing through the blocks in the corresponding set
-    {
-        if(PWF.L2Tags.get([l2set_index,i]) == l2block_index)
-        {
-            //search successful, found in this set
-            //console.log("L2 Hit")
-            return PWF.L2Latency
-        }
-    }
-    return PWF.MMLatency
-}
-PWF.setInitialMemory = (wordAddress, value) =>
-{
-    //shifting 0x10010000 to 0
-    let index = (wordAddress-268500992)/4
-    PWF.memory[index]=value
-}
-PWF.setMemory = (wordAddress, value) =>
-{
-    //shifting 0x10010000 to 0
-    let index = (wordAddress-268500992)/4
-    PWF.memory[index]=value
-    PWF.updateCache(wordAddress) 
-
-}
-PWF.getMemory = (wordAddress) =>
-{
-    let index = (wordAddress-268500992)/4
-    PWF.updateCache(wordAddress) 
-    return PWF.memory[index]
-} 
-
 PWF.setRegister = (reg, num) => {
     if(reg==='r0' || reg==='zero')
         PWF.registers.set('r0', 0)
@@ -330,9 +75,23 @@ PWF.getRegister = (reg) => {
     return PWF.registers.get(reg)
 }
 
+PWF.setMemory = (wordAddress, value) =>
+{
+    //shifting 0x10010000 to 0
+    let index = (wordAddress-268500992)/4
+    PWF.memory[index]=value
+}
+PWF.getMemory = (wordAddress) =>
+{
+    let index = (wordAddress-268500992)/4
+    return PWF.memory[index]
+} 
 PWF.reset = () => {    
     PWF.memory = new Array(1024).fill(0) 
     PWF.pc = 0
+    PWF.prevPC = 0
+    PWF.prevprevPC = 0
+    PWF.pipe =  null
     PWF.registers = new Map(
         [
             ["r0", 0],
@@ -369,7 +128,6 @@ PWF.reset = () => {
             ["ra", 0]
         ]
     )
-    PWF.initializeCache()
 }
 
 PWF.isInst = (line)=>
@@ -385,23 +143,16 @@ PWF.isInst = (line)=>
     }
     return false
 }
-PWF.isMemInst = (line)=> //returns the address of the word to be accessed if it is a memory instruction like sw or lw
+PWF.isMemInst = (line)=>
 {
     if(line.indexOf("#")>=0)
         line.length = line.indexOf("#")
     for(var i of memInst)
     {
         if(line.includes(i))
-        {
-            console.log(line)
-            let src = line[2].split("(")
-            let offset = parseInt(src[0])
-            let src1 = src[1].replace("$", "").replace(")", "")
-            let src2 = offset + PWF.getRegister(src1)
-            return src2
-        } 
+            return true
     }
-    return -1 //returns flag -1 if not a memory instruction
+    return false
 }
 PWF.isBranchInst = (line)=>
 {
@@ -476,6 +227,61 @@ PWF.formatInst = (line)=>
     //console.log(output)
     return output
 }
+/* PWF.isDependent = (line1, line2) =>
+{
+    //console.log("****")
+    if(line1.includes(":"))
+        line1.splice(0,1)//removes the tag from the beginning hence extracting the instruction
+    if(line2.includes(":"))
+        line2.splice(0,1)//removes the tag from the beginning hence extracting the instruction
+
+    //console.log(line1, line2)
+    //console.log("****")
+    if(PWF.isBranchInst(line1)|| line1.includes("sw")|| line1.includes("syscall"))
+    {
+        return false
+    }
+    if(PWF.isBranchInst(line2))
+    {
+        if(line2.includes("bne")||line2.includes("ble")||line2.includes("beq"))
+        {
+            let dep1 = line2[1]
+            let dep2 = line2[2]
+            let dest = line1[1]
+            if(dest===dep1 || dest===dep2)
+            {
+                return true
+            }
+            return false          
+        }
+        else
+        {//j 
+            return false
+        }
+    }
+    if(PWF.isTwoSource(line2))
+    {
+        let dest = line1[1]
+        let dep1 = line2[2]
+        let dep2 = line2[3]
+        if(dest===dep1 || dest===dep2)
+        {
+            return true
+        }
+        return false
+
+    }
+    if(PWF.isOneSource(line2))
+    {
+        let dest = line1[1]
+        let dep1 = line2[2]
+        if(dest===dep1)
+        {
+            return true
+        }
+        return false
+    }
+} */
 PWF.isBranchDependent = (lines, pc) => //Here we check all cases that result in one stall, we check both previous and prev prev pc
 {
     let line1 = lines[PWF.prevprevPC]
@@ -779,14 +585,6 @@ PWF.Memory = (line, pc) =>
 {
     let row = PWF.pipe.size()[0]
     let col = PWF.pipe.size()[1]
-    let numOfCycles = 1;
-    let address = PWF.isMemInst(line)
-    if(address!=-1)
-    {
-        console.log("Memory instruction")
-        numOfCycles = PWF.stallTime(address)
-    }
-    console.log("cycles", numOfCycles)
     //console.log(row, col)
     row=row-1//row refers to index now
     //console.log("memory")
@@ -893,7 +691,7 @@ PWF.run = (lines, tags)=>
             for(let j=1; j<line.length; j++, index=index+4)
             {
                 let value = parseInt(lines[i][j])
-                PWF.setInitialMemory(index, value)
+                PWF.setMemory(index, value)
             }
         }
     }
@@ -942,60 +740,3 @@ PWF.run = (lines, tags)=>
 }
 
 export default PWF
-
-
-/* PWF.isDependent = (line1, line2) =>
-{
-    //console.log("****")
-    if(line1.includes(":"))
-        line1.splice(0,1)//removes the tag from the beginning hence extracting the instruction
-    if(line2.includes(":"))
-        line2.splice(0,1)//removes the tag from the beginning hence extracting the instruction
-
-    //console.log(line1, line2)
-    //console.log("****")
-    if(PWF.isBranchInst(line1)|| line1.includes("sw")|| line1.includes("syscall"))
-    {
-        return false
-    }
-    if(PWF.isBranchInst(line2))
-    {
-        if(line2.includes("bne")||line2.includes("ble")||line2.includes("beq"))
-        {
-            let dep1 = line2[1]
-            let dep2 = line2[2]
-            let dest = line1[1]
-            if(dest===dep1 || dest===dep2)
-            {
-                return true
-            }
-            return false          
-        }
-        else
-        {//j 
-            return false
-        }
-    }
-    if(PWF.isTwoSource(line2))
-    {
-        let dest = line1[1]
-        let dep1 = line2[2]
-        let dep2 = line2[3]
-        if(dest===dep1 || dest===dep2)
-        {
-            return true
-        }
-        return false
-
-    }
-    if(PWF.isOneSource(line2))
-    {
-        let dest = line1[1]
-        let dep1 = line2[2]
-        if(dest===dep1)
-        {
-            return true
-        }
-        return false
-    }
-} */
