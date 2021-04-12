@@ -291,6 +291,7 @@ PWF.stallTime = (wordAddress) =>
             return PWF.L2Latency
         }
     }
+    //console.log("Main memory")
     return PWF.MMLatency
 }
 PWF.setInitialMemory = (wordAddress, value) =>
@@ -328,6 +329,9 @@ PWF.getRegister = (reg) => {
 PWF.reset = () => {    
     PWF.memory = new Array(1024).fill(0) 
     PWF.pc = 0
+    PWF.prevPC = 0
+    PWF.prevprevPC = 0
+    PWF.pipe =  null
     PWF.registers = new Map(
         [
             ["r0", 0],
@@ -383,7 +387,7 @@ PWF.returnMem = (line)=> //returns the address of the word to be accessed if it 
 {
     if(line.indexOf("#")>=0)
         line.length = line.indexOf("#")
-    //console.log(line)
+    //console.log("in return mem", line)
     for(var i of memInst)
     {
         if(line.includes(i))
@@ -393,10 +397,11 @@ PWF.returnMem = (line)=> //returns the address of the word to be accessed if it 
             let offset = parseInt(src[0])
             let src1 = src[1].replace("$", "").replace(")", "")
             let src2 = offset + PWF.getRegister(src1)
-            return true
+            //console.log(src2)
+            return src2
         } 
     }
-    return false//returns flag -1 if not a memory instruction
+    return -1//returns flag -1 if not a memory instruction
 }
 PWF.isBranchInst = (line)=>
 {
@@ -770,19 +775,19 @@ PWF.Execute = (lines,pc) =>
         PWF.pipe.set([row,i], EXE)
     }
 }
-PWF.Memory = (line, pc) =>
+PWF.Memory = (lines, pc) =>
 {
     let row = PWF.pipe.size()[0]
     let col = PWF.pipe.size()[1]
     let numOfCycles = 1;
     //console.log("Memory instruction")
-    let address = PWF.returnMem(line)
+    let address = PWF.returnMem(lines[pc])
     if(address!=-1)
     {
         //console.log("Memory instruction")
         numOfCycles = PWF.stallTime(address)
     }
-    console.log("cycles", numOfCycles)
+    //console.log("cycles", numOfCycles)
     //console.log(row, col)
     row=row-1//row refers to index now
     //console.log("memory")
@@ -806,7 +811,16 @@ PWF.Memory = (line, pc) =>
     {
         PWF.appendColumn()
     }
-    PWF.pipe.set([row,i], MEM)
+    for(let k=0; k<numOfCycles; k++)
+    {
+        let col = PWF.pipe.size()[1]
+        if(i>=col)
+        {
+            PWF.appendColumn()
+        }
+        PWF.pipe.set([row,i++], MEM)
+    }
+    
 }
 PWF.WriteBack = (line,pc) =>
 {
@@ -821,12 +835,15 @@ PWF.WriteBack = (line,pc) =>
     {
         i++
     }
-    i++
-    while(i<col)
+    while(i<col && PWF.pipe.get([row,i])==MEM)
+    {
+        i++
+    }   
+    /* while(i<col)
     {
         PWF.pipe.set([row,i], stall)
         i++
-    }
+    } */
     PWF.appendColumn()
     PWF.pipe.set([row,i], WB)
 }

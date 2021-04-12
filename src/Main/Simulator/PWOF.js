@@ -1,6 +1,5 @@
 import { matrix } from 'mathjs'
 import local from './localEXE.js'
-import PWF from './PWF.js'
 
 const IF = "  IF "
 const IDRF = "IDRF "
@@ -294,8 +293,6 @@ PWOF.stallTime = (wordAddress) =>
     }
     return PWOF.MMLatency
 }
-
-
 PWOF.setInitialMemory = (wordAddress, value) =>
 {
     //shifting 0x10010000 to 0
@@ -316,24 +313,24 @@ PWOF.getMemory = (wordAddress) =>
     PWOF.updateCache(wordAddress) 
     return PWOF.memory[index]
 } 
-
 PWOF.setRegister = (reg, num) => {
     if(reg==='r0' || reg==='zero')
         PWOF.registers.set('r0', 0)
     else
         PWOF.registers.set(reg, num)
 }
-
 PWOF.getRegister = (reg) => {
     if(reg === "zero" || reg==='r0'){
         return 0;
     }
     return PWOF.registers.get(reg)
 }
-
 PWOF.reset = () => {    
     PWOF.memory = new Array(1024).fill(0) 
     PWOF.pc = 0
+    PWOF.prevPC = 0
+    PWOF.prevprevPC = 0
+    PWOF.pipe =  null
     PWOF.registers = new Map(
         [
             ["r0", 0],
@@ -372,8 +369,6 @@ PWOF.reset = () => {
     )
     PWOF.initializeCache()
 }
-
-
 PWOF.isInst = (line)=>
 {
     if(line=="" || line[0]=="#")
@@ -387,14 +382,16 @@ PWOF.isInst = (line)=>
     }
     return false
 }
-PWF.isMemInst = (line)=> //returns the address of the word to be accessed if it is a memory instruction like sw or lw
+PWOF.returnMem = (line)=> //returns the address of the word to be accessed if it is a memory instruction like sw or lw
 {
     if(line.indexOf("#")>=0)
-        line.length = line.indexOf("#")
+    line.length = line.indexOf("#")
+    //console.log("in return mem", line)
     for(var i of memInst)
     {
         if(line.includes(i))
         {
+            //console.log(line)
             let src = line[2].split("(")
             let offset = parseInt(src[0])
             let src1 = src[1].replace("$", "").replace(")", "")
@@ -402,7 +399,7 @@ PWF.isMemInst = (line)=> //returns the address of the word to be accessed if it 
             return src2
         } 
     }
-    return -1 //returns flag -1 if not a memory instruction
+    return -1//returns flag -1 if not a memory instruction
 }
 PWOF.isBranchInst = (line)=>
 {
@@ -836,10 +833,18 @@ PWOF.Execute = (lines,pc) =>
     PWOF.pipe.set([row,i], EXE)  
     return
 }
-PWOF.Memory = (line, pc) =>
+PWOF.Memory = (lines, pc) =>
 {
     let row = PWOF.pipe.size()[0]
-    let col = PWOF.pipe.size()[1]
+    let numOfCycles = 1;
+    //console.log("Memory instruction")
+    let address = PWOF.returnMem(lines[pc])
+    if(address!=-1)
+    {
+        //console.log("Memory instruction")
+        numOfCycles = PWOF.stallTime(address)
+    }
+    //console.log("cycles", numOfCycles)
     //console.log(row, col)
     row=row-1//row refers to index now
     //console.log("memory")
@@ -863,7 +868,15 @@ PWOF.Memory = (line, pc) =>
     {
         PWOF.appendColumn()
     }
-    PWOF.pipe.set([row,i], MEM)
+    for(let k=0; k<numOfCycles; k++)
+    {
+        let col = PWOF.pipe.size()[1]
+        if(i>=col)
+        {
+            PWOF.appendColumn()
+        }
+        PWOF.pipe.set([row,i++], MEM)
+    }
 
 }
 PWOF.WriteBack = (line,pc) =>
@@ -879,12 +892,15 @@ PWOF.WriteBack = (line,pc) =>
     {
         i++
     }
-    i++
-    while(i<col)
+    while(i<col && PWOF.pipe.get([row,i])==MEM)
+    {
+        i++
+    }   
+    /* while(i<col)
     {
         PWOF.pipe.set([row,i], stall)
         i++
-    }
+    } */
     PWOF.appendColumn()
     PWOF.pipe.set([row,i], WB)
 }
