@@ -111,8 +111,10 @@ class MainPage extends Component {
     //console.log("Calling PWOF.run")
     // this.state.PWOFMatrix = PWOF.run(this.state.lines, this.state.tags)
 
-    this.state.PWOFMatrix = PWOF.run(this.state.lines, this.state.tags)
+    //IMPORTANT: here call both PWF and PWOF.updateCacheSettings() along with appropriate cache input paramenters before calling run
+
     this.state.PWFMatrix = PWF.run(this.state.lines, this.state.tags)
+    this.state.PWOFMatrix = PWOF.run(this.state.lines, this.state.tags)
     this.setState({
       PWOFMatrix: this.state.PWOFMatrix,
       PWFMatrix: this.state.PWFMatrix
