@@ -15,8 +15,6 @@ const TwoSource = ["add", "addu", "sub", "subu"]
 const OneSource = ["addi", "addiu", "srl", "sll", "li"]
 const ExeWrite = ["add", "addu", "sub", "subu", "addi", "addiu", "srl", "sll", "li"]
 
-var line1, line2, line3;
-
 var PWF = 
 {
     pc:0,
@@ -67,7 +65,7 @@ var PWF =
     L1Priority: new Array(4).fill(0), //2D array[set][block]
     L2Priority: new Array(8).fill(0), //2D array[set][block]
     L1Size: 16,
-    L1BlockSize: 4,
+    L1BlockSize: 8,
     L1Associativity: 1,
     L2Size: 128,
     L2BlockSize: 8,
@@ -315,21 +313,18 @@ PWF.getMemory = (wordAddress) =>
     PWF.updateCache(wordAddress) 
     return PWF.memory[index]
 } 
-
 PWF.setRegister = (reg, num) => {
     if(reg==='r0' || reg==='zero')
         PWF.registers.set('r0', 0)
     else
         PWF.registers.set(reg, num)
 }
-
 PWF.getRegister = (reg) => {
     if(reg === "zero" || reg==='r0'){
         return 0;
     }
     return PWF.registers.get(reg)
 }
-
 PWF.reset = () => {    
     PWF.memory = new Array(1024).fill(0) 
     PWF.pc = 0
@@ -371,7 +366,6 @@ PWF.reset = () => {
     )
     PWF.initializeCache()
 }
-
 PWF.isInst = (line)=>
 {
     if(line=="" || line[0]=="#")
@@ -385,23 +379,24 @@ PWF.isInst = (line)=>
     }
     return false
 }
-PWF.isMemInst = (line)=> //returns the address of the word to be accessed if it is a memory instruction like sw or lw
+PWF.returnMem = (line)=> //returns the address of the word to be accessed if it is a memory instruction like sw or lw
 {
     if(line.indexOf("#")>=0)
         line.length = line.indexOf("#")
+    //console.log(line)
     for(var i of memInst)
     {
         if(line.includes(i))
         {
-            console.log(line)
+            //console.log(line)
             let src = line[2].split("(")
             let offset = parseInt(src[0])
             let src1 = src[1].replace("$", "").replace(")", "")
             let src2 = offset + PWF.getRegister(src1)
-            return src2
+            return true
         } 
     }
-    return -1 //returns flag -1 if not a memory instruction
+    return false//returns flag -1 if not a memory instruction
 }
 PWF.isBranchInst = (line)=>
 {
@@ -780,10 +775,11 @@ PWF.Memory = (line, pc) =>
     let row = PWF.pipe.size()[0]
     let col = PWF.pipe.size()[1]
     let numOfCycles = 1;
-    let address = PWF.isMemInst(line)
+    //console.log("Memory instruction")
+    let address = PWF.returnMem(line)
     if(address!=-1)
     {
-        console.log("Memory instruction")
+        //console.log("Memory instruction")
         numOfCycles = PWF.stallTime(address)
     }
     console.log("cycles", numOfCycles)
