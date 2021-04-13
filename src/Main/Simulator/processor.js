@@ -159,10 +159,10 @@ processor.updateCache = (wordAddress) =>
         }
     }
     //processor.L1[0][0][0] = 50
-    //console.log("L1 data", processor.L1)
+    console.log("L1 data", processor.L1)
     //processor.L1Tags[0][1] = -3
-    //console.log("L1 Tags", processor.L1Tags)
-    //console.log("L1 Priority", processor.L1Priority)
+    console.log("L1 Tags", processor.L1Tags)
+    console.log("L1 Priority", processor.L1Priority)
     //************************************************************************************* */
     //search L2, if there, change priority of all elements in the set, else find lowest priority position in the set and overwrite in L2
     let l2_block_size = processor.L2BlockSize/4 //no of words in a block
@@ -222,6 +222,7 @@ processor.updateCache = (wordAddress) =>
                 {
                     let t = l2block_index*l2_block_size
                     processor.L2.set([l2set_index, i, j], processor.memory[t+j])
+                    //console.log(processor.memory)
                     //console.log(processor.L2.get([l2set_index, i, j]))
                 }
                 //console.log("*")
@@ -230,9 +231,9 @@ processor.updateCache = (wordAddress) =>
             //console.log("check")        
         }
     }
-    //console.log("L2 data", processor.L2)
-    //console.log("L2 Tags", processor.L2Tags)
-    //console.log("L2 Priority", processor.L2Priority)
+    console.log("L2 data", processor.L2)
+    console.log("L2 Tags", processor.L2Tags)
+    console.log("L2 Priority", processor.L2Priority)
     //************************************************************************************* */
 } 
 processor.stallTime = (wordAddress) =>
@@ -253,7 +254,7 @@ processor.stallTime = (wordAddress) =>
         {
             //search successful, found in this set
             //console.log("L1 Hit")
-            return processor.L1Latency
+            return processor.L1Latency 
         }
     }
     let l2_block_size = processor.L2BlockSize/4 //no of words in a block
@@ -267,12 +268,11 @@ processor.stallTime = (wordAddress) =>
         {
             //search successful, found in this set
             //console.log("L2 Hit")
-            return processor.L2Latency
+            return processor.L2Latency + processor.L1Latency
         }
     }
-    return processor.MMLatency
+    return processor.MMLatency + processor.L2Latency + processor.L1Latency
 }
-
 
 processor.setInitialMemory = (wordAddress, value) =>
 {

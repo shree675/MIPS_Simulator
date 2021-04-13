@@ -65,7 +65,7 @@ var PWF =
     L1Priority: new Array(4).fill(0), //2D array[set][block]
     L2Priority: new Array(8).fill(0), //2D array[set][block]
     L1Size: 16,
-    L1BlockSize: 8,
+    L1BlockSize: 4,
     L1Associativity: 1,
     L2Size: 128,
     L2BlockSize: 8,
@@ -288,11 +288,11 @@ PWF.stallTime = (wordAddress) =>
         {
             //search successful, found in this set
             //console.log("L2 Hit")
-            return PWF.L2Latency
+            return PWF.L2Latency + PWF.L1Latency
         }
     }
     //console.log("Main memory")
-    return PWF.MMLatency
+    return PWF.MMLatency + PWF.L2Latency + PWF.L1Latency
 }
 PWF.setInitialMemory = (wordAddress, value) =>
 {

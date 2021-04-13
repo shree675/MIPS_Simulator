@@ -274,7 +274,7 @@ PWOF.stallTime = (wordAddress) =>
         {
             //search successful, found in this set
             //console.log("L1 Hit")
-            return PWOF.L1Latency
+            return PWOF.L1Latency 
         }
     }
     let l2_block_size = PWOF.L2BlockSize/4 //no of words in a block
@@ -288,10 +288,10 @@ PWOF.stallTime = (wordAddress) =>
         {
             //search successful, found in this set
             //console.log("L2 Hit")
-            return PWOF.L2Latency
+            return PWOF.L2Latency +PWOF.L1Latency
         }
     }
-    return PWOF.MMLatency
+    return PWOF.MMLatency + PWOF.L2Latency +PWOF.L1Latency
 }
 PWOF.setInitialMemory = (wordAddress, value) =>
 {
