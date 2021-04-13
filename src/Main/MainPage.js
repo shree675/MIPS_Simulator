@@ -87,6 +87,7 @@ class MainPage extends Component {
   }
 
   run = () => {
+    //call processor.updateCachesettings
 		processor.reset()
     this.state.print = "*Read Only*\n"
     this.state.pc = 0
@@ -144,6 +145,7 @@ class MainPage extends Component {
     }
     if(this.state.lines==null)
     {
+      //here call processor.updateCacheSettings() ->pass 10 parameters
       [this.state.lines, this.state.tags] = parser.parse(this.state.code)
     }
     // console.log("Going to execute")
