@@ -2,12 +2,16 @@ import React, {useState} from "react";
 import { ListGroupItem } from "react-bootstrap";
 import { Dropdown } from "reactjs-dropdown-component";
 import "./Sidebar.css";
+import Checkbox from '@material-ui/core/Checkbox';
+import CacheDisplay from "./CacheDisplay";
 
 const Sidebar = props =>
 {
   const [b,setB] = useState(false);
   const [h,setH] = useState(false);
   const [d,setD] = useState(true);
+  const [checked, setChecked] = useState(false);
+  var customcheck=false;
 
   var pc=props.programCounter;
   var registersmap=props.registersmap;
@@ -196,25 +200,89 @@ const Sidebar = props =>
     console.log("binary");
   }
 
+  function changeChbox(event){        
+    setChecked(event.target.checked);
+    customcheck=!checked;
+    // console.log(customcheck);
+    onCacheChange();
+  }
+
   var l1cachesize=16;
   var l2cachesize=64;
-  var blocksize=4;
+  var l1blocksize=4;
+  var l2blocksize=4;
   var l1assoc=1;
   var l2assoc=1;
   var l1latency=1;
   var l2latency=2;
   var memlatency=10;
 
+  var l1cachetable=props.l1cache;
+  var l2cachetable=props.l2cache;
+
+  var l1sets,l2sets;
+
+  l1sets=[];
+  l2sets=[];
+
+  // console.log('cache data',l1cachetable)
+
+  var x=0;
+
+  try{
+
+  for(var i=0;i<l1cachetable._data.length;i++){
+    // console.log('fasd',l1cachetable._data[i])
+    l1sets.push(l1cachetable._data[i]);
+    x=0;
+    
+  }
+  }
+  catch(error){
+    x=1;
+  }
+
+  try{
+
+    console.log(l2cachetable);
+
+  for(var i=0;i<l2cachetable._data.length;i++){
+    // console.log('fasd',l2cachetable._data)
+    l2sets.push(l2cachetable._data[i]);
+    x=0;
+  }
+  }
+  catch(error){
+    x=1;
+  }
+
+  // console.log('fasasasffsasdaffasfdasadfsfasas',l1sets);
+
+  // console.log(l1cachetable);
+  // console.log(l2cachetable);
+
+  function onCacheChange(){
+    props.onCacheChange(l1cachesize,l1blocksize,l1assoc,l1latency,l2cachesize,l2blocksize,l2assoc,l2blocksize,l2latency,memlatency,customcheck);
+  }
+
   function changeCacheSizel1(item,value) {
-    l1cachesize=parseInt(item.value);
+    l1cachesize=parseInt(item.value);    
+    onCacheChange();
   }
 
   function changeCacheSizel2(item,value) {
     l2cachesize=parseInt(item.value);
+    onCacheChange();
   }
 
-  function changeBlockSize(item,value) {
-    blocksize=parseInt(item.value);
+  function changeBlockSizel1(item,value) {
+    l1blocksize=parseInt(item.value);
+    onCacheChange();
+  }
+
+  function changeBlockSizel2(item,value) {
+    l2blocksize=parseInt(item.value);
+    onCacheChange();
   }
 
   function changeAssocl1(item,value) {
@@ -222,11 +290,12 @@ const Sidebar = props =>
       l1assoc=1;
     }
     else if(item.value==="Fully Associative"){
-      l1assoc=l1cachesize/blocksize;
+      l1assoc=l1cachesize/l1blocksize;
     }
     else{
       l1assoc=parseInt(item.value);
     }
+    onCacheChange();
   }
 
   function changeAssocl2(item,value) {
@@ -234,21 +303,27 @@ const Sidebar = props =>
       l2assoc=1;
     }
     else if(item.value==="Fully Associative"){
-      l2assoc=l2cachesize/blocksize;
+      l2assoc=l2cachesize/l2blocksize;
     }
-    l2assoc=parseInt(item.value);
+    else{
+      l2assoc=parseInt(item.value);
+    }
+    onCacheChange();
   }
 
   function changeLatl1(item,value) {
     l1latency=parseInt(item.value);
+    onCacheChange();
   }
 
   function changeLatl2(item,value) {
     l2latency=parseInt(item.value);
+    onCacheChange();
   }
 
   function changeLatMem(item,value) {
     memlatency=parseInt(item.value);
+    onCacheChange();
   }
 
   let cachesizesl1=[
@@ -704,7 +779,7 @@ const Sidebar = props =>
                           name="4 bytes"
                           title="4 bytes"
                           list={blocksizes}
-                          onChange={changeBlockSize}
+                          onChange={changeBlockSizel1}
                           fontSize="12px"
                           color="black"
                           styles={{
@@ -810,7 +885,7 @@ const Sidebar = props =>
                           name="4 bytes"
                           title="4 bytes"
                           list={blocksizes}
-                          onChange={changeBlockSize}
+                          onChange={changeBlockSizel2}
                           color="black"
                           styles={{
                             list: {fontWeight: `bold`, fontSize: `12px`, padding: `0px`, margin: `0px`},
@@ -920,7 +995,39 @@ const Sidebar = props =>
                 </tr>
 
               </table>
+
+              <table className="cache-settings-table">
+
+                <tr className="table-row">
+
+                  <td className="table-row" style={{textAlign: `left`}}>
+                      
+                  <div className="query" style={{paddingBottom: `0px`}}>
+
+                      <span style={{textAlign: `left`, width: `auto`}}>Hypothetical Ideal Case</span>
+                      <span style={{float: `right`, color: `black`, fontSize: '10px', marginTop: `-8px`, marginBottom: `-8px`}}>
+                      <Checkbox
+                        checked={checked}
+                        // disableRipple
+                        onChange={changeChbox}                                         
+                      />
+
+                      </span>
+
+                    </div>
+
+                  </td>
+
+                </tr>
+
+              </table>
+
             </div>
+            
+            <hr style={{fontSize: `18px`, borderColor: `tomato`}}></hr>
+
+            <CacheDisplay l1sets={l1sets} l2sets={l2sets} valid={x} />
+
           </li>          
 
         </ul>
