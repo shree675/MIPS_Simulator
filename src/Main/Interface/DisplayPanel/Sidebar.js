@@ -175,7 +175,7 @@ const Sidebar = props =>
     {document.getElementById("sb1").style.backgroundColor="grey"}
     {document.getElementById("sb2").style.backgroundColor="#333333"}
     {document.getElementById("sb3").style.backgroundColor="#333333"}
-    console.log("decimal");
+    //console.log("decimal");
   }
 
   function hex() {
@@ -191,7 +191,7 @@ const Sidebar = props =>
     {document.getElementById("sb1").style.backgroundColor="#333333"}
     {document.getElementById("sb2").style.backgroundColor="grey"}
     {document.getElementById("sb3").style.backgroundColor="#333333"}
-    console.log("hexadecimal");
+    //console.log("hexadecimal");
   }
 
   function bin() {
@@ -207,7 +207,7 @@ const Sidebar = props =>
     {document.getElementById("sb1").style.backgroundColor="#333333"}
     {document.getElementById("sb2").style.backgroundColor="#333333"}
     {document.getElementById("sb3").style.backgroundColor="grey"}
-    console.log("binary");
+    //console.log("binary");
   }
 
   function changeChbox(event){        
@@ -442,7 +442,7 @@ const Sidebar = props =>
     }
   ];
 
-  console.log(x);
+  //console.log(x);
 
   // console.log('l1cachesize',l1cachesize);
   // console.log('l1blocksize',l1blocksize);

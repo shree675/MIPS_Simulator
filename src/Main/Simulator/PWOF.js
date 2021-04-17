@@ -73,8 +73,9 @@ var PWOF =
     L1Latency: 1,
     L2Latency: 2,
     MMLatency: 10,
+    isIdealCase: false,
 };
-PWOF.updateCacheSettings = (l1_size, l1_block, l1_asso, l2_size, l2_block, l2_asso, l1_latency, l2_latency, mm_latency) => {
+PWOF.updateCacheSettings = (l1_size, l1_block, l1_asso, l2_size, l2_block, l2_asso, l1_latency, l2_latency, mm_latency, idealcase) => {
     PWOF.L1Size = l1_size
     PWOF.L1BlockSize = l1_block
     PWOF.L1Associativity = l1_asso
@@ -84,6 +85,8 @@ PWOF.updateCacheSettings = (l1_size, l1_block, l1_asso, l2_size, l2_block, l2_as
     PWOF.L1Latency = l1_latency
     PWOF.L2Latency = l2_latency
     PWOF.MMLatency = mm_latency
+    PWOF.isIdealCase = idealcase
+    console.log("mmlatency in PWOF", PWOF.MMLatency)
 }
 
 PWOF.initializeCache = () => {
@@ -839,7 +842,7 @@ PWOF.Memory = (lines, pc) =>
     let numOfCycles = 1;
     //console.log("Memory instruction")
     let address = PWOF.returnMem(lines[pc])
-    if(address!=-1)
+    if(/* !PWOF.isIdealCase && */ address!=-1)
     {
         //console.log("Memory instruction")
         numOfCycles = PWOF.stallTime(address)
