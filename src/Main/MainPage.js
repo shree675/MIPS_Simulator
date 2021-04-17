@@ -79,47 +79,32 @@ class MainPage extends Component {
 	}
 
   setCode = (newCode)=>{
-    // console.log('here');
-    // console.log(newCode);
     this.deleteFile();
     this.setState({
       code: newCode
     });
     this.state.code=newCode;
-    //console.log(this.state.code);
     this.render();
   }
 
   run = () => {
     //call processor.updateCachesettings
 
-
-    processor.updateCacheSettings(this.state.l1cachesize,this.state.l1blocksize,this.state.l1assoc,this.state.l2cachesize,this.state.l2blocksize,this.state.l2assoc,this.state.l1latency,this.state.l2latency,this.state.memlatency,this.state.isidealcase);
 		processor.reset()
     this.state.print = "*Read Only*\n"
     this.state.pc = 0
-    //console.log(this.state.print)
     this.setState({
-      // print: "*Read Only*\n"
       pc:0,
-      print: "*Read Only*\n"
+      print: "*Read Only*\n",
+      valid: 0
     });
-    //console.log(this.state.print);
-		//parser.reset()
-    //console.log(this.state.code)
-    //console.log("run");
+
+    processor.updateCacheSettings(this.state.l1cachesize,this.state.l1blocksize,this.state.l1assoc,this.state.l2cachesize,this.state.l2blocksize,this.state.l2assoc,this.state.l1latency,this.state.l2latency,this.state.memlatency,this.state.isidealcase);
+    
     do
     {
       this.step()
-      //console.log(this.state.pc);
     }while(this.state.pc!=0);
-
-    
-    //this.state.lines = parser.parse(this.state.code)
-    //[this.state.lines, this.state.tags] = parser.parse(this.state.code)
-    //console.log(this.state.lines)
-    //console.log("Calling PWOF.run")
-    // this.state.PWOFMatrix = PWOF.run(this.state.lines, this.state.tags)
 
     //IMPORTANT: here call both PWF and PWOF.updateCacheSettings() along with appropriate cache input paramenters before calling run
     PWF.updateCacheSettings(this.state.l1cachesize,this.state.l1blocksize,this.state.l1assoc,this.state.l2cachesize,this.state.l2blocksize,this.state.l2assoc,this.state.l1latency,this.state.l2latency,this.state.memlatency,this.state.isidealcase);
@@ -150,7 +135,8 @@ class MainPage extends Component {
       this.setState({
         lines: null,
         tags: null,
-        print: this.state.print
+        print: this.state.print,
+        valid: 0
       })
     }
     if(this.state.lines==null)
@@ -159,22 +145,18 @@ class MainPage extends Component {
       processor.updateCacheSettings(this.state.l1cachesize,this.state.l1blocksize,this.state.l1assoc,this.state.l2cachesize,this.state.l2blocksize,this.state.l2assoc,this.state.l1latency,this.state.l2latency,this.state.memlatency,this.state.isidealcase);
       [this.state.lines, this.state.tags] = parser.parse(this.state.code)
     }
-    // console.log("Going to execute")
     for(var [key,value] of processor.registers){
       this.state.prevRegisters.set(key,value);
     }
-    // console.log('prev', this.state.prevRegisters);
     [this.state.pc, this.state.print] = execute.exe(this.state.lines, this.state.tags, this.state.pc, this.state.print)
     
     this.setState({
-      // pc: execute.exe(this.state.lines, this.state.tags, this.state.pc)
       pc: this.state.pc,
       registers: processor.registers,
       memory: processor.memory,
       print: this.state.print,
       L1: processor.L1,
       L2: processor.L2
-      // prevRegisters: this.state.tempRegisters
     });
 
     //IDE.highlight(this.state.pc);
@@ -213,7 +195,6 @@ class MainPage extends Component {
 		let file = event.target.files[0];
 		//creating a reader object
 		var reader = new FileReader();
-    //console.log("SetFile")
 
 		reader.onload = () => {
 			// console.log(reader.result);
@@ -231,8 +212,7 @@ class MainPage extends Component {
 	}
 
 	deleteFile = (event) => {
-		// localStorage.removeItem("result");
-		// window.location.reload()
+
 		this.setState({
 			code: "",
       processor: processor.reset(),
@@ -241,9 +221,12 @@ class MainPage extends Component {
       pc: 0,
       print: "*Read Only*\n",
       PWFMatrix: null,
-      PWOFMatrix: null
+      PWOFMatrix: null,
+      valid: 1,      
 		})
-    //console.log(this.state.print)
+
+    processor.L1=new Array(0);
+    processor.L2=new Array(0);    
     
 	}
 
@@ -270,6 +253,10 @@ class MainPage extends Component {
       memlatency: memlatency,
       isidealcase: isideal
     });
+
+    // console.log(l2csize);
+    // console.log(l2bsize);
+    // console.log(l2assoc);
     
   }
 
@@ -282,7 +269,7 @@ class MainPage extends Component {
     /* var ac = require('brace');
     var Range = ac.require('ace/range').Range;
     editor.session.addMarker(new Range(2, 0, 0, 1), 'myMarker', 'fullLine', true); */
-    {console.log('afsdasdf',this.state.L2);}
+    // {console.log('afsdasdf',this.state.L2);}
    /*  var editor = ace.edit("ace-editor");
     var Range = ace.require('ace/range').Range;
     editor.session.addMarker(new Range(2, 3,2, 11), 'ace_highlight-marker', 'fullLine'); */

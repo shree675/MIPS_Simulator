@@ -68,6 +68,10 @@ processor.updateCacheSettings = (l1_size, l1_block, l1_asso, l2_size, l2_block, 
 }
 
 processor.initializeCache = () => {
+
+    processor.L1=new Array(0);
+    processor.L2=new Array(0);
+
     //initializing data array for L1
     let l1_block_size = processor.L1BlockSize/4 //no of words in a block
     let l1_blocks = processor.L1Associativity   //no of blocks in a set
