@@ -153,3 +153,38 @@ td {
     padding-bottom: 8px;
     /* font-size: 14px; */
 }
+
+#cache-display-table {
+    width: 100%;
+    vertical-align: top;
+}
+
+#cache-display-data {
+    color: grey;
+    width: 50%;
+    vertical-align: top;    
+}
+
+#cache-display-row {
+    width: 50%;
+}
+
+.cache-info {
+    color: #cacaca;
+    font-size: 14px;
+    padding: 5px;
+}
+
+.cache-caution {
+    color: #acacac;
+    font-size: 16px;
+    padding: 5px;
+    /* margin: 10px; */
+    text-align: center;
+}
+
+.caution-symbol {
+    color: orange;
+    font-size: 22px;
+    text-align: center;
+}

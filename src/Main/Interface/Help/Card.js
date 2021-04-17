@@ -110,7 +110,7 @@ class DropDownCard extends Component{
                 </button>
                 {this.state.displayMenu===true?(
                 <div style={{textAlign: `center`}}>
-                    <Link id="link-id" to='/information'><button id="opened" className="a-button">Instructions</button></Link>
+                    <Link id="link-id" to='/information'><button id="opened" className="a-button" style={{paddingTop: `5px`, paddingBottom: `5px`, fontSize: `16px`}}>Instructions</button></Link>
                     <span id="opened" className="non-button">Sample Programs</span>
                     <button onClick={this.bubbleSort} id="opened" className="ns a-button">BubbleSort.asm</button>
                     <button onClick={this.fibonacci} id="opened" className="ns a-button">Fibonacci.asm</button>

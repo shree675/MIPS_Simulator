@@ -37,8 +37,8 @@ var processor = {
             ["ra", 0]
         ]
     ), 
-    L1: new Array(8).fill(0), //3D array[set][block][offset]
-    L2: new Array(32).fill(0), //3D array[set][block][offset]
+    L1: [[[0],[0]],[[0],[0]]], //3D array[set][block][offset]
+    L2: [[[0],[0]],[[0],[0]]], //3D array[set][block][offset]
     L1Tags: new Array(4).fill(0), //2D array[set][block]
     L2Tags: new Array(8).fill(0), //2D array[set][block]
     L1Priority: new Array(4).fill(0), //2D array[set][block]
@@ -52,8 +52,9 @@ var processor = {
     L1Latency: 1,
     L2Latency: 2,
     MMLatency: 10,
+    isideal: false
 }
-processor.updateCacheSettings = (l1_size, l1_block, l1_asso, l2_size, l2_block, l2_asso, l1_latency, l2_latency, mm_latency) => {
+processor.updateCacheSettings = (l1_size, l1_block, l1_asso, l2_size, l2_block, l2_asso, l1_latency, l2_latency, mm_latency, isideal) => {
     processor.L1Size = l1_size
     processor.L1BlockSize = l1_block
     processor.L1Associativity = l1_asso
@@ -63,9 +64,14 @@ processor.updateCacheSettings = (l1_size, l1_block, l1_asso, l2_size, l2_block, 
     processor.L1Latency = l1_latency
     processor.L2Latency = l2_latency
     processor.MMLatency = mm_latency
+    processor.isideal=isideal
 }
 
 processor.initializeCache = () => {
+
+    processor.L1=new Array(0);
+    processor.L2=new Array(0);
+
     //initializing data array for L1
     let l1_block_size = processor.L1BlockSize/4 //no of words in a block
     let l1_blocks = processor.L1Associativity   //no of blocks in a set
@@ -159,10 +165,10 @@ processor.updateCache = (wordAddress) =>
         }
     }
     //processor.L1[0][0][0] = 50
-    console.log("L1 data", processor.L1)
+    // console.log("L1 data", processor.L1)
     //processor.L1Tags[0][1] = -3
-    console.log("L1 Tags", processor.L1Tags)
-    console.log("L1 Priority", processor.L1Priority)
+    // console.log("L1 Tags", processor.L1Tags)
+    // console.log("L1 Priority", processor.L1Priority)
     //************************************************************************************* */
     //search L2, if there, change priority of all elements in the set, else find lowest priority position in the set and overwrite in L2
     let l2_block_size = processor.L2BlockSize/4 //no of words in a block
@@ -231,9 +237,9 @@ processor.updateCache = (wordAddress) =>
             //console.log("check")        
         }
     }
-    console.log("L2 data", processor.L2)
-    console.log("L2 Tags", processor.L2Tags)
-    console.log("L2 Priority", processor.L2Priority)
+    // console.log("L2 data", processor.L2)
+    // console.log("L2 Tags", processor.L2Tags)
+    // console.log("L2 Priority", processor.L2Priority)
     //************************************************************************************* */
 } 
 processor.stallTime = (wordAddress) =>

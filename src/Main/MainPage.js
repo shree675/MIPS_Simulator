@@ -1,7 +1,5 @@
 import '../App.css';
 import React, { Component } from 'react';
-// import { matrix, null } from 'mathjs'
-// import ace from 'ace-builds/src-min-noconflict/ace';
 import Editor from './Interface/Editor/Editor.js';
 import Navbar from './Interface/Navbar/Navbar.js';
 import Console from './Interface/Console/Console.js'
@@ -12,13 +10,10 @@ import execute from './Simulator/execute.js'
 import PWOF from './Simulator/PWOF.js'
 import PWF from './Simulator/PWF.js'
 import DropDownCard from './Interface/Help/Card.js';
-// import ResizePanel from "react-resize-panel";
-// import SplitPane from 'react-split-pane';
 // import {Resizable} from 're-resizable';
 
 class MainPage extends Component {
 
-  // console.log(document.getElementById("editor"));
   constructor(props) {
     super(props);
     this.ideMan = React.createRef();
@@ -26,7 +21,6 @@ class MainPage extends Component {
 
   state = {
 		code: '',
-    //isRunning: false,
 		lines: null,
     tags: null,
 		registers: processor.registers,
@@ -70,55 +64,56 @@ class MainPage extends Component {
           ["s8", 0],
           ["ra", 0]
       ]),
-    // prevRegisters: processor.registers
-    // tempRegisters: processor.registers
+      l1cachesize: 16,
+      l1blocksize: 4,
+      l1assoc: 1,
+      l1latency: 1,
+      l2cachesize: 64,
+      l2blocksize: 4,
+      l2assoc: 1,
+      l2latency: 2,
+      memlatency: 10,
+      isidealcase: false,
+      L1: processor.L1,
+      L2: processor.L2
 	}
 
   setCode = (newCode)=>{
-    // console.log('here');
-    // console.log(newCode);
     this.deleteFile();
     this.setState({
       code: newCode
     });
     this.state.code=newCode;
-    //console.log(this.state.code);
     this.render();
   }
 
   run = () => {
     //call processor.updateCachesettings
+
 		processor.reset()
     this.state.print = "*Read Only*\n"
     this.state.pc = 0
-    //console.log(this.state.print)
     this.setState({
-      // print: "*Read Only*\n"
       pc:0,
-      print: "*Read Only*\n"
+      print: "*Read Only*\n",
+      valid: 0
     });
-    //console.log(this.state.print);
-		//parser.reset()
-    //console.log(this.state.code)
-    //console.log("run");
+
+    processor.updateCacheSettings(this.state.l1cachesize,this.state.l1blocksize,this.state.l1assoc,this.state.l2cachesize,this.state.l2blocksize,this.state.l2assoc,this.state.l1latency,this.state.l2latency,this.state.memlatency,this.state.isidealcase);
+    
     do
     {
       this.step()
-      //console.log(this.state.pc);
     }while(this.state.pc!=0);
-    //this.state.lines = parser.parse(this.state.code)
-    //[this.state.lines, this.state.tags] = parser.parse(this.state.code)
-    //console.log(this.state.lines)
-    //console.log("Calling PWOF.run")
-    // this.state.PWOFMatrix = PWOF.run(this.state.lines, this.state.tags)
 
     //IMPORTANT: here call both PWF and PWOF.updateCacheSettings() along with appropriate cache input paramenters before calling run
-
+    PWF.updateCacheSettings(this.state.l1cachesize,this.state.l1blocksize,this.state.l1assoc,this.state.l2cachesize,this.state.l2blocksize,this.state.l2assoc,this.state.l1latency,this.state.l2latency,this.state.memlatency,this.state.isidealcase);
+    PWOF.updateCacheSettings(this.state.l1cachesize,this.state.l1blocksize,this.state.l1assoc,this.state.l2cachesize,this.state.l2blocksize,this.state.l2assoc,this.state.l1latency,this.state.l2latency,this.state.memlatency,this.state.isidealcase);
     this.state.PWFMatrix = PWF.run(this.state.lines, this.state.tags)
     this.state.PWOFMatrix = PWOF.run(this.state.lines, this.state.tags)
     this.setState({
       PWOFMatrix: this.state.PWOFMatrix,
-      PWFMatrix: this.state.PWFMatrix
+      PWFMatrix: this.state.PWFMatrix,
     });
     //console.log('PWOF :',this.state.PWOFMatrix)
     //console.log('PWF: ',this.state.PWFMatrix)
@@ -140,28 +135,28 @@ class MainPage extends Component {
       this.setState({
         lines: null,
         tags: null,
-        print: this.state.print
+        print: this.state.print,
+        valid: 0
       })
     }
     if(this.state.lines==null)
     {
       //here call processor.updateCacheSettings() ->pass 10 parameters
+      processor.updateCacheSettings(this.state.l1cachesize,this.state.l1blocksize,this.state.l1assoc,this.state.l2cachesize,this.state.l2blocksize,this.state.l2assoc,this.state.l1latency,this.state.l2latency,this.state.memlatency,this.state.isidealcase);
       [this.state.lines, this.state.tags] = parser.parse(this.state.code)
     }
-    // console.log("Going to execute")
     for(var [key,value] of processor.registers){
       this.state.prevRegisters.set(key,value);
     }
-    // console.log('prev', this.state.prevRegisters);
     [this.state.pc, this.state.print] = execute.exe(this.state.lines, this.state.tags, this.state.pc, this.state.print)
     
     this.setState({
-      // pc: execute.exe(this.state.lines, this.state.tags, this.state.pc)
       pc: this.state.pc,
       registers: processor.registers,
       memory: processor.memory,
-      print: this.state.print
-      // prevRegisters: this.state.tempRegisters
+      print: this.state.print,
+      L1: processor.L1,
+      L2: processor.L2
     });
 
     //IDE.highlight(this.state.pc);
@@ -200,7 +195,6 @@ class MainPage extends Component {
 		let file = event.target.files[0];
 		//creating a reader object
 		var reader = new FileReader();
-    //console.log("SetFile")
 
 		reader.onload = () => {
 			// console.log(reader.result);
@@ -218,8 +212,7 @@ class MainPage extends Component {
 	}
 
 	deleteFile = (event) => {
-		// localStorage.removeItem("result");
-		// window.location.reload()
+
 		this.setState({
 			code: "",
       processor: processor.reset(),
@@ -228,9 +221,12 @@ class MainPage extends Component {
       pc: 0,
       print: "*Read Only*\n",
       PWFMatrix: null,
-      PWOFMatrix: null
+      PWOFMatrix: null,
+      valid: 1,      
 		})
-    //console.log(this.state.print)
+
+    processor.L1=new Array(0);
+    processor.L2=new Array(0);    
     
 	}
 
@@ -244,15 +240,36 @@ class MainPage extends Component {
 		})
 	}
 
+  onCacheChange = (l1csize,l1bsize,l1assoc,l1latency,l2csize,l2bsize,l2assoc,l2latency,memlatency,isideal)=>{
+    this.setState({
+      l1cachesize: l1csize,
+      l1blocksize: l1bsize,
+      l1assoc: l1assoc,
+      l1latency: l1latency,
+      l2cachesize: l2csize,
+      l2blocksize: l2bsize,
+      l2assoc: l2assoc,
+      l2latency: l2latency,
+      memlatency: memlatency,
+      isidealcase: isideal
+    });
+
+    // console.log(l2csize);
+    // console.log(l2bsize);
+    // console.log(l2assoc);
+    
+  }
+
 
   render = () => {
+    // console.log(this.state.l1cachesize);
     // console.log(document.getElementById("editor"));
     /* var Range = require("ace/range").Range
     editor.session.addMarker(new Range(8, 0, 8, 1), 'ace_highlight-marker', 'fullLine');  */
     /* var ac = require('brace');
     var Range = ac.require('ace/range').Range;
     editor.session.addMarker(new Range(2, 0, 0, 1), 'myMarker', 'fullLine', true); */
-    
+    // {console.log('afsdasdf',this.state.L2);}
    /*  var editor = ace.edit("ace-editor");
     var Range = ace.require('ace/range').Range;
     editor.session.addMarker(new Range(2, 3,2, 11), 'ace_highlight-marker', 'fullLine'); */
@@ -267,6 +284,9 @@ class MainPage extends Component {
               programCounter={this.state.pc}
               memoryArray={this.state.memory}
               prevRegisters={this.state.prevRegisters}
+              onCacheChange={this.onCacheChange}
+              l1cache={processor.L1}
+              l2cache={processor.L2}
             />
           </div> 
           {/* 722px */}
