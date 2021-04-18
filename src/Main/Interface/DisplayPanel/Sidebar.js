@@ -207,7 +207,6 @@ const Sidebar = props =>
     {document.getElementById("sb1").style.backgroundColor="#333333"}
     {document.getElementById("sb2").style.backgroundColor="#333333"}
     {document.getElementById("sb3").style.backgroundColor="grey"}
-    //console.log("binary");
   }
 
   function changeChbox(event){        
@@ -251,7 +250,7 @@ const Sidebar = props =>
   // console.log(l2cachetable);
 
   function onCacheChange(){
-    props.onCacheChange(l1cachesize,l1blocksize,l1assoc,l1latency,l2cachesize,l2blocksize,l2assoc,l2blocksize,l2latency,memlatency,customcheck);
+    props.onCacheChange(l1cachesize,l1blocksize,l1assoc,l1latency,l2cachesize,l2blocksize,l2assoc,l2latency,memlatency,customcheck);
   }
 
   function changeCacheSizel1(item,value) {
