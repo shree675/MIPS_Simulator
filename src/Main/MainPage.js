@@ -109,7 +109,7 @@ class MainPage extends Component {
     PWF.updateCacheSettings(this.state.l1cachesize,this.state.l1blocksize,this.state.l1assoc,this.state.l2cachesize,this.state.l2blocksize,this.state.l2assoc,this.state.l1latency,this.state.l2latency,this.state.memlatency,this.state.isidealcase);
     PWOF.updateCacheSettings(this.state.l1cachesize,this.state.l1blocksize,this.state.l1assoc,this.state.l2cachesize,this.state.l2blocksize,this.state.l2assoc,this.state.l1latency,this.state.l2latency,this.state.memlatency,this.state.isidealcase);
     
-    console.log(this.state.l1cachesize,this.state.l1blocksize,this.state.l1assoc,this.state.l2cachesize,this.state.l2blocksize,this.state.l2assoc,this.state.l1latency,this.state.l2latency,this.state.memlatency,this.state.isidealcase)
+    //console.log(this.state.l1cachesize,this.state.l1blocksize,this.state.l1assoc,this.state.l2cachesize,this.state.l2blocksize,this.state.l2assoc,this.state.l1latency,this.state.l2latency,this.state.memlatency,this.state.isidealcase)
     
     this.state.PWFMatrix = PWF.run(this.state.lines, this.state.tags)
     this.state.PWOFMatrix = PWOF.run(this.state.lines, this.state.tags)
@@ -253,7 +253,8 @@ class MainPage extends Component {
       l2assoc: l2assoc,
       l2latency: l2latency,
       memlatency: memlatency,
-      isidealcase: isideal
+      isidealcase: isideal,
+      pc:0,
     });
 
     // console.log(l2csize);

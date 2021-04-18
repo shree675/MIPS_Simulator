@@ -86,8 +86,6 @@ PWF.updateCacheSettings = (l1_size, l1_block, l1_asso, l2_size, l2_block, l2_ass
     PWF.L2Latency = l2_latency
     PWF.MMLatency = mm_latency
     PWF.isIdealCase = idealcase
-    console.log("mmlatency in PWF", PWF.MMLatency)
-    console.log("idIdeal in PWF", PWF.isIdealCase)
 }
 
 PWF.initializeCache = () => {
@@ -786,7 +784,7 @@ PWF.Memory = (lines, pc) =>
     let numOfCycles = 1;
     //console.log("Memory instruction")
     let address = PWF.returnMem(lines[pc])
-    if(/* !PWF.isIdealCase && */ address!=-1)
+    if(!PWF.isIdealCase && address!=-1)
     {
         //console.log("Memory instruction")
         numOfCycles = PWF.stallTime(address)
