@@ -108,7 +108,9 @@ class MainPage extends Component {
     //IMPORTANT: here call both PWF and PWOF.updateCacheSettings() along with appropriate cache input paramenters before calling run
     PWF.updateCacheSettings(this.state.l1cachesize,this.state.l1blocksize,this.state.l1assoc,this.state.l2cachesize,this.state.l2blocksize,this.state.l2assoc,this.state.l1latency,this.state.l2latency,this.state.memlatency,this.state.isidealcase);
     PWOF.updateCacheSettings(this.state.l1cachesize,this.state.l1blocksize,this.state.l1assoc,this.state.l2cachesize,this.state.l2blocksize,this.state.l2assoc,this.state.l1latency,this.state.l2latency,this.state.memlatency,this.state.isidealcase);
+    
     console.log(this.state.l1cachesize,this.state.l1blocksize,this.state.l1assoc,this.state.l2cachesize,this.state.l2blocksize,this.state.l2assoc,this.state.l1latency,this.state.l2latency,this.state.memlatency,this.state.isidealcase)
+    
     this.state.PWFMatrix = PWF.run(this.state.lines, this.state.tags)
     this.state.PWOFMatrix = PWOF.run(this.state.lines, this.state.tags)
     this.setState({
@@ -257,6 +259,9 @@ class MainPage extends Component {
     // console.log(l2csize);
     // console.log(l2bsize);
     // console.log(l2assoc);
+    // console.log('l1lat',l1latency)
+    // console.log('l2lat',l2latency)
+    // console.log('mem',memlatency)
     
   }
 
