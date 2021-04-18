@@ -16,8 +16,10 @@ const CacheDisplay = (props) => {
       valid=1;
     }
     
-    var colors=["#dec24a","#39ed7b"];
-    var bgcolors=["rgba(255,255,0,0.1)","rgba(144,238,144,0.1)"];
+    /* var colors=["#dec24a","#39ed7b"]; */
+    var colors=["#8be9fd","#39ed7b"];
+    /* var bgcolors=["rgba(255,255,0,0.1)","rgba(144,238,144,0.1)"]; */
+    var bgcolors=["rgba(139,233,253,0.2)","rgba(57,237,123,0.2)"];
 
     return (
 
