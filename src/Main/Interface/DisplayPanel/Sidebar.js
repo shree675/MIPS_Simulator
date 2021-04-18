@@ -4,6 +4,7 @@ import { Dropdown } from "reactjs-dropdown-component";
 import "./Sidebar.css";
 import Checkbox from '@material-ui/core/Checkbox';
 import CacheDisplay from "./CacheDisplay";
+import { makeStyles } from '@material-ui/core/styles';
 
 var l1cachesize=16;
 var l2cachesize=64;
@@ -17,12 +18,29 @@ var memlatency=10;
 var customcheck=false;
 var x=0;
 
+const useStyles = makeStyles({
+  icon: {
+    borderRadius: 3,
+    width: 18,
+    height: 18,
+    margin: 3,
+    // marginRight: 3,
+    border: "2px solid #ffaaaa",
+    backgroundColor: 'white',
+    'input:hover ~ &': {
+      backgroundColor: '#ffaaaa',   // c64360
+    },
+  },
+});
+
 const Sidebar = props =>
 {
   const [b,setB] = useState(false);
   const [h,setH] = useState(false);
   const [d,setD] = useState(true);
   const [checked, setChecked] = useState(false);
+
+  const styles = useStyles();
 
   var pc=props.programCounter;
   var registersmap=props.registersmap;
@@ -214,6 +232,14 @@ const Sidebar = props =>
     customcheck=!checked;
     // console.log(customcheck);
     onCacheChange();
+    if(customcheck===true){
+      document.getElementById("ideal").style.display="block";
+      document.getElementById("non-ideal").style.display="none";
+    }
+    else{
+      document.getElementById("ideal").style.display="none";
+      document.getElementById("non-ideal").style.display="block";
+    }
   }
 
   var l1cachetable=props.l1cache;
@@ -1011,10 +1037,12 @@ const Sidebar = props =>
                   <div className="query" style={{paddingBottom: `0px`}}>
 
                       <span style={{textAlign: `left`, width: `auto`}}>Hypothetical Ideal Case</span>
-                      <span style={{float: `right`, color: `black`, fontSize: '10px', marginTop: `-8px`, marginBottom: `-8px`}}>
+                      <span style={{float: `right`, overflow: `hidden`, padding: `0px`, marginTop: `-8px`, marginBottom: `-8px`, marginRight: `-8px`}}>
                       <Checkbox
                         checked={checked}
                         // disableRipple
+                        borderColor="white"
+                        icon={<span className={styles.icon} />}
                         onChange={changeChbox}                                         
                       />
 
@@ -1032,7 +1060,26 @@ const Sidebar = props =>
             
             <hr style={{fontSize: `18px`, borderColor: `tomato`}}></hr>
 
-            <CacheDisplay l1sets={l1sets} l2sets={l2sets} />
+            <ul>
+              <li id="non-ideal">
+
+              <CacheDisplay l1sets={l1sets} l2sets={l2sets} />
+
+              </li>
+
+              <li id="ideal">
+
+                <div className="ideal-inst">
+                        
+                  <br></br>
+                  <div className="caution-symbol">⚠</div>
+                  <div>Cache is disabled</div>
+                
+                </div>
+
+              </li>
+
+            </ul>
 
           </li>          
 
