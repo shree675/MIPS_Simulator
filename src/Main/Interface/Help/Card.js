@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
 import './Card.css';
-// import '../../../App.js';
 import Codes from './Codes.js';
 import {Link} from 'react-router-dom';
 
@@ -25,9 +24,6 @@ class DropDownCard extends Component{
       }
 
       bubbleSort(){
-        //   console.log('hello');
-        // const app = new App();
-        
         const codes = new Codes();
         this.props.setCode(codes.bubbleSort);
         this.setState({
@@ -36,8 +32,6 @@ class DropDownCard extends Component{
       }
 
       testcodes(){
-        //   console.log('hello');
-        // const app = new App();
         const codes = new Codes();
         this.props.setCode(codes.testcode);
         this.setState({
@@ -101,8 +95,6 @@ class DropDownCard extends Component{
 
     render(){
         
-        // console.log(app.state.pc);
-
         return(
             <div id="help-menu">
                 <button id="help-button" onClick={this.displayMenu}>

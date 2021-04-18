@@ -15,19 +15,15 @@ class Editor extends Component {
   }
   
   onChange(newValue, e) {
-    // console.log('onChange', newValue, e);
     this.props.onCodeChange(String(newValue))
   }
   highlight=(pc)=>{
     
-    //console.log("highlighting");
-    //console.log(pc)
     if(this.state.markers!=null)
     {
       this.state.markers.pop();
     }
     this.state.markers.push({startRow: pc, startCol: 0, endRow: (pc+1), endCol: -1, className: 'highlight-marker', type: 'fullline' });
-    //console.log(this.state.markers)
     this.setState({
       markers: this.state.markers
     })
@@ -72,7 +68,6 @@ markers.push({startRow: 0, startCol: 0, endRow: 1, endCol: 6, className: 'replac
                   highlight = {this.highlight.bind(this)}
                   style={{width: "100%", zIndex: `0`, height: `440px`}}    /* 440px act*/ /* 470px */
                   name="mipsIDE" 
-                  // maxLines={Infinity}
                   editorProps={{$blockScrolling: true}}
                   setOptions={{tabSize: 4, wrap: false}}
                   markers={this.state.markers}

@@ -96,9 +96,7 @@ class MainPage extends Component {
     this.setState({
       pc:0,
       print: "*Read Only*\n",
-      //valid: 0
     });
-
     
     do
     {
@@ -117,6 +115,9 @@ class MainPage extends Component {
       PWOFMatrix: this.state.PWOFMatrix,
       PWFMatrix: this.state.PWFMatrix,
     });
+
+    this.ideMan.current.highlight(-1);
+
     //console.log('PWOF :',this.state.PWOFMatrix)
     //console.log('PWF: ',this.state.PWFMatrix)
     /* let a = PWOF.run(this.state.lines, this.state.tags)
@@ -226,6 +227,8 @@ class MainPage extends Component {
       PWOFMatrix: null,
       valid: 1,      
 		})
+
+    this.ideMan.current.highlight(-1);
 
     processor.L1=new Array(0);
     processor.L2=new Array(0);    

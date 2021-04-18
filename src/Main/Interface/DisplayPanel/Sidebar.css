@@ -154,6 +154,10 @@ td {
     /* font-size: 14px; */
 }
 
+#cache-display {
+    overflow-x: hidden;
+}
+
 #cache-display-table {
     width: 100%;
     vertical-align: top;
@@ -187,4 +191,19 @@ td {
     color: orange;
     font-size: 22px;
     text-align: center;
+}
+
+.ideal-inst {
+    text-align: center;
+    font-size: 20px;
+    padding: 10px;
+    color: #acacac;
+}
+
+#non-ideal {
+    display: block;
+}
+
+#ideal {
+    display: none;
 }

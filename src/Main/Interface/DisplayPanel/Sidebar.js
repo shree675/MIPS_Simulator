@@ -4,6 +4,7 @@ import { Dropdown } from "reactjs-dropdown-component";
 import "./Sidebar.css";
 import Checkbox from '@material-ui/core/Checkbox';
 import CacheDisplay from "./CacheDisplay";
+import { makeStyles } from '@material-ui/core/styles';
 
 var l1cachesize=16;
 var l2cachesize=64;
@@ -17,12 +18,29 @@ var memlatency=10;
 var customcheck=false;
 var x=0;
 
+const useStyles = makeStyles({
+  icon: {
+    borderRadius: 3,
+    width: 18,
+    height: 18,
+    margin: 3,
+    // marginRight: 3,
+    border: "2px solid #ffaaaa",
+    backgroundColor: 'white',
+    'input:hover ~ &': {
+      backgroundColor: '#ffaaaa',   // c64360
+    },
+  },
+});
+
 const Sidebar = props =>
 {
   const [b,setB] = useState(false);
   const [h,setH] = useState(false);
   const [d,setD] = useState(true);
   const [checked, setChecked] = useState(false);
+
+  const styles = useStyles();
 
   var pc=props.programCounter;
   var registersmap=props.registersmap;
@@ -133,7 +151,6 @@ const Sidebar = props =>
     document.getElementById("sb1").style.opacity="1";
     document.getElementById("sb2").style.opacity="1";
     document.getElementById("sb3").style.opacity="1";
-    // console.log("registers");
   }
 
   function memory() {
@@ -146,7 +163,6 @@ const Sidebar = props =>
     document.getElementById("sb1").style.opacity="1";
     document.getElementById("sb2").style.opacity="1";
     document.getElementById("sb3").style.opacity="1";
-    // console.log("memory");
   }
 
   function cache() {
@@ -156,16 +172,12 @@ const Sidebar = props =>
     {document.getElementById("b3").style.backgroundColor="gray"}
     {document.getElementById("b1").style.backgroundColor="#333333"}
     {document.getElementById("b2").style.backgroundColor="#333333"}
-    document.getElementById("sb1").style.opacity="0.5";
+    document.getElementById("sb1").style.opacity="0.5";    
     document.getElementById("sb2").style.opacity="0.5";
     document.getElementById("sb3").style.opacity="0.5";
-    // console.log("memory");
   }
 
   function dec() {
-    // d=true;
-    // h=false;
-    // b=false;
     setB(false);
     setD(true);
     setH(false);
@@ -175,13 +187,9 @@ const Sidebar = props =>
     {document.getElementById("sb1").style.backgroundColor="grey"}
     {document.getElementById("sb2").style.backgroundColor="#333333"}
     {document.getElementById("sb3").style.backgroundColor="#333333"}
-    //console.log("decimal");
   }
 
   function hex() {
-    // d=false;
-    // h=true;
-    // b=false;
     setB(false);
     setD(false);
     setH(true);
@@ -191,13 +199,9 @@ const Sidebar = props =>
     {document.getElementById("sb1").style.backgroundColor="#333333"}
     {document.getElementById("sb2").style.backgroundColor="grey"}
     {document.getElementById("sb3").style.backgroundColor="#333333"}
-    //console.log("hexadecimal");
   }
 
   function bin() {
-    // d=false;
-    // h=false;
-    // b=true;
     setB(true);
     setD(false);
     setH(false);
@@ -212,8 +216,15 @@ const Sidebar = props =>
   function changeChbox(event){        
     setChecked(event.target.checked);
     customcheck=!checked;
-    // console.log(customcheck);
     onCacheChange();
+    if(customcheck===true){
+      document.getElementById("ideal").style.display="block";
+      document.getElementById("non-ideal").style.display="none";
+    }
+    else{
+      document.getElementById("ideal").style.display="none";
+      document.getElementById("non-ideal").style.display="block";
+    }
   }
 
   var l1cachetable=props.l1cache;
@@ -245,9 +256,6 @@ const Sidebar = props =>
   catch(error){
     x=1;
   }
-
-  // console.log(l1cachetable);
-  // console.log(l2cachetable);
 
   function onCacheChange(){
     props.onCacheChange(l1cachesize,l1blocksize,l1assoc,l1latency,l2cachesize,l2blocksize,l2assoc,l2latency,memlatency,customcheck);
@@ -440,8 +448,6 @@ const Sidebar = props =>
       value: '30'
     }
   ];
-
-  //console.log(x);
 
   // console.log('l1cachesize',l1cachesize);
   // console.log('l1blocksize',l1blocksize);
@@ -720,7 +726,6 @@ const Sidebar = props =>
                   {/* Decimal */}
 
                   <div id="memory-tabledec">
-
                   </div>
 
                 </li>
@@ -1011,10 +1016,11 @@ const Sidebar = props =>
                   <div className="query" style={{paddingBottom: `0px`}}>
 
                       <span style={{textAlign: `left`, width: `auto`}}>Hypothetical Ideal Case</span>
-                      <span style={{float: `right`, color: `black`, fontSize: '10px', marginTop: `-8px`, marginBottom: `-8px`}}>
+                      <span style={{float: `right`, overflow: `hidden`, padding: `0px`, marginTop: `-8px`, marginBottom: `-8px`, marginRight: `-8px`}}>
                       <Checkbox
                         checked={checked}
-                        // disableRipple
+                        borderColor="white"
+                        icon={<span className={styles.icon} />}
                         onChange={changeChbox}                                         
                       />
 
@@ -1032,7 +1038,26 @@ const Sidebar = props =>
             
             <hr style={{fontSize: `18px`, borderColor: `tomato`}}></hr>
 
-            <CacheDisplay l1sets={l1sets} l2sets={l2sets} />
+            <ul>
+              <li id="non-ideal">
+
+              <CacheDisplay l1sets={l1sets} l2sets={l2sets} />
+
+              </li>
+
+              <li id="ideal">
+
+                <div className="ideal-inst">
+                        
+                  <br></br>
+                  <div className="caution-symbol">⚠</div>
+                  <div>Cache is disabled</div>
+                
+                </div>
+
+              </li>
+
+            </ul>
 
           </li>          
 
