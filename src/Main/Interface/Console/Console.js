@@ -2,7 +2,6 @@ import React from 'react';
 import './Console.css'
 import AceEditor from "react-ace";
 import 'brace/theme/dracula'; 
-// import { ResizableArea } from 'react-resizable-area'
 
 const Console = props => {
 
@@ -33,13 +32,8 @@ const Console = props => {
         document.getElementById("pipeline-f").style.backgroundColor="#2e2e2e";
     }
 
-    // var array=['CC1','CC2','CC3','CC4','CC5','CC1','CC2','CC3','CC4','CC5','CC1','CC2','CC3','CC4','CC5','CC1','CC2','CC3','CC4','CC5','CC1','CC2','CC3','CC4','CC5']
-    // var ar2=[array,array,array,array,array,array,array,array];
-
     const pwofarr = props.pwofmatrix;
     const pwfarr = props.pwfmatrix;
-    // console.log(pwofarr);
-    // console.log(pwfarr);
 
     function generateNoForwardTable(){
 
@@ -72,18 +66,14 @@ const Console = props => {
             }
 
             if(tablex.length>100){
-                // tablex.length=100;
                 tablex=tablex.slice(0,100);
             }
 
             if(tablex[0].length>200){
                 for(var i=0;i<tablex.length;i++){
-                    // tablex[i].length=2;
                     tablex[i]=tablex[i].slice(0,200);
                 }
             }
-
-            // console.log(table);
 
         }
 
@@ -92,7 +82,6 @@ const Console = props => {
             
                 (<div className="inside-pip">
                 <div style={{color: `#acacac`}}>Number of Cycles: <span style={{color: `white`}}>{cycles} |</span> Number of Stalls: <span style={{color: `white`}}>{stalls} |</span> IPC: <span style={{color: `white`}}>{ipc}</span></div>
-                {/* <hr></hr> */}
                 
                 <table  className="pipeline-table" style={{borderColor: `#8be9fd`}}>
                     {tablex.map((eh)=>(eh!=tablex[0]?(<tr>
@@ -152,18 +141,14 @@ const Console = props => {
             }
 
             if(tablex.length>100){
-                // tablex.length=100;
                 tablex=tablex.slice(0,100);
             }
 
             if(tablex[0].length>200){
                 for(var i=0;i<tablex.length;i++){
-                    // tablex[i].length=200;
                     tablex[i]=tablex[i].slice(0,200);
                 }
             }
-
-            // console.log(table);
 
         }
 
@@ -172,7 +157,6 @@ const Console = props => {
             
                 (<div className="inside-pip">
                 <div style={{color: `#acacac`}}>Number of Cycles: <span style={{color: `white`}}>{cycles} |</span> Number of Stalls: <span style={{color: `white`}}>{stalls} |</span> IPC: <span style={{color: `white`}}>{ipc}</span></div>
-                {/* <hr></hr> */}
                 <table  className="pipeline-table" style={{borderColor: `#8be9fd`}}>
                     {tablex.map((eh)=>(eh!=tablex[0]?(<tr>
                         {eh.map((e)=>((e===eh[0])?(<td  id="pip" style={{backgroundColor: `#343434`, color: `#abcdef`, width: `0px`, textAlign: `left`}}>{e}</td>):(
@@ -208,7 +192,6 @@ const Console = props => {
                 <span id="console-btn" onClick={() => openConsole()}>Console</span>
                 <span id="pipeline-f" onClick={() => openPipelinef()}>Pipeline-Forwarding</span>
                 <span id="pipeline-nf" onClick={() => openPipelinenf()}>Pipeline-NoForwarding</span>
-                {/* <span className={classPipeline} onClick={() => pipelineScreen()}>Pipeline</span> */}
             </div>
             <div id="console-area">
                 <AceEditor

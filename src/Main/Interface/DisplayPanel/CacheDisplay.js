@@ -7,8 +7,6 @@ const CacheDisplay = (props) => {
 
     var valid;
 
-    //console.log(l1sets);
-
     if(l1sets.length===0){
       valid=0;
     }
