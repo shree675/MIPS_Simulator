@@ -132,6 +132,12 @@ processor.updateCache = (wordAddress) =>
             {
                 //no need to update priorities because it is already the most recently used
             }
+            for(let j=0; j<l1_block_size; j++)//parsing through the block and updating L1 data in case it is a store
+            {
+                let t = l1block_index*l1_block_size
+                processor.L1.set([l1set_index, i, j], processor.memory[t+j])
+                //console.log(processor.L1.get([l1set_index, i, j]))
+            }
         }
     }
     if(!l1_flag)//if the search was unsuccessful, need to write/overwrite
@@ -203,6 +209,13 @@ processor.updateCache = (wordAddress) =>
             else
             {
                 //no need to update priorities because it is already the most recently used
+            }
+            for(let j=0; j<l2_block_size; j++)//parsing through the block
+            {
+                let t = l2block_index*l2_block_size
+                processor.L2.set([l2set_index, i, j], processor.memory[t+j])
+                //console.log(processor.memory)
+                //console.log(processor.L2.get([l2set_index, i, j]))
             }
         }
     }
