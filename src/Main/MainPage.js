@@ -24,7 +24,7 @@ class MainPage extends Component {
 		lines: null,
     tags: null,
 		registers: processor.registers,
-    print: "*Read Only*\n",
+    print: "🔍 Read Only\n",
 		pc: 0,
     PWOFMatrix: null,
     PWFMatrix: null,
@@ -91,11 +91,11 @@ class MainPage extends Component {
     //call processor.updateCachesettings
     processor.updateCacheSettings(this.state.l1cachesize,this.state.l1blocksize,this.state.l1assoc,this.state.l2cachesize,this.state.l2blocksize,this.state.l2assoc,this.state.l1latency,this.state.l2latency,this.state.memlatency,this.state.isidealcase);
 		processor.reset()
-    this.state.print = "*Read Only*\n"
+    this.state.print = "🔍 Read Only\n"
     this.state.pc = 0
     this.setState({
       pc:0,
-      print: "*Read Only*\n",
+      print: "🔍 Read Only\n",
     });
     
     do
@@ -134,7 +134,7 @@ class MainPage extends Component {
   step = () =>{   
     if(this.state.pc===0)
     { 
-      this.state.print = "*Read Only*\n"  
+      this.state.print = "🔍 Read Only\n"  
       this.setState({
         lines: null,
         tags: null,
@@ -222,7 +222,7 @@ class MainPage extends Component {
       memory: processor.memory,
       registers: processor.registers,
       pc: 0,
-      print: "*Read Only*\n",
+      print: "🔍 Read Only\n",
       PWFMatrix: null,
       PWOFMatrix: null,
       valid: 1,      
