@@ -92,7 +92,7 @@ processor.initializeCache = () => {
     processor.L2Tags = matrix().resize([l2_sets,l2_blocks], -1)
     processor.L2Priority = matrix().resize([l2_sets,l2_blocks], -1)
 }
-processor.updateCache = (wordAddress) =>
+processor.updateCache = (wordAddress, store) =>
 {
     //most recently used will have priority value 0, least recently used will have priority value [no of blocks in a set-1]
     let index = (wordAddress-268500992)/4
@@ -132,11 +132,14 @@ processor.updateCache = (wordAddress) =>
             {
                 //no need to update priorities because it is already the most recently used
             }
-            for(let j=0; j<l1_block_size; j++)//parsing through the block and updating L1 data in case it is a store
+            if(store)
             {
-                let t = l1block_index*l1_block_size
-                processor.L1.set([l1set_index, i, j], processor.memory[t+j])
-                //console.log(processor.L1.get([l1set_index, i, j]))
+                for(let j=0; j<l1_block_size; j++)//parsing through the block and updating L1 data because it is a store
+                {
+                    let t = l1block_index*l1_block_size
+                    processor.L1.set([l1set_index, i, j], processor.memory[t+j])
+                    //console.log(processor.L1.get([l1set_index, i, j]))
+                }
             }
         }
     }
@@ -193,7 +196,7 @@ processor.updateCache = (wordAddress) =>
             //search successful, found in this set
             //console.log("block found")
             l2_flag=1
-            if(processor.L2Priority.get([l2set_index,i]) != 0)
+            if(processor.L2Priority.get([l2set_index,i]) != 0 && (store || !l1_flag))//only update priority if it is not a L1 hit or if it is a store
             {
                 for(let j=0; j<l2_blocks; j++)//parsing through the blocks in the corresponding set and updating priority
                 {
@@ -210,12 +213,15 @@ processor.updateCache = (wordAddress) =>
             {
                 //no need to update priorities because it is already the most recently used
             }
-            for(let j=0; j<l2_block_size; j++)//parsing through the block
+            if(store)
             {
-                let t = l2block_index*l2_block_size
-                processor.L2.set([l2set_index, i, j], processor.memory[t+j])
-                //console.log(processor.memory)
-                //console.log(processor.L2.get([l2set_index, i, j]))
+                for(let j=0; j<l2_block_size; j++)//parsing through the block and updating data because it is a sw
+                {
+                    let t = l2block_index*l2_block_size
+                    processor.L2.set([l2set_index, i, j], processor.memory[t+j])
+                    //console.log(processor.memory)
+                    //console.log(processor.L2.get([l2set_index, i, j]))
+                }
             }
         }
     }
@@ -304,13 +310,13 @@ processor.setMemory = (wordAddress, value) =>
     //shifting 0x10010000 to 0
     let index = (wordAddress-268500992)/4
     processor.memory[index]=value
-    processor.updateCache(wordAddress) 
+    processor.updateCache(wordAddress, true) 
 
 }
 processor.getMemory = (wordAddress) =>
 {
     let index = (wordAddress-268500992)/4
-    processor.updateCache(wordAddress) 
+    processor.updateCache(wordAddress, false) 
     return processor.memory[index]
 } 
 
