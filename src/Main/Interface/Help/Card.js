@@ -3,6 +3,8 @@ import './Card.css';
 import Codes from './Codes.js';
 import {Link} from 'react-router-dom';
 
+// this is the HELP panel component
+
 class DropDownCard extends Component{
 
     constructor() {
@@ -22,6 +24,8 @@ class DropDownCard extends Component{
         this.piptest3=this.piptest3.bind(this);
 
       }
+
+      /* the below functions display appropriate codes on the editor on selecting an asm program from the HELP panel */
 
       bubbleSort(){
         const codes = new Codes();
@@ -79,7 +83,7 @@ class DropDownCard extends Component{
         });
       }
       
-      displayMenu(event) {
+      displayMenu(event) {                // function that expands the HELP panel on click
         event.preventDefault();
         if(!this.state.displayMenu){
             this.setState({
@@ -93,17 +97,20 @@ class DropDownCard extends Component{
         }
       }
 
-    render(){
+    render(){                       // rendering HELP panel UI
         
         return(
             <div id="help-menu">
+                {/* HELP button */}
                 <button id="help-button" onClick={this.displayMenu}>
                     <p id="help-menu-button"> HELP </p>
                 </button>
                 {this.state.displayMenu===true?(
                 <div style={{textAlign: `center`}}>
+                    {/* navigate to instructions page on click */}
                     <Link id="link-id" to='/information'><button id="opened" className="a-button" style={{paddingTop: `5px`, paddingBottom: `5px`, fontSize: `16px`}}>Instructions</button></Link>
                     <span id="opened" className="non-button">Sample Programs</span>
+                    {/* asm codes buttons */}
                     <button onClick={this.bubbleSort} id="opened" className="ns a-button">BubbleSort.asm</button>
                     <button onClick={this.fibonacci} id="opened" className="ns a-button">Fibonacci.asm</button>
                     <button onClick={this.arithmetic} id="opened" className="ns a-button">SimpleOps.asm</button>

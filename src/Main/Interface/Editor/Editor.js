@@ -4,6 +4,8 @@ import 'brace/mode/mips_assembler';
 import 'brace/theme/dracula';
 import './Editor.css'
 
+// editor component (main)
+
 class Editor extends Component {
 
   constructor(props) {
@@ -17,7 +19,7 @@ class Editor extends Component {
   onChange(newValue, e) {
     this.props.onCodeChange(String(newValue))
   }
-  highlight=(pc)=>{
+  highlight=(pc)=>{                     // function to implement line highlight on editor during step-run
     
     if(this.state.markers!=null)
     {
@@ -66,7 +68,7 @@ markers.push({startRow: 0, startCol: 0, endRow: 1, endCol: 6, className: 'replac
                   value = {this.props.code}
                   onChange={this.onChange.bind(this)}
                   highlight = {this.highlight.bind(this)}
-                  style={{width: "100%", zIndex: `0`, height: `440px`}}    /* 440px act*/ /* 470px */
+                  style={{width: "100%", zIndex: `0`, height: `440px`}}
                   name="mipsIDE" 
                   editorProps={{$blockScrolling: true}}
                   setOptions={{tabSize: 4, wrap: false}}

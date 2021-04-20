@@ -24,7 +24,7 @@ class MainPage extends Component {
 		lines: null,
     tags: null,
 		registers: processor.registers,
-    print: "🔍 Read Only\n",
+    print: "📖 Read Only\n",    // 🕮 📖
 		pc: 0,
     PWOFMatrix: null,
     PWFMatrix: null,
@@ -91,11 +91,11 @@ class MainPage extends Component {
     //call processor.updateCachesettings
     processor.updateCacheSettings(this.state.l1cachesize,this.state.l1blocksize,this.state.l1assoc,this.state.l2cachesize,this.state.l2blocksize,this.state.l2assoc,this.state.l1latency,this.state.l2latency,this.state.memlatency,this.state.isidealcase);
 		processor.reset()
-    this.state.print = "🔍 Read Only\n"
+    this.state.print = "📖 Read Only\n"
     this.state.pc = 0
     this.setState({
       pc:0,
-      print: "🔍 Read Only\n",
+      print: "📖 Read Only\n",
     });
     
     do
@@ -106,8 +106,6 @@ class MainPage extends Component {
     //IMPORTANT: here call both PWF and PWOF.updateCacheSettings() along with appropriate cache input paramenters before calling run
     PWF.updateCacheSettings(this.state.l1cachesize,this.state.l1blocksize,this.state.l1assoc,this.state.l2cachesize,this.state.l2blocksize,this.state.l2assoc,this.state.l1latency,this.state.l2latency,this.state.memlatency,this.state.isidealcase);
     PWOF.updateCacheSettings(this.state.l1cachesize,this.state.l1blocksize,this.state.l1assoc,this.state.l2cachesize,this.state.l2blocksize,this.state.l2assoc,this.state.l1latency,this.state.l2latency,this.state.memlatency,this.state.isidealcase);
-    
-    //console.log(this.state.l1cachesize,this.state.l1blocksize,this.state.l1assoc,this.state.l2cachesize,this.state.l2blocksize,this.state.l2assoc,this.state.l1latency,this.state.l2latency,this.state.memlatency,this.state.isidealcase)
     
     this.state.PWFMatrix = PWF.run(this.state.lines, this.state.tags)
     this.state.PWOFMatrix = PWOF.run(this.state.lines, this.state.tags)
@@ -134,7 +132,7 @@ class MainPage extends Component {
   step = () =>{   
     if(this.state.pc===0)
     { 
-      this.state.print = "🔍 Read Only\n"  
+      this.state.print = "📖 Read Only\n"  
       this.setState({
         lines: null,
         tags: null,
@@ -222,7 +220,7 @@ class MainPage extends Component {
       memory: processor.memory,
       registers: processor.registers,
       pc: 0,
-      print: "🔍 Read Only\n",
+      print: "📖 Read Only\n",
       PWFMatrix: null,
       PWOFMatrix: null,
       valid: 1,      
@@ -259,13 +257,6 @@ class MainPage extends Component {
       isidealcase: isideal,
       pc:0,
     });
-
-    // console.log(l2csize);
-    // console.log(l2bsize);
-    // console.log(l2assoc);
-    // console.log('l1lat',l1latency)
-    // console.log('l2lat',l2latency)
-    // console.log('mem',memlatency)
     
   }
 
@@ -285,36 +276,31 @@ class MainPage extends Component {
     return (
       <div className="main-screen">
         <div className="App">
-          {/* <div style={{height: }} */}
+
             <DropDownCard setCode={this.setCode}/>
-          <div style={{width: '35%'}}>
-            <Sidebar
-              registersmap={this.state.registers}
-              programCounter={this.state.pc}
-              memoryArray={this.state.memory}
-              prevRegisters={this.state.prevRegisters}
-              onCacheChange={this.onCacheChange}
-              l1cache={processor.L1}
-              l2cache={processor.L2}
-            />
+          
+            <div style={{width: '35%'}}>
+              <Sidebar
+                registersmap={this.state.registers}
+                programCounter={this.state.pc}
+                memoryArray={this.state.memory}
+                prevRegisters={this.state.prevRegisters}
+                onCacheChange={this.onCacheChange}
+                l1cache={processor.L1}
+                l2cache={processor.L2}
+              />
           </div> 
           {/* 722px */}
           <div style={{width: '65%', height: `100%`}}>
-          <div>
-          {/* <DropDownCard /> */}
-          {/* <ResizePanel direction="s"> */}
-          <Navbar
-            run={this.run}
-            step={this.step}
-            setFile={this.setFile}
-            deleteFile={this.deleteFile}
-          />
-          {/* </ResizePanel> */}
-        </div>
-        {/* <Resizable
-            minHeight={300}
-            maxHeight={539}
-            enable={{top: false, bottom: true, left: false, right: false, bottomLeft:false, topLeft: false, topRight: false, bottomRight: false}}> */}
+            <div>
+              <Navbar
+                run={this.run}
+                step={this.step}
+                setFile={this.setFile}
+                deleteFile={this.deleteFile}
+              />
+          </div>
+        
           <div id="editor" style={{height: ``, zIndex: `-20`}}>
             
             <Editor ref={this.ideMan}
@@ -324,16 +310,8 @@ class MainPage extends Component {
             />
             
           </div>
-          {/* </Resizable> */}
-          {/* </ResizePanel> */}
-          {/* <Resizable
-            defaultSize={{height: 210}}
-            enable={{top: true, bottom: false, left: false, right: false, bottomLeft:false, topLeft: false, topRight: false, bottomRight: false}}> */}
           <div>
-            {/* <div style={{height: '100%', overflow: `hidden`}}> */}
             <div style={{height: '1px', backgroundColor: '#bd93f9'}}></div>
-            {/* </ResizePanel> */}
-            {/* <SplitPane split="horizontal" defaultSize={210}> */}
             
             <div style={{zIndex: `0`, height: `100%`}}>
 
@@ -344,11 +322,7 @@ class MainPage extends Component {
               />
             
             </div>
-            {/* </SplitPane> */}
-            
-            {/* </div> */}
             </div>
-            {/* </Resizable> */}
             </div>
           </div>
           

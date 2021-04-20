@@ -3,9 +3,9 @@ import './Console.css'
 import AceEditor from "react-ace";
 import 'brace/theme/dracula'; 
 
-const Console = props => {
+const Console = props => {               // Console component (main)
 
-    function openConsole(){
+    function openConsole(){             // display console only on toggle
         document.getElementById("console-area").style.display="block";
         document.getElementById("pipeline-area-nf").style.display="none";
         document.getElementById("pipeline-area").style.display="none";
@@ -14,7 +14,7 @@ const Console = props => {
         document.getElementById("pipeline-nf").style.backgroundColor="#2e2e2e";
     }
 
-    function openPipelinef(){
+    function openPipelinef(){           // display pipeline-forwarding only on toggle
         document.getElementById("console-area").style.display="none";
         document.getElementById("pipeline-area").style.display="block";
         document.getElementById("pipeline-area-nf").style.display="none";
@@ -23,7 +23,7 @@ const Console = props => {
         document.getElementById("pipeline-nf").style.backgroundColor="#2e2e2e";
     }
 
-    function openPipelinenf(){
+    function openPipelinenf(){          // display pipeline-noforwarding only on toggle
         document.getElementById("console-area").style.display="none";
         document.getElementById("pipeline-area").style.display="none";
         document.getElementById("pipeline-area-nf").style.display="block";
@@ -35,7 +35,7 @@ const Console = props => {
     const pwofarr = props.pwofmatrix;
     const pwfarr = props.pwfmatrix;
 
-    function generateNoForwardTable(){
+    function generateNoForwardTable(){              // formatting 2D pipeline-withoutforwarding array into a suitable list
 
         let cycles;
         let stalls;
@@ -65,6 +65,8 @@ const Console = props => {
                 tablex.push(pwofarr._data[i]);
             }
 
+            /* trimming pipeline table if too long */
+
             if(tablex.length>100){
                 tablex=tablex.slice(0,100);
             }
@@ -77,13 +79,14 @@ const Console = props => {
 
         }
 
-        return (
+        return (                        // rendering pipeline UI
             (pwfarr!=null?
             
                 (<div className="inside-pip">
                 <div style={{color: `#acacac`}}>Number of Cycles: <span style={{color: `white`}}>{cycles} |</span> Number of Stalls: <span style={{color: `white`}}>{stalls} |</span> IPC: <span style={{color: `white`}}>{ipc}</span></div>
                 
                 <table  className="pipeline-table" style={{borderColor: `#8be9fd`}}>
+                    {/* converting 2D list into pipeline table */}
                     {tablex.map((eh)=>(eh!=tablex[0]?(<tr>
                         {eh.map((e)=>((e===eh[0])?(<td  id="pip" style={{backgroundColor: `#343434`, color: `#abcdef`, width: `0px`, textAlign: `left`}}>{e}</td>):(
                             (e.trim()==='STALL')?(<td style={{width: `0px`, color: `#797d99`}} id="pip">{e}</td>):
@@ -100,7 +103,8 @@ const Console = props => {
                     
                 </table>
             </div>):
-            (<div className="write-code">
+            (                               // if editor is empty, display message
+            <div className="write-code">
                 ⚠ <span id="normal-text">Write some code and click 'RUN' to generate the pipeline</span>
                 <p>
                 <div style={{color: `#acacac`}}>Note: Large codes may take around a minute to execute.</div>
@@ -111,7 +115,7 @@ const Console = props => {
         );
     }
 
-    function generateForwardTable(){
+    function generateForwardTable(){              // formatting 2D pipeline-withforwarding array into a suitable list
 
         var cycles, stalls, ipc;
 
@@ -140,6 +144,8 @@ const Console = props => {
                 tablex.push(pwfarr._data[i]);
             }
 
+            /* trimming pipeline table if too long */
+
             if(tablex.length>100){
                 tablex=tablex.slice(0,100);
             }
@@ -152,12 +158,13 @@ const Console = props => {
 
         }
 
-        return (
+        return (                        // rendering pipeline UI
             (pwfarr!=null?
             
                 (<div className="inside-pip">
                 <div style={{color: `#acacac`}}>Number of Cycles: <span style={{color: `white`}}>{cycles} |</span> Number of Stalls: <span style={{color: `white`}}>{stalls} |</span> IPC: <span style={{color: `white`}}>{ipc}</span></div>
                 <table  className="pipeline-table" style={{borderColor: `#8be9fd`}}>
+                    {/* converting 2D list into pipeline table */}
                     {tablex.map((eh)=>(eh!=tablex[0]?(<tr>
                         {eh.map((e)=>((e===eh[0])?(<td  id="pip" style={{backgroundColor: `#343434`, color: `#abcdef`, width: `0px`, textAlign: `left`}}>{e}</td>):(
                             (e.trim()==='STALL')?(<td style={{width: `0px`, color: `#797d99`}} id="pip">{e}</td>):
@@ -174,7 +181,8 @@ const Console = props => {
                     
                 </table>
             </div>):
-            (<div className="write-code">
+            (                               // if editor is empty, display messaage
+            <div className="write-code">
             ⚠ <span id="normal-text">Write some code and click 'RUN' to generate the pipeline</span>
             <p>
             <div style={{color: `#acacac`}}>Note: Large codes may take around a minute to execute.</div>
@@ -185,20 +193,23 @@ const Console = props => {
         );
     }
 
-    return (
+    return (                                // rendering AceEditor UI
         <div className="console-wrapper">
-        
+            
+            {/* buttons */}
             <div style={{zIndex: `0`}} className="console-nav">
                 <span id="console-btn" onClick={() => openConsole()}>Console</span>
                 <span id="pipeline-f" onClick={() => openPipelinef()}>Pipeline-Forwarding</span>
                 <span id="pipeline-nf" onClick={() => openPipelinenf()}>Pipeline-NoForwarding</span>
             </div>
+
             <div id="console-area">
+                {/* React ace-editor package */}
                 <AceEditor
                     className={"console"}
                     theme="dracula"
                     fontSize={14}
-                    style={{ width: "100%", zIndex: `0`, height: `210px`}}/* 210px*/
+                    style={{ width: "100%", zIndex: `0`, height: `210px`}}
                     name="console"
                     editorProps={{ $blockScrolling: true }}
                     setOptions={{ tabSize: 4, wrap: false }}
@@ -207,12 +218,15 @@ const Console = props => {
                     readOnly
                 />
             </div>
+
             <div id="pipeline-area">
                 {generateForwardTable()}
             </div>
+            
             <div id="pipeline-area-nf">
                {generateNoForwardTable()}
             </div>
+
         </div>
     );
 }
