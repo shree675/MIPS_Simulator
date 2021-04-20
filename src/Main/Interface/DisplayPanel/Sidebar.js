@@ -17,23 +17,24 @@ var l2latency=2;
 var memlatency=10;
 var customcheck=false;
 var x=0;
+var l1assocerror=false;
+var l1assocactual=1;
 
-const useStyles = makeStyles({
+const useStyles = makeStyles({        // CSS for checkbox (Material UI)
   icon: {
     borderRadius: 3,
     width: 18,
     height: 18,
     margin: 3,
-    // marginRight: 3,
     border: "2px solid #ffaaaa",
     backgroundColor: 'white',
     'input:hover ~ &': {
-      backgroundColor: '#ffaaaa',   // c64360
+      backgroundColor: '#ffaaaa',
     },
   },
 });
 
-const Sidebar = props =>
+const Sidebar = props =>                  // Sidebar component (main)
 {
   const [b,setB] = useState(false);
   const [h,setH] = useState(false);
@@ -52,7 +53,7 @@ const Sidebar = props =>
 
   var prevRegisters=props.prevRegisters;
 
-  for(var [key,value] of registersmap){
+  for(var [key,value] of registersmap){                   // converting decimal into hexadecimal and binary
     if(document.getElementById(key+'hex')!=null){
       if(prevRegisters.get(key)!=registersmap.get(key)){
         document.getElementById(key+'hex').style.backgroundColor="#bd93f9";
@@ -88,7 +89,7 @@ const Sidebar = props =>
   var c=0;
   var lastSeen=0;
 
-  for(var i=0;i<1024;i++){
+  for(var i=0;i<1024;i++){                                // populating the memory segment
     if(memoryArr[i]!=0){
       c=1;
       lastSeen=i;
@@ -109,20 +110,22 @@ const Sidebar = props =>
     start=i;
   }
 
-  if(c===0){
+  if(c===0){                                      // populating the memory segment
     prev=0;
     str+=("[0x" + (4*prev+268500992).toString(16) + "...<br/>...0x" + (4*(1024)+268500992).toString(16) + "]: 0<br/>");
     strdec+=("[0x" + (4*prev+268500992).toString(16) + "...<br/>...0x" + (4*(1024)+268500992).toString(16) + "]: 0<br/>");
     strbin+=("[0x" + (4*prev+268500992).toString(16) + "...<br/>...0x" + (4*(1024)+268500992).toString(16) + "]: 0<br/>");
   }
 
-  else{
+  else{                                           // populating the memory segment
     if(lastSeen!=1023){
       str+=("<br>" + "[0x" + (4*(lastSeen+1)+268500992).toString(16) + "...<br/>...0x" + (4*(1024)+268500992).toString(16) + "]: 0<br/>");
       strdec+=("<br>" + "[0x" + (4*(lastSeen+1)+268500992).toString(16) + "...<br/>...0x" + (4*(1024)+268500992).toString(16) + "]: 0<br/>");
       strbin+=("<br>" + "[0x" + (4*(lastSeen+1)+268500992).toString(16) + "...<br/>...0x" + (4*(1024)+268500992).toString(16) + "]: 0<br/>");
     }
   }
+
+  /* setting dec, hex and bin strings */
 
   if(document.getElementById("memory-table")!=null){
     document.getElementById("memory-table").innerHTML=str;
@@ -141,7 +144,7 @@ const Sidebar = props =>
     registersmapbin.set(key,value.toString(2));    
   }
 
-  function reg() {
+  function reg() {                              // display register segment only on toggle
     {document.getElementById("mem").style.display="none";}
     {document.getElementById("regs").style.display="block";}
     {document.getElementById("cache-display").style.display="none";}
@@ -153,7 +156,7 @@ const Sidebar = props =>
     document.getElementById("sb3").style.opacity="1";
   }
 
-  function memory() {
+  function memory() {                           // display memory segment only on toggle
     {document.getElementById("regs").style.display="none";}
     {document.getElementById("mem").style.display="block";}
     {document.getElementById("cache-display").style.display="none";}
@@ -165,7 +168,7 @@ const Sidebar = props =>
     document.getElementById("sb3").style.opacity="1";
   }
 
-  function cache() {
+  function cache() {                            // display cache segment only on toggle
     {document.getElementById("regs").style.display="none";}
     {document.getElementById("mem").style.display="none";}
     {document.getElementById("cache-display").style.display="block";}
@@ -177,7 +180,7 @@ const Sidebar = props =>
     document.getElementById("sb3").style.opacity="0.5";
   }
 
-  function dec() {
+  function dec() {                // display decimal values only on toggle
     setB(false);
     setD(true);
     setH(false);
@@ -189,7 +192,7 @@ const Sidebar = props =>
     {document.getElementById("sb3").style.backgroundColor="#333333"}
   }
 
-  function hex() {
+  function hex() {                // display hexadecimal values only on toggle
     setB(false);
     setD(false);
     setH(true);
@@ -201,7 +204,7 @@ const Sidebar = props =>
     {document.getElementById("sb3").style.backgroundColor="#333333"}
   }
 
-  function bin() {
+  function bin() {                // display binary values only on toggle
     setB(true);
     setD(false);
     setH(false);
@@ -226,6 +229,8 @@ const Sidebar = props =>
       document.getElementById("non-ideal").style.display="block";
     }
   }
+
+  /* back-end for cache settings */
 
   var l1cachetable=props.l1cache;
   var l2cachetable=props.l2cache;
@@ -262,7 +267,15 @@ const Sidebar = props =>
   }
 
   function changeCacheSizel1(item,value) {
-    l1cachesize=parseInt(item.value);   
+    l1cachesize=parseInt(item.value); 
+    if(l1blocksize===8 && l1cachesize===16 && l1assoc===4){
+      l1assocerror=true;
+      l1assoc=2;
+    }
+    else{
+      l1assocerror=false;
+      l1assoc=l1assocactual;
+    }  
     onCacheChange();
   }
 
@@ -273,6 +286,14 @@ const Sidebar = props =>
 
   function changeBlockSizel1(item,value) {
     l1blocksize=parseInt(item.value);
+    if(l1blocksize===8 && l1cachesize===16 && l1assoc===4){
+      l1assocerror=true;
+      l1assoc=2;
+    }
+    else{
+      l1assocerror=false;   
+      l1assoc=l1assocactual;   
+    }
     onCacheChange();
   }
 
@@ -284,12 +305,29 @@ const Sidebar = props =>
   function changeAssocl1(item,value) {
     if(item.value==="Direct Mapped"){
       l1assoc=1;
+      l1assocactual=l1assoc;
     }
     else if(item.value==="Fully Associative"){
       l1assoc=l1cachesize/l1blocksize;
+      l1assocactual=l1assoc;
     }
     else{
       l1assoc=parseInt(item.value);
+      l1assocactual=l1assoc;
+      if(l1assoc===4){
+        if(l1cachesize===16 && l1blocksize===8){
+          l1assocerror=true;          
+          l1assoc=2;
+        }
+        else{
+          l1assocerror=false;
+          l1assoc=4;
+        }
+      }
+      else{
+        l1assocerror=false;
+        l1assoc=4;
+      }
     }
     onCacheChange();
   }
@@ -321,6 +359,8 @@ const Sidebar = props =>
     memlatency=parseInt(item.value);
     onCacheChange();
   }
+
+  /* lists for dropdown in cache settings segment */
 
   let cachesizesl1=[
     {
@@ -449,17 +489,10 @@ const Sidebar = props =>
     }
   ];
 
-  // console.log('l1cachesize',l1cachesize);
-  // console.log('l1blocksize',l1blocksize);
-  // console.log('l1assoc',l1assoc);
-  // console.log('l2cachesize',l2cachesize);
-  // console.log('l2blocksize',l2blocksize);
-  // console.log('l2assoc',l2assoc);
-  // console.log('\n');
-
-  return (
+  return (                                              // rendering the complete UI
     <div className="sidebar">
       
+      {/* buttons */}
       <div className="sidebar-menu">
         <button id="b1" onClick={reg}>REGISTERS</button>
         <button id="b2" onClick={memory}>MEMORY</button>
@@ -469,6 +502,7 @@ const Sidebar = props =>
       <br></br>
       <hr style={{margin:`0px`, clear:`both`, padding:`0px`, height:`2px`, border:`none`, backgroundColor:`gray`}}></hr>
 
+      {/* buttons */}
       <div className="sidebar-options">
         <button id="sb1" onClick={dec}>DECIMAL</button>
         <button id="sb2" onClick={hex}>HEXADECIMAL</button>
@@ -479,7 +513,7 @@ const Sidebar = props =>
 
       <div>
         <ul>
-
+          {/* segments */}
           <li id="regs">
             <div>
               <ul>
@@ -716,7 +750,7 @@ const Sidebar = props =>
                 </li>
               </ul>
             </div>
-            {/* Register segment */}
+            {/* end of Register segment */}
           </li>
 
           <li id="mem">
@@ -745,11 +779,12 @@ const Sidebar = props =>
                 </li>
               </ul>
             </div>
-            {/* Memory segment */}
+            {/* end of Memory segment */}
           </li>
 
           <li id="cache-display">
             <div>
+              {/* cache settings display */}
               <table className="cache-settings-table">
 
                 <tr className="table-row">
@@ -1040,8 +1075,8 @@ const Sidebar = props =>
 
             <ul>
               <li id="non-ideal">
-
-              <CacheDisplay l1sets={l1sets} l2sets={l2sets} />
+              {/* cache table display */}
+              <CacheDisplay l1sets={l1sets} l2sets={l2sets} l1assocerror={l1assocerror} />
 
               </li>
 
@@ -1058,7 +1093,7 @@ const Sidebar = props =>
               </li>
 
             </ul>
-
+            {/* end of Cache segment */}
           </li>          
 
         </ul>

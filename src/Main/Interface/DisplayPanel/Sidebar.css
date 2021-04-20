@@ -207,3 +207,16 @@ td {
 #ideal {
     display: none;
 }
+
+.l1assoc-error {
+    font-family: montserrat;
+    font-size: 14px;
+    color: grey;
+    padding-left: 5px;
+    padding-right: 5px;
+}
+
+.no-padding {
+    margin: 0px;
+    padding: 0px;
+}
