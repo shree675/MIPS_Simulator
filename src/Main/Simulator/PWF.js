@@ -109,7 +109,7 @@ PWF.initializeCache = () => {
     PWF.L2Tags = matrix().resize([l2_sets,l2_blocks], -1)
     PWF.L2Priority = matrix().resize([l2_sets,l2_blocks], -1)
 }
-PWF.updateCache = (wordAddress) =>
+PWF.updateCache = (wordAddress, store) =>
 {
     //most recently used will have priority value 0, least recently used will have priority value [no of blocks in a set-1]
     let index = (wordAddress-268500992)/4
@@ -149,6 +149,15 @@ PWF.updateCache = (wordAddress) =>
             {
                 //no need to update priorities because it is already the most recently used
             }
+            if(store)
+            {
+                for(let j=0; j<l1_block_size; j++)//parsing through the block and updating L1 data because it is a store
+                {
+                    let t = l1block_index*l1_block_size
+                    PWF.L1.set([l1set_index, i, j], PWF.memory[t+j])
+                    //console.log(PWF.L1.get([l1set_index, i, j]))
+                }
+            }
         }
     }
     if(!l1_flag)//if the search was unsuccessful, need to write/overwrite
@@ -160,7 +169,7 @@ PWF.updateCache = (wordAddress) =>
             {
                 let t = PWF.L1Priority.get([l1set_index,i])
                 PWF.L1Priority.set([l1set_index,i], t+1)
-                //processor.L1Priority[l1set_index][i]++
+                //PWF.L1Priority[l1set_index][i]++
             }                
         }
         for(let i=0; i<l1_blocks; i++)//parsing through the blocks in the corresponding set
@@ -181,9 +190,9 @@ PWF.updateCache = (wordAddress) =>
             //console.log("check")        
         }
     }
-    //processor.L1[0][0][0] = 50
+    //PWF.L1[0][0][0] = 50
     //console.log("L1 data", PWF.L1)
-    //processor.L1Tags[0][1] = -3
+    //PWF.L1Tags[0][1] = -3
     //console.log("L1 Tags", PWF.L1Tags)
     //console.log("L1 Priority", PWF.L1Priority)
     //************************************************************************************* */
@@ -204,7 +213,7 @@ PWF.updateCache = (wordAddress) =>
             //search successful, found in this set
             //console.log("block found")
             l2_flag=1
-            if(PWF.L2Priority.get([l2set_index,i]) != 0)
+            if(PWF.L2Priority.get([l2set_index,i]) != 0 && (store || !l1_flag))
             {
                 for(let j=0; j<l2_blocks; j++)//parsing through the blocks in the corresponding set and updating priority
                 {
@@ -221,6 +230,16 @@ PWF.updateCache = (wordAddress) =>
             {
                 //no need to update priorities because it is already the most recently used
             }
+            if(store)
+            {
+                for(let j=0; j<l2_block_size; j++)//parsing through the block and updating data because it is a sw
+                {
+                    let t = l2block_index*l2_block_size
+                    PWF.L2.set([l2set_index, i, j], PWF.memory[t+j])
+                    //console.log(PWF.memory)
+                    //console.log(PWF.L2.get([l2set_index, i, j]))
+                }
+            }
         }
     }
     if(!l2_flag)//if the search was unsuccessful, need to write/overwrite
@@ -232,7 +251,7 @@ PWF.updateCache = (wordAddress) =>
             {
                 let t = PWF.L2Priority.get([l2set_index,i])
                 PWF.L2Priority.set([l2set_index,i], t+1)
-                //processor.L1Priority[l1set_index][i]++
+                //PWF.L1Priority[l1set_index][i]++
             }                
         }
         for(let i=0; i<l2_blocks; i++)//parsing through the blocks in the corresponding set
@@ -307,13 +326,13 @@ PWF.setMemory = (wordAddress, value) =>
     //shifting 0x10010000 to 0
     let index = (wordAddress-268500992)/4
     PWF.memory[index]=value
-    PWF.updateCache(wordAddress) 
+    PWF.updateCache(wordAddress, true) 
 
 }
 PWF.getMemory = (wordAddress) =>
 {
     let index = (wordAddress-268500992)/4
-    PWF.updateCache(wordAddress) 
+    PWF.updateCache(wordAddress, false) 
     return PWF.memory[index]
 } 
 PWF.setRegister = (reg, num) => {
