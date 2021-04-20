@@ -1,6 +1,6 @@
 import { matrix } from 'mathjs'
 import local from './localEXE.js'
-
+//Simulates the entire MIPS code and cache and for each valid instruction, generates a new row in the pipeline diagram with forwarding
 const IF = "  IF "
 const IDRF = "IDRF "
 const EXE = " EXE "
@@ -8,7 +8,7 @@ const MEM = " MEM "
 const WB = "  WB "
 const stall = "STALL"
 const empty = "     "
-const instructions = ["add", "addu", "sub", "subu", "addi", "addiu", "srl", "sll", "bne", "beq", "ble", "j", "li", "lui", "lw", "sw", "syscall"]
+const instructions = ["add", "addu", "sub", "subu", "addi", "addiu", "srl", "sll", "bne", "beq", "ble", "j", "li", "lui", "lw", "sw", "syscall", "jr"]
 const memInst = ["lw", "sw"]
 const branchInst = ["bne", "beq", "ble", "j"]
 const TwoSource = ["add", "addu", "sub", "subu"]
@@ -87,7 +87,6 @@ PWF.updateCacheSettings = (l1_size, l1_block, l1_asso, l2_size, l2_block, l2_ass
     PWF.MMLatency = mm_latency
     PWF.isIdealCase = idealcase
 }
-
 PWF.initializeCache = () => {
     //initializing data array for L1
     let l1_block_size = PWF.L1BlockSize/4 //no of words in a block
@@ -114,23 +113,18 @@ PWF.updateCache = (wordAddress, store) =>
     //most recently used will have priority value 0, least recently used will have priority value [no of blocks in a set-1]
     let index = (wordAddress-268500992)/4
     let data = PWF.memory[index]
-    //******************************************************* */
     //search L1, if there, change priority of all elements in the set, else find lowest priority position in the set and overwrite in L1
     let l1_block_size = PWF.L1BlockSize/4 //no of words in a block
     let l1_blocks = PWF.L1Associativity   //no of blocks in a set
     let l1_sets = PWF.L1Size/(PWF.L1Associativity*PWF.L1BlockSize) //total number of sets in the cache
-    
     let l1block_index = Math.floor(index/l1_block_size) //this is the value of address to be searched/stored in the tag array
     let l1set_index = l1block_index%l1_sets  //this is the set number which this address belongs to
     let l1_flag = 0
-    //console.log("set index ", l1set_index)
-    //console.log("block index ", l1block_index)
     for(let i=0; i<l1_blocks; i++)//parsing through the blocks in the corresponding set
     {
         if(PWF.L1Tags.get([l1set_index,i]) == l1block_index)
         {
             //search successful, found in this set
-            //console.log("block found")
             l1_flag=1
             if(PWF.L1Priority.get([l1set_index,i]) != 0)
             {
@@ -155,21 +149,18 @@ PWF.updateCache = (wordAddress, store) =>
                 {
                     let t = l1block_index*l1_block_size
                     PWF.L1.set([l1set_index, i, j], PWF.memory[t+j])
-                    //console.log(PWF.L1.get([l1set_index, i, j]))
                 }
             }
         }
     }
     if(!l1_flag)//if the search was unsuccessful, need to write/overwrite
     {
-        //console.log("not found in l1")
         for(let i=0; i<l1_blocks; i++)//parsing through the blocks in the corresponding set to update remaining priorities
         {
             if(PWF.L1Priority.get([l1set_index,i]) != -1)
             {
                 let t = PWF.L1Priority.get([l1set_index,i])
                 PWF.L1Priority.set([l1set_index,i], t+1)
-                //PWF.L1Priority[l1set_index][i]++
             }                
         }
         for(let i=0; i<l1_blocks; i++)//parsing through the blocks in the corresponding set
@@ -182,36 +173,23 @@ PWF.updateCache = (wordAddress, store) =>
                 {
                     let t = l1block_index*l1_block_size
                     PWF.L1.set([l1set_index, i, j], PWF.memory[t+j])
-                    //console.log(PWF.L1.get([l1set_index, i, j]))
                 }
-                //console.log("*")
                 break
-            }    
-            //console.log("check")        
+            }         
         }
     }
-    //PWF.L1[0][0][0] = 50
-    //console.log("L1 data", PWF.L1)
-    //PWF.L1Tags[0][1] = -3
-    //console.log("L1 Tags", PWF.L1Tags)
-    //console.log("L1 Priority", PWF.L1Priority)
     //************************************************************************************* */
     //search L2, if there, change priority of all elements in the set, else find lowest priority position in the set and overwrite in L2
     let l2_block_size = PWF.L2BlockSize/4 //no of words in a block
     let l2_blocks = PWF.L2Associativity   //no of blocks in a set
     let l2_sets = PWF.L2Size/(PWF.L2Associativity*PWF.L2BlockSize) //total number of sets in the cache
-    
     let l2block_index = Math.floor(index/l2_block_size) //this is the value of address to be searched/stored in the tag array
     let l2set_index = l2block_index%l2_sets  //this is the set number which this address belongs to
     let l2_flag = 0
-    //console.log("set index ", l2set_index)
-    //console.log("block index ", l2block_index)
     for(let i=0; i<l2_blocks; i++)//parsing through the blocks in the corresponding set
     {
         if(PWF.L2Tags.get([l2set_index,i]) == l2block_index)
         {
-            //search successful, found in this set
-            //console.log("block found")
             l2_flag=1
             if(PWF.L2Priority.get([l2set_index,i]) != 0 && (store || !l1_flag))
             {
@@ -236,22 +214,18 @@ PWF.updateCache = (wordAddress, store) =>
                 {
                     let t = l2block_index*l2_block_size
                     PWF.L2.set([l2set_index, i, j], PWF.memory[t+j])
-                    //console.log(PWF.memory)
-                    //console.log(PWF.L2.get([l2set_index, i, j]))
                 }
             }
         }
     }
     if(!l2_flag)//if the search was unsuccessful, need to write/overwrite
     {
-        //console.log("not found in l2")
         for(let i=0; i<l2_blocks; i++)//parsing through the blocks in the corresponding set to update remaining priorities
         {
             if(PWF.L2Priority.get([l2set_index,i]) != -1)
             {
                 let t = PWF.L2Priority.get([l2set_index,i])
                 PWF.L2Priority.set([l2set_index,i], t+1)
-                //PWF.L1Priority[l1set_index][i]++
             }                
         }
         for(let i=0; i<l2_blocks; i++)//parsing through the blocks in the corresponding set
@@ -264,25 +238,18 @@ PWF.updateCache = (wordAddress, store) =>
                 {
                     let t = l2block_index*l2_block_size
                     PWF.L2.set([l2set_index, i, j], PWF.memory[t+j])
-                    //console.log(PWF.L2.get([l2set_index, i, j]))
                 }
-                //console.log("*")
                 break
             }    
-            //console.log("check")        
         }
     }
-    //console.log("L2 data", PWF.L2)
-    //console.log("L2 Tags", PWF.L2Tags)
-    //console.log("L2 Priority", PWF.L2Priority)
-    //************************************************************************************* */
 } 
 PWF.stallTime = (wordAddress) =>
 {
     //this function takes an address, check L1, L2 and returns number of stall cycles accordingly
     //if hit in L1, return L1Latency
-    //else if hit in L2, return L2Latency
-    //else return MMLatency
+    //else if hit in L2, return L2Latency +L1Latency
+    //else return MMLatency + L1Latency +L2Latency
     let index = (wordAddress-268500992)/4
     let l1_block_size = PWF.L1BlockSize/4 //no of words in a block
     let l1_blocks = PWF.L1Associativity   //no of blocks in a set
@@ -293,8 +260,6 @@ PWF.stallTime = (wordAddress) =>
     {
         if(PWF.L1Tags.get([l1set_index,i]) == l1block_index)
         {
-            //search successful, found in this set
-            //console.log("L1 Hit")
             return PWF.L1Latency
         }
     }
@@ -307,17 +272,14 @@ PWF.stallTime = (wordAddress) =>
     {
         if(PWF.L2Tags.get([l2set_index,i]) == l2block_index)
         {
-            //search successful, found in this set
-            //console.log("L2 Hit")
             return PWF.L2Latency + PWF.L1Latency
         }
     }
-    //console.log("Main memory")
     return PWF.MMLatency + PWF.L2Latency + PWF.L1Latency
 }
 PWF.setInitialMemory = (wordAddress, value) =>
 {
-    //shifting 0x10010000 to 0
+    //shifting 0x10010000 to 0 //this method is called while initialising the main memory during preprocessing stage
     let index = (wordAddress-268500992)/4
     PWF.memory[index]=value
 }
@@ -408,17 +370,14 @@ PWF.returnMem = (line)=> //returns the address of the word to be accessed if it 
 {
     if(line.indexOf("#")>=0)
         line.length = line.indexOf("#")
-    //console.log("in return mem", line)
     for(var i of memInst)
     {
         if(line.includes(i))
         {
-            //console.log(line)
             let src = line[2].split("(")
             let offset = parseInt(src[0])
             let src1 = src[1].replace("$", "").replace(")", "")
             let src2 = offset + PWF.getRegister(src1)
-            //console.log(src2)
             return src2
         } 
     }
@@ -473,12 +432,10 @@ PWF.appendColumn = () =>
     let row = PWF.pipe.size()[0]
     let col = PWF.pipe.size()[1]
     PWF.pipe.resize([row, col+1], empty)
-    //console.log(PWF.pipe)
 }
 PWF.formatInst = (line)=>
 {
     let output = ""
-    //console.log(line)
     for(let i of line)
     {
         if(line[0].includes(":"))
@@ -494,7 +451,6 @@ PWF.formatInst = (line)=>
             output = output+" "+i
         }
     }
-    //console.log(output)
     return output
 }
 PWF.isBranchDependent = (lines, pc) => //Here we check all cases that result in one stall, we check both previous and prev prev pc
@@ -608,7 +564,6 @@ PWF.isMemDependent = (lines, pc) =>//Here we check if the previous instruction i
     if(line2.includes("lw")||line2.includes("lui"))
     {
         let dep1 = line2[2].split(/[\(\)]+/)[1]
-        //console.log(dest, dep1)
         if(dest===dep1)
         {
             return true
@@ -630,7 +585,6 @@ PWF.InstructionFetch = (lines,pc) =>
 {
     let row = PWF.pipe.size()[0]
     let col = PWF.pipe.size()[1]
-    //console.log(row, col)
     row=row-1//row refers to index now
     let i = row+1
     if(!PWF.isBranchInst(lines[PWF.prevPC]))
@@ -655,9 +609,7 @@ PWF.RegisterFetch = (lines, pc) =>
 {
     let row = PWF.pipe.size()[0]
     let col = PWF.pipe.size()[1]
-    //console.log(row, col)
     row=row-1//row refers to index now
-    //console.log("register fetch")
         let i = row+1
         while(PWF.pipe.get([row,i])!=IF)
         {
@@ -743,9 +695,7 @@ PWF.Execute = (lines,pc) =>
 {
     let row = PWF.pipe.size()[0]
     let col = PWF.pipe.size()[1]
-    //console.log(row, col)
     row=row-1//row refers to index now
-    //console.log("execute")
     let i = row+1
     while(PWF.pipe.get([row,i])!=IDRF)
     {
@@ -801,17 +751,12 @@ PWF.Memory = (lines, pc) =>
     let row = PWF.pipe.size()[0]
     let col = PWF.pipe.size()[1]
     let numOfCycles = 1;
-    //console.log("Memory instruction")
     let address = PWF.returnMem(lines[pc])
     if(!PWF.isIdealCase && address!=-1)
     {
-        //console.log("Memory instruction")
         numOfCycles = PWF.stallTime(address)
     }
-    //console.log("cycles", numOfCycles)
-    //console.log(row, col)
     row=row-1//row refers to index now
-    //console.log("memory")
     let i = row+1
     while(PWF.pipe.get([row,i])!=EXE)
     {
@@ -847,9 +792,7 @@ PWF.WriteBack = (line,pc) =>
 {
     let row = PWF.pipe.size()[0]
     let col = PWF.pipe.size()[1]
-    //console.log(row, col)
     row=row-1//row refers to index now
-    //console.log("write-back")
     //find MEM of the current line, if there are any remaining column, fill them with stalls, then append a column and enter WB
     let i = row+1
     while(PWF.pipe.get([row,i])!=MEM)
@@ -860,11 +803,6 @@ PWF.WriteBack = (line,pc) =>
     {
         i++
     }   
-    /* while(i<col)
-    {
-        PWF.pipe.set([row,i], stall)
-        i++
-    } */
     PWF.appendColumn()
     PWF.pipe.set([row,i], WB)
 }
@@ -874,9 +812,8 @@ PWF.updateMatrix = (lines, pc)=>
     let line = lines[pc]
     if(PWF.pipe==null)
     {
-        //console.log("first")
+        //for the first line
         PWF.pipe = matrix([[empty, empty, empty, empty, empty, empty]])
-        //PWOF.pipe.resize([1,6], empty)
         PWF.pipe.set([0,0], PWF.formatInst(line))
         PWF.pipe.set([0,1], IF)
         PWF.pipe.set([0,2], IDRF)
@@ -888,7 +825,6 @@ PWF.updateMatrix = (lines, pc)=>
     {
         let row = PWF.pipe.size()[0]
         let col = PWF.pipe.size()[1]
-        //console.log(row, col)
         PWF.pipe.resize([row+1, col], empty)
         PWF.pipe.set([row,0], PWF.formatInst(line))
         PWF.InstructionFetch(lines,pc)
@@ -898,17 +834,9 @@ PWF.updateMatrix = (lines, pc)=>
         PWF.WriteBack(line,pc) 
     }
 }
-
 PWF.run = (lines, tags)=>
 {
-    //console.log(lines)
     PWF.reset()
-    //console.log("PWOF.run")
-    /*let a = matrix([["IF", "IDRF", "EXE", "MEM", "WB"]])
-    console.log(a) 
-    a.resize([2,6], " * ")
-    a.set([1,1], "Stall")
-    console.log(a) */
     if(lines==null)
     {
         return PWF.pipe
@@ -923,7 +851,6 @@ PWF.run = (lines, tags)=>
         }
         if(line!="" && line.includes(".word"))//only for storing integers
         {
-            //tags.set(lines[i][0], i)
             for(let j=1; j<line.length; j++, index=index+4)
             {
                 let value = parseInt(lines[i][j])
@@ -938,12 +865,8 @@ PWF.run = (lines, tags)=>
         PWF.prevprevPC++
         if(PWF.pc===lines.length)//if pc has reached the end of the lines pf code, reinitialize to 0, ready for the next step or run
         {
-            /* PWOF.pc=0
-            PWOF.prevPC=0
-            PWOF.prevprevPC=0 */
             return PWF.pipe
         }
-        //console.log("count")
     }
     do{
         if(lines==null)
@@ -953,83 +876,17 @@ PWF.run = (lines, tags)=>
         while(!PWF.isInst(lines[PWF.pc]))
         {
             PWF.pc++
-            if(PWF.pc===lines.length)//if pc has reached the end of the lines pf code, reinitialize to 0, ready for the next step or run
+            if(PWF.pc===lines.length)//if pc has reached the end of the lines pf code return
             {
-            /* PWOF.pc=0
-            PWOF.prevPC=0
-            PWOF.prevprevPC=0 */
-            return PWF.pipe
+                return PWF.pipe
             }
-            //console.log("instruction")
-            //console.log(lines[PWOF.pc])
-            //code to add a line to matrix
         }
         PWF.updateMatrix(lines,PWF.pc)
         PWF.prevprevPC = PWF.prevPC
         PWF.prevPC = PWF.pc
         PWF.pc = local.exe(lines, tags, PWF.pc, PWF)
-        //console.log(PWOF.registers)
-        //console.log(PWOF.memory)
-       // console.log(PWOF.pipe)
     }while(PWF.pc!=0)
     return PWF.pipe
 }
-
 export default PWF
 
-
-/* PWF.isDependent = (line1, line2) =>
-{
-    //console.log("****")
-    if(line1.includes(":"))
-        line1.splice(0,1)//removes the tag from the beginning hence extracting the instruction
-    if(line2.includes(":"))
-        line2.splice(0,1)//removes the tag from the beginning hence extracting the instruction
-
-    //console.log(line1, line2)
-    //console.log("****")
-    if(PWF.isBranchInst(line1)|| line1.includes("sw")|| line1.includes("syscall"))
-    {
-        return false
-    }
-    if(PWF.isBranchInst(line2))
-    {
-        if(line2.includes("bne")||line2.includes("ble")||line2.includes("beq"))
-        {
-            let dep1 = line2[1]
-            let dep2 = line2[2]
-            let dest = line1[1]
-            if(dest===dep1 || dest===dep2)
-            {
-                return true
-            }
-            return false          
-        }
-        else
-        {//j 
-            return false
-        }
-    }
-    if(PWF.isTwoSource(line2))
-    {
-        let dest = line1[1]
-        let dep1 = line2[2]
-        let dep2 = line2[3]
-        if(dest===dep1 || dest===dep2)
-        {
-            return true
-        }
-        return false
-
-    }
-    if(PWF.isOneSource(line2))
-    {
-        let dest = line1[1]
-        let dep1 = line2[2]
-        if(dest===dep1)
-        {
-            return true
-        }
-        return false
-    }
-} */

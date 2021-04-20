@@ -10,24 +10,22 @@ import execute from './Simulator/execute.js'
 import PWOF from './Simulator/PWOF.js'
 import PWF from './Simulator/PWF.js'
 import DropDownCard from './Interface/Help/Card.js';
-// import {Resizable} from 're-resizable';
 
-class MainPage extends Component {
-
+class MainPage extends Component { //this is the Mainpage where all components of the simulator are integrated
   constructor(props) {
     super(props);
     this.ideMan = React.createRef();
   }
 
   state = {
-		code: '',
-		lines: null,
-    tags: null,
-		registers: processor.registers,
-    print: "📖 Read Only\n",    // 🕮 📖
-		pc: 0,
-    PWOFMatrix: null,
-    PWFMatrix: null,
+		code: '', //the MIPS code input from the editor as a string
+		lines: null, //MIPS code input parsed linewise
+    tags: null, //array containing tags such as "main:"
+		registers: processor.registers, 
+    print: "📖 Read Only\n",    // 🕮 📖 contains the string contents of the Read only console
+		pc: 0, //program counter
+    PWOFMatrix: null, //The 2D array used to display the pipeline diagram without forwarding
+    PWFMatrix: null, //The 2D array used to display the pipeline diagram with forwarding
     memory: processor.memory,
     prevRegisters: new Map(
       [
@@ -63,22 +61,22 @@ class MainPage extends Component {
           ["sp", 0],
           ["s8", 0],
           ["ra", 0]
-      ]),
-      l1cachesize: 16,
-      l1blocksize: 4,
-      l1assoc: 1,
-      l1latency: 1,
-      l2cachesize: 64,
-      l2blocksize: 4,
-      l2assoc: 1,
-      l2latency: 2,
-      memlatency: 10,
-      isidealcase: false,
-      L1: processor.L1,
-      L2: processor.L2
+      ]), //previous state of registers is maintained to enable highlighting of registers when the corresponding values change
+      l1cachesize: 16, //size of L1 cache in bytes
+      l1blocksize: 4, //size of the blocks in L1 cache in bytes
+      l1assoc: 1, //associativity of L1 cache
+      l1latency: 1, //latency of L1 cache
+      l2cachesize: 64, //size of L2 cache in bytes
+      l2blocksize: 4, //size of the blocks in L2 cache in bytes
+      l2assoc: 1, //associativity of L2 cache
+      l2latency: 2, //latency of L2 cache
+      memlatency: 10, //latency of Man Memory access
+      isidealcase: false, //if this is checked, the memory heirarchy is disabled and all memory are operations are assumed to be 1 cycle
+      L1: processor.L1, //L1 cache data table
+      L2: processor.L2 //L2 cache data table
 	}
 
-  setCode = (newCode)=>{
+  setCode = (newCode)=>{ //updates the MIPS code input when changes are made in the editor
     this.deleteFile();
     this.setState({
       code: newCode
@@ -87,8 +85,7 @@ class MainPage extends Component {
     this.render();
   }
 
-  run = () => {
-    //call processor.updateCachesettings
+  run = () => {//runs the entire MIPS code, displays updated Registers, Memory, Cache Table and both pipeline tables, with and without forwarding
     processor.updateCacheSettings(this.state.l1cachesize,this.state.l1blocksize,this.state.l1assoc,this.state.l2cachesize,this.state.l2blocksize,this.state.l2assoc,this.state.l1latency,this.state.l2latency,this.state.memlatency,this.state.isidealcase);
 		processor.reset()
     this.state.print = "📖 Read Only\n"
@@ -97,39 +94,23 @@ class MainPage extends Component {
       pc:0,
       print: "📖 Read Only\n",
     });
-    
-    do
+    do//repeatedly calls the step function to execute each line step by step
     {
       this.step()
     }while(this.state.pc!=0);
-
     //IMPORTANT: here call both PWF and PWOF.updateCacheSettings() along with appropriate cache input paramenters before calling run
     PWF.updateCacheSettings(this.state.l1cachesize,this.state.l1blocksize,this.state.l1assoc,this.state.l2cachesize,this.state.l2blocksize,this.state.l2assoc,this.state.l1latency,this.state.l2latency,this.state.memlatency,this.state.isidealcase);
     PWOF.updateCacheSettings(this.state.l1cachesize,this.state.l1blocksize,this.state.l1assoc,this.state.l2cachesize,this.state.l2blocksize,this.state.l2assoc,this.state.l1latency,this.state.l2latency,this.state.memlatency,this.state.isidealcase);
-    
     this.state.PWFMatrix = PWF.run(this.state.lines, this.state.tags)
     this.state.PWOFMatrix = PWOF.run(this.state.lines, this.state.tags)
     this.setState({
       PWOFMatrix: this.state.PWOFMatrix,
       PWFMatrix: this.state.PWFMatrix,
-    });
-
-    this.ideMan.current.highlight(-1);
-
-    //console.log('PWOF :',this.state.PWOFMatrix)
-    //console.log('PWF: ',this.state.PWFMatrix)
-    /* let a = PWOF.run(this.state.lines, this.state.tags)
-    console.log(a) */
-    /* let b = PWF.run(this.state.lines, this.state.tags)
-    console.log(b) */
-    /* this.state.PWOFMatrix = PWOF.run(this.state.lines, this.state.tags)
-    console.log('PWOF :',this.state.PWOFMatrix)
-
-    this.state.PWFMatrix = PWF.run(this.state.lines, this.state.tags)
-    console.log('PWF: ',this.state.PWFMatrix) */
+    }); //the pipeline diagram tables are now generated
+    this.ideMan.current.highlight(-1); 
 	}
 
-  step = () =>{   
+  step = () =>{ //executes the instruction pointed to by pc
     if(this.state.pc===0)
     { 
       this.state.print = "📖 Read Only\n"  
@@ -142,7 +123,6 @@ class MainPage extends Component {
     }
     if(this.state.lines==null)
     {
-      //here call processor.updateCacheSettings() ->pass 10 parameters
       processor.updateCacheSettings(this.state.l1cachesize,this.state.l1blocksize,this.state.l1assoc,this.state.l2cachesize,this.state.l2blocksize,this.state.l2assoc,this.state.l1latency,this.state.l2latency,this.state.memlatency,this.state.isidealcase);
       [this.state.lines, this.state.tags] = parser.parse(this.state.code)
     }
@@ -159,37 +139,7 @@ class MainPage extends Component {
       L1: processor.L1,
       L2: processor.L2
     });
-
-    //IDE.highlight(this.state.pc);
-    this.ideMan.current.highlight(this.state.pc)
-    //IDE.highlight(pc);
-
-    // this.state.prevRegisters=processor.registers;
-    
-    // console.log('current', this.state.registers);
-    // console.log('reg', processor.registers);
-    // console.log(this.state.prevRegisters===processor.registers);
-    // this.state.tempRegisters=this.state.registers;
-    // this.setState({
-    
-    // });
-    
-
-    // if(this.state.pc===0){
-    //   this.setState({
-    //     memory: new Array(1024).fill(0)
-    //   });
-    // }
-    // this.render();
-
-    //console.log("Checking Registers")
-    // console.log(processor.registers)
-    //console.log('current', this.state.registers);
-    // console.log("Checking pc")
-    // console.log(this.state.pc)
-    //console.log("Checking Memory")
-    //console.log(this.state.memory)
-
+    this.ideMan.current.highlight(this.state.pc)//updates the parameter used to move the highlight of the line to be executed on the next click of step
   }
 
 	setFile = async (event) => {
@@ -203,7 +153,6 @@ class MainPage extends Component {
 				code: String(reader.result)
 			})
 		}
-
     try{
 		  reader.readAsText(file);
     }
@@ -211,9 +160,7 @@ class MainPage extends Component {
 
     }
 	}
-
 	deleteFile = (event) => {
-
 		this.setState({
 			code: "",
       processor: processor.reset(),
@@ -225,15 +172,10 @@ class MainPage extends Component {
       PWOFMatrix: null,
       valid: 1,      
 		})
-
     this.ideMan.current.highlight(-1);
-
     processor.L1=new Array(0);
     processor.L2=new Array(0);    
-    
 	}
-
-
   onCodeChange = changedCode => {
 		this.setState({
 			code: changedCode,
@@ -242,9 +184,8 @@ class MainPage extends Component {
       pc:0,
 		})
 	}
-
   onCacheChange = (l1csize,l1bsize,l1assoc,l1latency,l2csize,l2bsize,l2assoc,l2latency,memlatency,isideal)=>{
-    this.setState({
+    this.setState({ //updates the state variables of the cache when the inputs of cache settings are changed in the UI
       l1cachesize: l1csize,
       l1blocksize: l1bsize,
       l1assoc: l1assoc,
@@ -257,28 +198,12 @@ class MainPage extends Component {
       isidealcase: isideal,
       pc:0,
     });
-    
   }
-
-
   render = () => {
-    // console.log(this.state.l1cachesize);
-    // console.log(document.getElementById("editor"));
-    /* var Range = require("ace/range").Range
-    editor.session.addMarker(new Range(8, 0, 8, 1), 'ace_highlight-marker', 'fullLine');  */
-    /* var ac = require('brace');
-    var Range = ac.require('ace/range').Range;
-    editor.session.addMarker(new Range(2, 0, 0, 1), 'myMarker', 'fullLine', true); */
-    // {console.log('afsdasdf',this.state.L2);}
-   /*  var editor = ace.edit("ace-editor");
-    var Range = ace.require('ace/range').Range;
-    editor.session.addMarker(new Range(2, 3,2, 11), 'ace_highlight-marker', 'fullLine'); */
     return (
       <div className="main-screen">
         <div className="App">
-
             <DropDownCard setCode={this.setCode}/>
-          
             <div style={{width: '35%'}}>
               <Sidebar
                 registersmap={this.state.registers}
@@ -290,7 +215,6 @@ class MainPage extends Component {
                 l2cache={processor.L2}
               />
           </div> 
-          {/* 722px */}
           <div style={{width: '65%', height: `100%`}}>
             <div>
               <Navbar
@@ -300,35 +224,27 @@ class MainPage extends Component {
                 deleteFile={this.deleteFile}
               />
           </div>
-        
           <div id="editor" style={{height: ``, zIndex: `-20`}}>
-            
             <Editor ref={this.ideMan}
               onCodeChange={this.onCodeChange}
               code={this.state.code}
               pc={this.state.pc} 
-            />
-            
+            /> 
           </div>
           <div>
             <div style={{height: '1px', backgroundColor: '#bd93f9'}}></div>
-            
             <div style={{zIndex: `0`, height: `100%`}}>
-
               <Console
                 console={this.state.print}
                 pwfmatrix={this.state.PWFMatrix}
                 pwofmatrix={this.state.PWOFMatrix}
               />
-            
             </div>
             </div>
             </div>
           </div>
-          
         </div>
     )
   }
 }
-
 export default MainPage;
