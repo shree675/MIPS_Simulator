@@ -102,18 +102,14 @@ processor.updateCache = (wordAddress, store) =>
     let l1_block_size = processor.L1BlockSize/4 //no of words in a block
     let l1_blocks = processor.L1Associativity   //no of blocks in a set
     let l1_sets = processor.L1Size/(processor.L1Associativity*processor.L1BlockSize) //total number of sets in the cache
-    
     let l1block_index = Math.floor(index/l1_block_size) //this is the value of address to be searched/stored in the tag array
     let l1set_index = l1block_index%l1_sets  //this is the set number which this address belongs to
     let l1_flag = 0
-    //console.log("set index ", l1set_index)
-    //console.log("block index ", l1block_index)
     for(let i=0; i<l1_blocks; i++)//parsing through the blocks in the corresponding set
     {
         if(processor.L1Tags.get([l1set_index,i]) == l1block_index)
         {
             //search successful, found in this set
-            //console.log("block found")
             l1_flag=1
             if(processor.L1Priority.get([l1set_index,i]) != 0)
             {
@@ -138,21 +134,19 @@ processor.updateCache = (wordAddress, store) =>
                 {
                     let t = l1block_index*l1_block_size
                     processor.L1.set([l1set_index, i, j], processor.memory[t+j])
-                    //console.log(processor.L1.get([l1set_index, i, j]))
+                    
                 }
             }
         }
     }
     if(!l1_flag)//if the search was unsuccessful, need to write/overwrite
     {
-        //console.log("not found in l1")
         for(let i=0; i<l1_blocks; i++)//parsing through the blocks in the corresponding set to update remaining priorities
         {
             if(processor.L1Priority.get([l1set_index,i]) != -1)
             {
                 let t = processor.L1Priority.get([l1set_index,i])
                 processor.L1Priority.set([l1set_index,i], t+1)
-                //processor.L1Priority[l1set_index][i]++
             }                
         }
         for(let i=0; i<l1_blocks; i++)//parsing through the blocks in the corresponding set
@@ -165,20 +159,11 @@ processor.updateCache = (wordAddress, store) =>
                 {
                     let t = l1block_index*l1_block_size
                     processor.L1.set([l1set_index, i, j], processor.memory[t+j])
-                    //console.log(processor.L1.get([l1set_index, i, j]))
                 }
-                //console.log("*")
                 break
-            }    
-            //console.log("check")        
+            }            
         }
     }
-    //processor.L1[0][0][0] = 50
-    // console.log("L1 data", processor.L1)
-    //processor.L1Tags[0][1] = -3
-    // console.log("L1 Tags", processor.L1Tags)
-    // console.log("L1 Priority", processor.L1Priority)
-    //************************************************************************************* */
     //search L2, if there, change priority of all elements in the set, else find lowest priority position in the set and overwrite in L2
     let l2_block_size = processor.L2BlockSize/4 //no of words in a block
     let l2_blocks = processor.L2Associativity   //no of blocks in a set
@@ -187,14 +172,11 @@ processor.updateCache = (wordAddress, store) =>
     let l2block_index = Math.floor(index/l2_block_size) //this is the value of address to be searched/stored in the tag array
     let l2set_index = l2block_index%l2_sets  //this is the set number which this address belongs to
     let l2_flag = 0
-    //console.log("set index ", l2set_index)
-    //console.log("block index ", l2block_index)
     for(let i=0; i<l2_blocks; i++)//parsing through the blocks in the corresponding set
     {
         if(processor.L2Tags.get([l2set_index,i]) == l2block_index)
         {
             //search successful, found in this set
-            //console.log("block found")
             l2_flag=1
             if(processor.L2Priority.get([l2set_index,i]) != 0 && (store || !l1_flag))//only update priority if it is not a L1 hit or if it is a store
             {
@@ -219,22 +201,18 @@ processor.updateCache = (wordAddress, store) =>
                 {
                     let t = l2block_index*l2_block_size
                     processor.L2.set([l2set_index, i, j], processor.memory[t+j])
-                    //console.log(processor.memory)
-                    //console.log(processor.L2.get([l2set_index, i, j]))
                 }
             }
         }
     }
     if(!l2_flag)//if the search was unsuccessful, need to write/overwrite
     {
-        //console.log("not found in l2")
         for(let i=0; i<l2_blocks; i++)//parsing through the blocks in the corresponding set to update remaining priorities
         {
             if(processor.L2Priority.get([l2set_index,i]) != -1)
             {
                 let t = processor.L2Priority.get([l2set_index,i])
                 processor.L2Priority.set([l2set_index,i], t+1)
-                //processor.L1Priority[l1set_index][i]++
             }                
         }
         for(let i=0; i<l2_blocks; i++)//parsing through the blocks in the corresponding set
@@ -247,58 +225,13 @@ processor.updateCache = (wordAddress, store) =>
                 {
                     let t = l2block_index*l2_block_size
                     processor.L2.set([l2set_index, i, j], processor.memory[t+j])
-                    //console.log(processor.memory)
-                    //console.log(processor.L2.get([l2set_index, i, j]))
                 }
-                //console.log("*")
                 break
-            }    
-            //console.log("check")        
+            }         
         }
     }
-    // console.log("L2 data", processor.L2)
-    // console.log("L2 Tags", processor.L2Tags)
-    // console.log("L2 Priority", processor.L2Priority)
     //************************************************************************************* */
 } 
-processor.stallTime = (wordAddress) =>
-{
-    //this function takes an address, check L1, L2 and returns number of stall cycles accordingly
-    //if hit in L1, return L1Latency
-    //else if hit in L2, return L2Latency
-    //else return MMLatency
-    let index = (wordAddress-268500992)/4
-    let l1_block_size = processor.L1BlockSize/4 //no of words in a block
-    let l1_blocks = processor.L1Associativity   //no of blocks in a set
-    let l1_sets = processor.L1Size/(processor.L1Associativity*processor.L1BlockSize) //total number of sets in the cache
-    let l1block_index = Math.floor(index/l1_block_size) //this is the value of address to be searched/stored in the tag array
-    let l1set_index = l1block_index%l1_sets  //this is the set number which this address belongs to
-    for(let i=0; i<l1_blocks; i++)//parsing through the blocks in the corresponding set
-    {
-        if(processor.L1Tags.get([l1set_index,i]) == l1block_index)
-        {
-            //search successful, found in this set
-            //console.log("L1 Hit")
-            return processor.L1Latency 
-        }
-    }
-    let l2_block_size = processor.L2BlockSize/4 //no of words in a block
-    let l2_blocks = processor.L2Associativity   //no of blocks in a set
-    let l2_sets = processor.L2Size/(processor.L2Associativity*processor.L2BlockSize) //total number of sets in the cache
-    let l2block_index = Math.floor(index/l2_block_size) //this is the value of address to be searched/stored in the tag array
-    let l2set_index = l2block_index%l2_sets  //this is the set number which this address belongs to
-    for(let i=0; i<l2_blocks; i++)//parsing through the blocks in the corresponding set
-    {
-        if(processor.L2Tags.get([l2set_index,i]) == l2block_index)
-        {
-            //search successful, found in this set
-            //console.log("L2 Hit")
-            return processor.L2Latency + processor.L1Latency
-        }
-    }
-    return processor.MMLatency + processor.L2Latency + processor.L1Latency
-}
-
 processor.setInitialMemory = (wordAddress, value) =>
 {
     //shifting 0x10010000 to 0
@@ -375,69 +308,5 @@ processor.reset = () => {
     )
     processor.initializeCache()
 }
-
 export default processor 
 
-/*
-* three arrays -> all arrays sizes=cache size/block size ; data, tag, priority = [0,associativity-1]
-* example: cache size=32, block size=8, k=2
-*/ 
-
- //testing arrays
-    /* let arr = [[[1,2], [3,4]],[[4,5], [6,7]]]
-    console.log(arr)
-    arr[0][0][0] = 5
-    console.log(arr) */
-/* let l1_block = matrix(l1_block_size).fill(0)
-    //console.log("l1_block", l1_block)
-    let l1_set = new Array()
-    for(let i=0; i<l1_blocks; i++)
-    {
-        l1_set.push(l1_block)
-        
-    }
-    //console.log("l1_set", l1_set)
-    let l1 = new Array()
-    for(let i=0; i<l1_sets; i++)
-    {
-        l1.push(l1_set)
-    }
-    processor.L1 = l1; */
-
-    /* let l1_temp = new Array(l1_blocks).fill(-1) //no of blocks in a set, one entry for each block
-    let l1_tags = new Array()
-    let l1_priority = new Array()
-    for(let i=0; i<l1_sets; i++)
-    {
-        l1_tags.push(l1_temp)
-        l1_priority.push(l1_temp)
-    }
-    processor.L1Tags = l1_tags
-    processor.L1Priority = l1_priority */
-
-    /*  let l2_block = new Array(l2_block_size).fill(0)
-    //console.log("l1_block", l1_block)
-    let l2_set = new Array()
-    for(let i=0; i<l2_blocks; i++)
-    {
-        l2_set.push(l2_block)
-        
-    }
-    //console.log("l1_set", l1_set)
-    let l2 = new Array()
-    for(let i=0; i<l2_sets; i++)
-    {
-        l2.push(l2_set)
-    }
-    processor.L2 = l2; */
-
-    /* let l2_temp = new Array(l2_blocks).fill(-1) //no of blocks in a set, one entry for each block
-    let l2_tags = new Array()
-    let l2_priority = new Array()
-    for(let i=0; i<l2_sets; i++)
-    {
-        l2_tags.push(l2_temp)
-        l2_priority.push(l2_temp)
-    }
-    processor.L2Tags = l2_tags
-    processor.L2Priority = l2_priority */

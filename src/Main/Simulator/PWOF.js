@@ -1,6 +1,6 @@
 import { matrix } from 'mathjs'
 import local from './localEXE.js'
-
+//Simulates the entire MIPS code and cache and for each valid instruction, generates a new row in the pipeline diagram without forwarding
 const IF = "  IF "
 const IDRF = "IDRF "
 const EXE = " EXE "
@@ -8,7 +8,7 @@ const MEM = " MEM "
 const WB = "  WB "
 const stall = "STALL"
 const empty = "     "
-const instructions = ["add", "addu", "sub", "subu", "addi", "addiu", "srl", "sll", "bne", "beq", "ble", "j", "li", "lui", "lw", "sw", "syscall"]
+const instructions = ["add", "addu", "sub", "subu", "addi", "addiu", "srl", "sll", "bne", "beq", "ble", "j", "li", "lui", "lw", "sw", "syscall", "jr"]
 const memInst = ["lw", "sw"]
 const branchInst = ["bne", "beq", "ble", "j"]
 const TwoSource = ["add", "addu", "sub", "subu"]
@@ -87,7 +87,6 @@ PWOF.updateCacheSettings = (l1_size, l1_block, l1_asso, l2_size, l2_block, l2_as
     PWOF.MMLatency = mm_latency
     PWOF.isIdealCase = idealcase
 }
-
 PWOF.initializeCache = () => {
     //initializing data array for L1
     let l1_block_size = PWOF.L1BlockSize/4 //no of words in a block
@@ -114,23 +113,17 @@ PWOF.updateCache = (wordAddress, store) =>
     //most recently used will have priority value 0, least recently used will have priority value [no of blocks in a set-1]
     let index = (wordAddress-268500992)/4
     let data = PWOF.memory[index]
-    //******************************************************* */
     //search L1, if there, change priority of all elements in the set, else find lowest priority position in the set and overwrite in L1
     let l1_block_size = PWOF.L1BlockSize/4 //no of words in a block
     let l1_blocks = PWOF.L1Associativity   //no of blocks in a set
     let l1_sets = PWOF.L1Size/(PWOF.L1Associativity*PWOF.L1BlockSize) //total number of sets in the cache
-    
     let l1block_index = Math.floor(index/l1_block_size) //this is the value of address to be searched/stored in the tag array
     let l1set_index = l1block_index%l1_sets  //this is the set number which this address belongs to
     let l1_flag = 0
-    //console.log("set index ", l1set_index)
-    //console.log("block index ", l1block_index)
     for(let i=0; i<l1_blocks; i++)//parsing through the blocks in the corresponding set
     {
         if(PWOF.L1Tags.get([l1set_index,i]) == l1block_index)
         {
-            //search successful, found in this set
-            //console.log("block found")
             l1_flag=1
             if(PWOF.L1Priority.get([l1set_index,i]) != 0)
             {
@@ -155,21 +148,18 @@ PWOF.updateCache = (wordAddress, store) =>
                 {
                     let t = l1block_index*l1_block_size
                     PWOF.L1.set([l1set_index, i, j], PWOF.memory[t+j])
-                    //console.log(PWOF.L1.get([l1set_index, i, j]))
                 }
             }
         }
     }
     if(!l1_flag)//if the search was unsuccessful, need to write/overwrite
     {
-        //console.log("not found in l1")
         for(let i=0; i<l1_blocks; i++)//parsing through the blocks in the corresponding set to update remaining priorities
         {
             if(PWOF.L1Priority.get([l1set_index,i]) != -1)
             {
                 let t = PWOF.L1Priority.get([l1set_index,i])
                 PWOF.L1Priority.set([l1set_index,i], t+1)
-                //processor.L1Priority[l1set_index][i]++
             }                
         }
         for(let i=0; i<l1_blocks; i++)//parsing through the blocks in the corresponding set
@@ -182,36 +172,23 @@ PWOF.updateCache = (wordAddress, store) =>
                 {
                     let t = l1block_index*l1_block_size
                     PWOF.L1.set([l1set_index, i, j], PWOF.memory[t+j])
-                    //console.log(PWOF.L1.get([l1set_index, i, j]))
                 }
-                //console.log("*")
                 break
-            }    
-            //console.log("check")        
+            }      
         }
     }
-    //processor.L1[0][0][0] = 50
-    //console.log("L1 data", PWOF.L1)
-    //processor.L1Tags[0][1] = -3
-    //console.log("L1 Tags", PWOF.L1Tags)
-    //console.log("L1 Priority", PWOF.L1Priority)
-    //************************************************************************************* */
     //search L2, if there, change priority of all elements in the set, else find lowest priority position in the set and overwrite in L2
     let l2_block_size = PWOF.L2BlockSize/4 //no of words in a block
     let l2_blocks = PWOF.L2Associativity   //no of blocks in a set
     let l2_sets = PWOF.L2Size/(PWOF.L2Associativity*PWOF.L2BlockSize) //total number of sets in the cache
-    
     let l2block_index = Math.floor(index/l2_block_size) //this is the value of address to be searched/stored in the tag array
     let l2set_index = l2block_index%l2_sets  //this is the set number which this address belongs to
     let l2_flag = 0
-    //console.log("set index ", l2set_index)
-    //console.log("block index ", l2block_index)
     for(let i=0; i<l2_blocks; i++)//parsing through the blocks in the corresponding set
     {
         if(PWOF.L2Tags.get([l2set_index,i]) == l2block_index)
         {
             //search successful, found in this set
-            //console.log("block found")
             l2_flag=1
             if(PWOF.L2Priority.get([l2set_index,i]) != 0 && (store || !l1_flag))
             {
@@ -236,22 +213,18 @@ PWOF.updateCache = (wordAddress, store) =>
                 {
                     let t = l2block_index*l2_block_size
                     PWOF.L2.set([l2set_index, i, j], PWOF.memory[t+j])
-                    //console.log(PWOF.memory)
-                    //console.log(PWOF.L2.get([l2set_index, i, j]))
                 }
             }
         }
     }
     if(!l2_flag)//if the search was unsuccessful, need to write/overwrite
     {
-        //console.log("not found in l2")
         for(let i=0; i<l2_blocks; i++)//parsing through the blocks in the corresponding set to update remaining priorities
         {
             if(PWOF.L2Priority.get([l2set_index,i]) != -1)
             {
                 let t = PWOF.L2Priority.get([l2set_index,i])
                 PWOF.L2Priority.set([l2set_index,i], t+1)
-                //processor.L1Priority[l1set_index][i]++
             }                
         }
         for(let i=0; i<l2_blocks; i++)//parsing through the blocks in the corresponding set
@@ -264,25 +237,18 @@ PWOF.updateCache = (wordAddress, store) =>
                 {
                     let t = l2block_index*l2_block_size
                     PWOF.L2.set([l2set_index, i, j], PWOF.memory[t+j])
-                    //console.log(PWOF.L2.get([l2set_index, i, j]))
                 }
-                //console.log("*")
                 break
-            }    
-            //console.log("check")        
+            }       
         }
     }
-    //console.log("L2 data", PWOF.L2)
-    //console.log("L2 Tags", PWOF.L2Tags)
-    //console.log("L2 Priority", PWOF.L2Priority)
-    //************************************************************************************* */
 } 
 PWOF.stallTime = (wordAddress) =>
 {
     //this function takes an address, check L1, L2 and returns number of stall cycles accordingly
-    //if hit in L1, return L1Latency
-    //else if hit in L2, return L2Latency
-    //else return MMLatency
+     //if hit in L1, return L1Latency
+    //else if hit in L2, return L2Latency +L1Latency
+    //else return MMLatency + L1Latency +L2Latency
     let index = (wordAddress-268500992)/4
     let l1_block_size = PWOF.L1BlockSize/4 //no of words in a block
     let l1_blocks = PWOF.L1Associativity   //no of blocks in a set
@@ -293,8 +259,6 @@ PWOF.stallTime = (wordAddress) =>
     {
         if(PWOF.L1Tags.get([l1set_index,i]) == l1block_index)
         {
-            //search successful, found in this set
-            //console.log("L1 Hit")
             return PWOF.L1Latency 
         }
     }
@@ -307,8 +271,6 @@ PWOF.stallTime = (wordAddress) =>
     {
         if(PWOF.L2Tags.get([l2set_index,i]) == l2block_index)
         {
-            //search successful, found in this set
-            //console.log("L2 Hit")
             return PWOF.L2Latency +PWOF.L1Latency
         }
     }
@@ -390,7 +352,7 @@ PWOF.reset = () => {
     )
     PWOF.initializeCache()
 }
-PWOF.isInst = (line)=>
+PWOF.isInst = (line)=> //checks if this particular line is a valid instruction
 {
     if(line=="" || line[0]=="#")
         return false
@@ -407,12 +369,10 @@ PWOF.returnMem = (line)=> //returns the address of the word to be accessed if it
 {
     if(line.indexOf("#")>=0)
     line.length = line.indexOf("#")
-    //console.log("in return mem", line)
     for(var i of memInst)
     {
         if(line.includes(i))
         {
-            //console.log(line)
             let src = line[2].split("(")
             let offset = parseInt(src[0])
             let src1 = src[1].replace("$", "").replace(")", "")
@@ -473,12 +433,10 @@ PWOF.appendColumn = () =>
     let row = PWOF.pipe.size()[0]
     let col = PWOF.pipe.size()[1]
     PWOF.pipe.resize([row, col+1], empty)
-    //console.log(PWOF.pipe)
 }
 PWOF.formatInst = (line)=>
 {
     let output = ""
-    //console.log(line)
     for(let i of line)
     {
         if(line[0].includes(":"))
@@ -494,12 +452,10 @@ PWOF.formatInst = (line)=>
             output = output+" "+i
         }
     }
-    //console.log(output)
     return output
 }
-PWOF.isDependent = (line1, line2) =>
+PWOF.isDependent = (line1, line2) => //checks if line2 is dependent on line1
 {
-    //console.log("****")
     if(line1.indexOf("#")>=0)
         line1.length = line1.indexOf("#")
     if(line2.indexOf("#")>=0)
@@ -565,7 +521,7 @@ PWOF.isDependent = (line1, line2) =>
         return false
     }
 }
-PWOF.isBranchDependent2 = (line1, line2) =>
+PWOF.isBranchDependent = (line1, line2) =>
 {
     //console.log("****")
     if(line1.indexOf("#")>=0)
@@ -591,47 +547,6 @@ PWOF.isBranchDependent2 = (line1, line2) =>
     return false
    
 }
-PWOF.isBranchDependent = (lines, pc) => //Here we check all cases that result in one stall, we check both previous and prev prev pc
-{
-    let line1 = lines[PWOF.prevprevPC]
-    let line2 = lines[PWOF.prevPC]
-    let line3 = lines[pc]
-    if(line1.indexOf("#")>=0)
-        line1.length = line1.indexOf("#")
-    if(line2.indexOf("#")>=0)
-        line2.length = line2.indexOf("#")
-    if(line3.indexOf("#")>=0)
-        line3.length = line3.indexOf("#")
-    if(line1.includes(":"))
-        line1.splice(0,1)//removes the tag from the beginning hence extracting the instruction
-    if(line2.includes(":"))
-        line2.splice(0,1)//removes the tag from the beginning hence extracting the instruction
-    if(line3.includes(":"))
-        line3.splice(0,1)//removes the tag from the beginning hence extracting the instruction
-
-    let dep1 = line3[1]
-    let dep2 = line3[2]
-    //when line two is of Exe-write type
-    if(PWOF.isExeWrite(line2))
-    {
-        let dest = line2[1]
-        if(dest===dep1 || dest===dep2)
-        {
-            return true
-        }
-        return false           
-    }
-    else if(line1.includes("lw"))
-    {
-        let dest = line1[1]
-        if(dest===dep1 || dest===dep2)
-        {
-            return true
-        }
-        return false  
-    }
-    return false
-} 
 PWOF.isBranchMemDependent = (lines, pc) => //Here we check all cases that result in two stall i.e. when the previous instruction is an "lw"
 {
     let line1 = lines[PWOF.prevPC]
@@ -663,12 +578,8 @@ PWOF.InstructionFetch = (lines,pc) =>
 {
     let row = PWOF.pipe.size()[0]
     let col = PWOF.pipe.size()[1]
-    //console.log(row, col)
     row=row-1//row refers to index now
     let i = row+1
-    //console.log(lines[PWOF.prevPC])
-    //console.log(lines[pc])
-    //console.log("*")
     if(!PWOF.isBranchInst(lines[PWOF.prevPC]))
     {
         while(PWOF.pipe.get([row-1,i])!=IDRF)
@@ -686,13 +597,11 @@ PWOF.InstructionFetch = (lines,pc) =>
         PWOF.pipe.set([row,i], IF)   
     }
 }
-PWOF.RegisterFetch2 = (lines, pc) =>
+PWOF.RegisterFetch = (lines, pc) =>
 {
     let row = PWOF.pipe.size()[0]
     let col = PWOF.pipe.size()[1]
-    //console.log(row, col)
     row=row-1//row refers to index now
-    //console.log("register fetch")
         let i = row+1
         while(PWOF.pipe.get([row,i])!=IF)
         {
@@ -700,14 +609,12 @@ PWOF.RegisterFetch2 = (lines, pc) =>
         }
         i++
         let j = row+1
-        if(PWOF.isBranchInst(lines[pc]) && PWOF.prevPC!=pc && PWOF.isBranchDependent2(lines[PWOF.prevPC], lines[pc]))//dependent on previous
-        {   
-            //console.log("dependent on previous")     
+        if(PWOF.isBranchInst(lines[pc]) && PWOF.prevPC!=pc && PWOF.isBranchDependent(lines[PWOF.prevPC], lines[pc]))//dependent on previous
+        {        
             while(PWOF.pipe.get([row-1,j])!=WB)
             {
                 j++
             }
-            //j++
             while(i<j)
             {
                 PWOF.pipe.set([row,i], stall)
@@ -716,16 +623,14 @@ PWOF.RegisterFetch2 = (lines, pc) =>
             PWOF.appendColumn()
             PWOF.pipe.set([row,i], IDRF)  
             return
-    
         }
-        if(PWOF.isBranchInst(lines[pc]) && PWOF.prevprevPC!=PWOF.prevPC && PWOF.isBranchDependent2(lines[PWOF.prevprevPC], lines[pc]))
+        if(PWOF.isBranchInst(lines[pc]) && PWOF.prevprevPC!=PWOF.prevPC && PWOF.isBranchDependent(lines[PWOF.prevprevPC], lines[pc]))
         {
-            //console.log("dependent on previous previous")
+            //dependent on previous previous
             while(PWOF.pipe.get([row-2,j])!=WB)
             {
                 j++
             }
-            //j++
             while(PWOF.pipe.get([row-1,j])==stall)
             {
                 j++
@@ -775,12 +680,9 @@ PWOF.RegisterFetch2 = (lines, pc) =>
 }
 PWOF.Execute = (lines,pc) =>
 {
-    //else next to IDRF under MEM
     let row = PWOF.pipe.size()[0]
     let col = PWOF.pipe.size()[1]
-    //console.log(row, col)
     row=row-1//row refers to index now
-    //console.log("execute")
     let i = row+1
     while(PWOF.pipe.get([row,i])!=IDRF)
     {
@@ -789,8 +691,7 @@ PWOF.Execute = (lines,pc) =>
     i++
     let j = row+1
     if(PWOF.prevPC!=pc && PWOF.isDependent(lines[PWOF.prevPC], lines[pc]))//dependent on previous
-    {   
-        //console.log("dependent on previous")     
+    {       
         while(PWOF.pipe.get([row-1,j])!=WB)
         {
             j++
@@ -808,7 +709,6 @@ PWOF.Execute = (lines,pc) =>
     }
     if(PWOF.prevprevPC!=PWOF.prevPC && PWOF.isDependent(lines[PWOF.prevprevPC], lines[pc]))//if prev prev exists and this inst is dependent on prev prev
     {
-        //console.log("dependent on previous previous")
         while(PWOF.pipe.get([row-2,j])!=WB)
         {
             j++
@@ -858,17 +758,12 @@ PWOF.Memory = (lines, pc) =>
 {
     let row = PWOF.pipe.size()[0]
     let numOfCycles = 1;
-    //console.log("Memory instruction")
     let address = PWOF.returnMem(lines[pc])
     if(!PWOF.isIdealCase && address!=-1)
     {
-        //console.log("Memory instruction")
         numOfCycles = PWOF.stallTime(address)
     }
-    //console.log("cycles", numOfCycles)
-    //console.log(row, col)
     row=row-1//row refers to index now
-    //console.log("memory")
     let i = row+1
     while(PWOF.pipe.get([row,i])!=EXE)
     {
@@ -904,9 +799,7 @@ PWOF.WriteBack = (line,pc) =>
 {
     let row = PWOF.pipe.size()[0]
     let col = PWOF.pipe.size()[1]
-    //console.log(row, col)
     row=row-1//row refers to index now
-    //console.log("write-back")
     //find MEM of the current line, if there are any remaining column, fill them with stalls, then append a column and enter WB
     let i = row+1
     while(PWOF.pipe.get([row,i])!=MEM)
@@ -917,11 +810,6 @@ PWOF.WriteBack = (line,pc) =>
     {
         i++
     }   
-    /* while(i<col)
-    {
-        PWOF.pipe.set([row,i], stall)
-        i++
-    } */
     PWOF.appendColumn()
     PWOF.pipe.set([row,i], WB)
 }
@@ -929,11 +817,9 @@ PWOF.updateMatrix = (lines, pc)=>
 {
     //updating matrix with a line
     let line = lines[pc]
-    if(PWOF.pipe==null)
+    if(PWOF.pipe==null) //first line
     {
-        //console.log("first")
         PWOF.pipe = matrix([[empty, empty, empty, empty, empty, empty]])
-        //PWOF.pipe.resize([1,6], empty)
         PWOF.pipe.set([0,0], PWOF.formatInst(line))
         PWOF.pipe.set([0,1], IF)
         PWOF.pipe.set([0,2], IDRF)
@@ -945,28 +831,18 @@ PWOF.updateMatrix = (lines, pc)=>
     {
         let row = PWOF.pipe.size()[0]
         let col = PWOF.pipe.size()[1]
-        //console.log(row, col)
         PWOF.pipe.resize([row+1, col], empty)
         PWOF.pipe.set([row,0], PWOF.formatInst(line))
         PWOF.InstructionFetch(lines,pc)
-        //PWOF.RegisterFetch(lines, pc)
-        PWOF.RegisterFetch2(lines, pc)
+        PWOF.RegisterFetch(lines, pc)
         PWOF.Execute(lines,pc)
         PWOF.Memory(lines,pc)
         PWOF.WriteBack(line,pc) 
     }
 }
-
 PWOF.run = (lines, tags)=>
 {
-    //console.log(lines)
     PWOF.reset()
-    //console.log("PWOF.run")
-    /*let a = matrix([["IF", "IDRF", "EXE", "MEM", "WB"]])
-    console.log(a) 
-    a.resize([2,6], " * ")
-    a.set([1,1], "Stall")
-    console.log(a) */
     if(lines==null)
     {
         return PWOF.pipe
@@ -996,12 +872,8 @@ PWOF.run = (lines, tags)=>
         PWOF.prevprevPC++
         if(PWOF.pc===lines.length)//if pc has reached the end of the lines pf code, reinitialize to 0, ready for the next step or run
         {
-            /* PWOF.pc=0
-            PWOF.prevPC=0
-            PWOF.prevprevPC=0 */
             return PWOF.pipe
         }
-        //console.log("count")
     }
     do{
         if(lines==null)
@@ -1011,292 +883,16 @@ PWOF.run = (lines, tags)=>
         while(!PWOF.isInst(lines[PWOF.pc]))
         {
             PWOF.pc++
-            if(PWOF.pc===lines.length)//if pc has reached the end of the lines pf code, reinitialize to 0, ready for the next step or run
+            if(PWOF.pc===lines.length)//if pc has reached the end of the lines pf code, return
             {
-            /* PWOF.pc=0
-            PWOF.prevPC=0
-            PWOF.prevprevPC=0 */
-            return PWOF.pipe
+                return PWOF.pipe
             }
-            //console.log("instruction")
-            //console.log(lines[PWOF.pc])
-            //code to add a line to matrix
         }
         PWOF.updateMatrix(lines,PWOF.pc)
         PWOF.prevprevPC = PWOF.prevPC
         PWOF.prevPC = PWOF.pc
         PWOF.pc = local.exe(lines, tags, PWOF.pc, PWOF)
-        //console.log(PWOF.registers)
-        //console.log(PWOF.memory)
-       // console.log(PWOF.pipe)
     }while(PWOF.pc!=0)
     return PWOF.pipe
 }
 export default PWOF
-
-/* let row = PWOF.pipe.size()[0]
-    let col = PWOF.pipe.size()[1]
-    //console.log(row, col)
-    row=row-1//row refers to index now
-    let i = row+1
-    while(PWOF.pipe.get([row-1,i])!=IDRF)
-        {
-            i++
-        }
-        
-    if(!PWOF.isBranchInst(lines[PWOF.prevPC]))
-    {
-        while(true)
-        {
-            if(PWOF.pipe.get([row-1,i])==IDRF)
-            {
-                PWOF.pipe.set([row,i], IF)
-                break
-            }
-            else 
-            {
-                i++
-            }
-        }
-    }
-    else if(PWOF.isBranchInst(lines[PWOF.prevPC]) && PWOF.isDependent(lines[PWOF.prevprevPC], lines[PWOF.prevPC]))
-    {
-        let i = row+1
-            while(true)
-            {
-                if(PWOF.pipe.get([row-1,i])==MEM)
-                {
-                    PWOF.pipe.set([row,i], IF)
-                    break
-                }
-                else 
-                {
-                    i++
-                }
-            }
-    }
-    else
-    {
-        let i = row+1
-            while(true)
-            {
-                if(PWOF.pipe.get([row-1,i])==EXE)
-                {
-                    PWOF.pipe.set([row,i], IF)
-                    break 
-                }
-                else 
-                {
-                    i++
-                }
-            }
-
-    } */
-
-    /* if(i>=col || PWOF.isDependent(lines[PWOF.prevPC], lines[pc]))
-    {
-        while(i<col)
-        {
-            if(PWOF.pipe.get([row,i])==empty)
-            {
-                PWOF.pipe.set([row,i], stall)
-            }
-            i++
-        }
-        PWOF.appendColumn()
-        PWOF.pipe.set([row,i], EXE)
-    }
-    else if(PWOF.isDependent(lines[PWOF.prevprevPC], lines[pc]))
-    {
-        while(PWOF.pipe.get([row-1,i])!=WB)
-        {
-            if(i>=col)
-            {
-                PWOF.appendColumn()
-                PWOF.pipe.set([row,i], EXE)  
-                return
-            }
-            PWOF.pipe.set([row,i], stall)
-            i++
-        }
-        if(i>=col)
-        {
-            PWOF.appendColumn()
-            PWOF.pipe.set([row,i], EXE)  
-                return
-        }
-        PWOF.pipe.set([row,i], EXE)        
-    }
-    else
-    {
-        while(PWOF.pipe.get([row-1,i])!=MEM)
-        {
-            if(i>=col)
-            {
-                PWOF.appendColumn()
-                PWOF.pipe.set([row,i], EXE)  
-                return
-            }
-            PWOF.pipe.set([row,i], stall)
-            i++
-        }
-        if(i>=col)
-        {
-            PWOF.appendColumn()
-        }
-        PWOF.pipe.set([row,i], EXE) 
-    } */
-
-    /* let row = PWOF.pipe.size()[0]
-    let col = PWOF.pipe.size()[1]
-    //console.log(row, col)
-    row=row-1//row refers to index now
-    //console.log("register fetch")
-        let i = row+1
-        while(PWOF.pipe.get([row,i])!=IF)
-        {
-            i++
-        }
-        i++
-        let j = row+1
-        while(PWOF.pipe.get([row-1,j])!=EXE)
-        {
-            j++
-        }
-        if(j<i)
-        {
-            while(PWOF.pipe.get([row-1,j])!=MEM)
-            {
-                j++
-            }
-        }
-        if(j<i)
-        {
-            while(PWOF.pipe.get([row-1,j])!=WB)
-            {
-                j++
-            }
-        }
-        while(i<j)
-        {
-            if(PWOF.pipe.get([row,i])==empty)
-                PWOF.pipe.set([row,i], stall)
-            i++
-        }
-        PWOF.pipe.set([row,i], IDRF) */
-        /* while(true)
-            {
-                if(PWOF.pipe.get([row-1,i])==EXE)
-                {
-                    if(PWOF.pipe.get([row,i])==empty)
-                    {
-                        PWOF.pipe.set([row,i], IDRF)
-                        break
-                    }
-                    else if(PWOF.pipe.get([row,i+1])==empty)
-                    {
-                        PWOF.pipe.set([row,i+1], IDRF)
-                        break
-                    }
-                    else
-                    {
-                        PWOF.pipe.set([row,i+2], IDRF)
-                        break
-                    }    
-                }
-                else 
-                {
-                    if(PWOF.pipe.get([row,i])==empty)
-                        PWOF.pipe.set([row,i], stall)
-                    i++
-                }
-            } */
-
-/* PWOF.RegisterFetch = (lines, pc) =>
-{
-    let row = PWOF.pipe.size()[0]
-    let col = PWOF.pipe.size()[1]
-    //console.log(row, col)
-    row=row-1//row refers to index now
-    //console.log("register fetch")
-        let i = row+1
-        while(PWOF.pipe.get([row,i])!=IF)
-        {
-            i++
-        }
-        i++
-        let j = row+1
-        if(PWOF.isBranchInst(lines[pc]))
-        {
-            if(PWOF.isBranchMemDependent(lines, pc))//2 stalls case
-            {
-                while(PWOF.pipe.get([row-1,j])!=WB)
-                {
-                    j++
-                }
-            }
-            else if(PWOF.isBranchDependent(lines, pc))//1 stall case
-            {
-                while(PWOF.pipe.get([row-1,j])!=MEM)
-                {
-                    j++
-                }
-                if(j<i)
-                {
-                    while(PWOF.pipe.get([row-1,j])!=WB)
-                    {
-                        j++
-                    }
-                }  
-            }
-            else//no stall case
-            {
-                while(PWOF.pipe.get([row-1,j])!=EXE)
-                {
-                    j++
-                } 
-                if(j<i)
-                {
-                    while(PWOF.pipe.get([row-1,j])!=MEM)
-                    {
-                        j++
-                    }
-                }
-                if(j<i)
-                {
-                    while(PWOF.pipe.get([row-1,j])!=WB)
-                    {
-                        j++
-                    }
-                }                  
-            }
-        }
-        else//same as no stall case
-        {
-            while(PWOF.pipe.get([row-1,j])!=EXE)
-            {
-                j++
-            } 
-            if(j<i)
-            {
-                while(PWOF.pipe.get([row-1,j])!=MEM)
-                {
-                    j++
-                }
-            }
-            if(j<i)
-            {
-                while(PWOF.pipe.get([row-1,j])!=WB)
-                {
-                    j++
-                }
-            }  
-        }
-        while(i<j)
-        {
-            if(PWOF.pipe.get([row,i])==empty)
-                PWOF.pipe.set([row,i], stall)
-            i++
-        }
-        PWOF.pipe.set([row,i], IDRF)
-} */
