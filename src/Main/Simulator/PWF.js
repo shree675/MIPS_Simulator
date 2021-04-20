@@ -126,18 +126,18 @@ PWF.updateCache = (wordAddress, store) =>
         {
             //search successful, found in this set
             l1_flag=1
+            let currentP1 = PWF.L1Priority.get([l1set_index,i])
             if(PWF.L1Priority.get([l1set_index,i]) != 0)
             {
                 for(let j=0; j<l1_blocks; j++)//parsing through the blocks in the corresponding set and updating priority
                 {
-                    if(PWF.L1Priority.get([l1set_index,j]) != -1)
+                    if(PWF.L1Priority.get([l1set_index,j]) != -1 && PWF.L1Priority.get([l1set_index,j])<currentP1)
                     {
                         let t = PWF.L1Priority.get([l1set_index,j])
                         PWF.L1Priority.set([l1set_index,j], t+1)
                     }
                 }
                 PWF.L1Priority.set([l1set_index,i],0)
-                break
             }
             else
             {
@@ -151,6 +151,7 @@ PWF.updateCache = (wordAddress, store) =>
                     PWF.L1.set([l1set_index, i, j], PWF.memory[t+j])
                 }
             }
+            break
         }
     }
     if(!l1_flag)//if the search was unsuccessful, need to write/overwrite
@@ -191,18 +192,18 @@ PWF.updateCache = (wordAddress, store) =>
         if(PWF.L2Tags.get([l2set_index,i]) == l2block_index)
         {
             l2_flag=1
+            let currentP2 = PWF.L2Priority.get([l2set_index,i])
             if(PWF.L2Priority.get([l2set_index,i]) != 0 && (store || !l1_flag))
             {
                 for(let j=0; j<l2_blocks; j++)//parsing through the blocks in the corresponding set and updating priority
                 {
-                    if(PWF.L2Priority.get([l2set_index,j]) != -1)
+                    if(PWF.L2Priority.get([l2set_index,j]) != -1 && PWF.L2Priority.get([l2set_index,j])<currentP2)
                     {
                         let t = PWF.L2Priority.get([l2set_index,j])
                         PWF.L2Priority.set([l2set_index,j], t+1)
                     }
                 }
                 PWF.L2Priority.set([l2set_index,i],0)
-                break
             }
             else
             {
@@ -216,6 +217,7 @@ PWF.updateCache = (wordAddress, store) =>
                     PWF.L2.set([l2set_index, i, j], PWF.memory[t+j])
                 }
             }
+            break
         }
     }
     if(!l2_flag)//if the search was unsuccessful, need to write/overwrite

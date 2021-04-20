@@ -111,18 +111,18 @@ processor.updateCache = (wordAddress, store) =>
         {
             //search successful, found in this set
             l1_flag=1
+            let currentP1 = processor.L1Priority.get([l1set_index,i])
             if(processor.L1Priority.get([l1set_index,i]) != 0)
             {
                 for(let j=0; j<l1_blocks; j++)//parsing through the blocks in the corresponding set and updating priority
                 {
-                    if(processor.L1Priority.get([l1set_index,j]) != -1)
+                    if(processor.L1Priority.get([l1set_index,j]) != -1 && processor.L1Priority.get([l1set_index,j])<currentP1)
                     {
                         let t = processor.L1Priority.get([l1set_index,j])
                         processor.L1Priority.set([l1set_index,j], t+1)
                     }
                 }
                 processor.L1Priority.set([l1set_index,i],0)
-                break
             }
             else
             {
@@ -137,6 +137,7 @@ processor.updateCache = (wordAddress, store) =>
                     
                 }
             }
+            break
         }
     }
     if(!l1_flag)//if the search was unsuccessful, need to write/overwrite
@@ -178,18 +179,18 @@ processor.updateCache = (wordAddress, store) =>
         {
             //search successful, found in this set
             l2_flag=1
+            let currentP2 = processor.L2Priority.get([l2set_index,i])
             if(processor.L2Priority.get([l2set_index,i]) != 0 && (store || !l1_flag))//only update priority if it is not a L1 hit or if it is a store
             {
                 for(let j=0; j<l2_blocks; j++)//parsing through the blocks in the corresponding set and updating priority
                 {
-                    if(processor.L2Priority.get([l2set_index,j]) != -1)
+                    if(processor.L2Priority.get([l2set_index,j]) != -1 && processor.L2Priority.get([l2set_index,j])<currentP2)
                     {
                         let t = processor.L2Priority.get([l2set_index,j])
                         processor.L2Priority.set([l2set_index,j], t+1)
                     }
                 }
                 processor.L2Priority.set([l2set_index,i],0)
-                break
             }
             else
             {
@@ -203,6 +204,7 @@ processor.updateCache = (wordAddress, store) =>
                     processor.L2.set([l2set_index, i, j], processor.memory[t+j])
                 }
             }
+            break
         }
     }
     if(!l2_flag)//if the search was unsuccessful, need to write/overwrite
@@ -252,21 +254,18 @@ processor.getMemory = (wordAddress) =>
     processor.updateCache(wordAddress, false) 
     return processor.memory[index]
 } 
-
 processor.setRegister = (reg, num) => {
     if(reg==='r0' || reg==='zero')
         processor.registers.set('r0', 0)
     else
         processor.registers.set(reg, num)
 }
-
 processor.getRegister = (reg) => {
     if(reg === "zero" || reg==='r0'){
         return 0;
     }
     return processor.registers.get(reg)
 }
-
 processor.reset = () => {    
     processor.memory = new Array(1024).fill(0) 
     processor.pc = 0
