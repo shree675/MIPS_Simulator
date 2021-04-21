@@ -150,6 +150,10 @@ PWOF.updateCache = (wordAddress, store) =>
                     PWOF.L1.set([l1set_index, i, j], PWOF.memory[t+j])
                 }
             }
+            else
+            {
+                return
+            }
             break
         }
     }
