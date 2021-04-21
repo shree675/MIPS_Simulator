@@ -137,6 +137,10 @@ processor.updateCache = (wordAddress, store) =>
                     
                 }
             }
+            else
+            {
+                return
+            }
             break
         }
     }

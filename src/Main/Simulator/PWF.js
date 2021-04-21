@@ -151,6 +151,10 @@ PWF.updateCache = (wordAddress, store) =>
                     PWF.L1.set([l1set_index, i, j], PWF.memory[t+j])
                 }
             }
+            else
+            {
+                return
+            }
             break
         }
     }
