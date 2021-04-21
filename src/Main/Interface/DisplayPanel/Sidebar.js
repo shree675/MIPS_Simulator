@@ -140,8 +140,10 @@ const Sidebar = props =>                  // Sidebar component (main)
   }
 
   for(var [key,value] of registersmap){
-    registersmaphex.set(key,value.toString(16));
-    registersmapbin.set(key,value.toString(2));    
+    if(value!=undefined){
+      registersmaphex.set(key,value.toString(16));
+      registersmapbin.set(key,value.toString(2));    
+    }
   }
 
   function reg() {                              // display register segment only on toggle
@@ -306,10 +308,12 @@ const Sidebar = props =>                  // Sidebar component (main)
     if(item.value==="Direct Mapped"){
       l1assoc=1;
       l1assocactual=l1assoc;
+      l1assocerror=false;
     }
     else if(item.value==="Fully Associative"){
       l1assoc=l1cachesize/l1blocksize;
       l1assocactual=l1assoc;
+      l1assocerror=false;
     }
     else{
       l1assoc=parseInt(item.value);
@@ -326,7 +330,7 @@ const Sidebar = props =>                  // Sidebar component (main)
       }
       else{
         l1assocerror=false;
-        l1assoc=4;
+        l1assoc=l1assocactual;
       }
     }
     onCacheChange();
