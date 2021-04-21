@@ -2,16 +2,8 @@ html, body {
     background-color: #383144;
 }
 
-/* .instructionpage {
-    height: 100%;
-    width: 100%;
-    background-color: #383144;
-} */
-
 .navbar {
     background-color: #292929;
-    /* padding: 10px; */
-    /* padding-right: 0px; */
     display: flex;
     flex-direction: row;
     justify-content: space-between;
@@ -24,13 +16,6 @@ html, body {
     padding-left: 10px;
     padding-top: 10px;
     padding-bottom: 10px;
-    /* width: 200px; */
-}
-
-.return-button {
-    float: right;
-    height: 100%;
-    /* margin: 0px; */
 }
 
 .nutshell {
@@ -38,13 +23,9 @@ html, body {
 }
 
 .svg-image {
-    /* width:fit-content; */
-    /* height:; */
     margin: 20px;
-    /* margin-left: 100px; */
-    /* margin-right: 100px; */
-    /* object-fit: fill; */
     padding: 10px;
     max-width: 100%;
     max-height: 100%;
+    border: 2px solid lightblue;
 }
