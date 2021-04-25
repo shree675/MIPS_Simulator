@@ -7,14 +7,14 @@
 # MIPSploration.asm
 <img src="readme_assets/asmIcon.svg" height="150" width="150">
 
-MIPSploration.asm is a web-based assembly language simulator that shows you how your MIPS assembly code alters the registers, memory and other related entities, step by step.
+*MIPSploration.asm* is a web-based assembly language simulator that shows you how your MIPS assembly code alters the registers, memory and other related entities, step by step.
 This project was developed as a part of the Computer Organization Lab course and aims to provide a exploratory experience of MIPS and related basic concepts of Computer Organization. 
 
 ## Get Started
 This Simulator has been developed using React. To host it locally, run the following
-1. Download the zip file (or) fork this repository and use git clone to clone it on your local desktop
-2. Run npm install
-3. Run npm start
+1. Download the zip file (or) fork this repository and use ```git clone``` to clone it on your local desktop
+2. Run ```npm install```
+3. Run ```npm start```
 <p>*Node and npm are required to run Simulator locally</p>
 
 ## How to use it
