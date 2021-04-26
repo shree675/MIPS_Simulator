@@ -9,7 +9,7 @@
 <img src="readme_assets/asmIcon.svg" height="150" width="150">
 
 *MIPSploration.asm* is a web-based assembly language simulator that shows you how your MIPS assembly code alters the registers, memory and other related entities, step by step.
-This project was developed as a part of the Computer Organization Lab course and aims to provide a exploratory experience of MIPS and related basic concepts of Computer Organization. 
+This project was developed as a part of the Computer Organization Lab course and aims to provide a exploratory experience of MIPS and related basic concepts of Computer Organization such as pipelining and memory heirarchy. 
 
 ## Get Started
 This Simulator has been developed using React. To host it locally, run the following
@@ -19,7 +19,7 @@ This Simulator has been developed using React. To host it locally, run the follo
 <p>*Node and npm are required to run Simulator locally</p>
 
 ## How to use it
-1. Enter your MIPS assembly code in the integrated code editor provided either by typing or using the Upload option.
+1. Enter your MIPS assembly code in the integrated code editor provided, either by typing or by using the UPLOAD option.
 2. Click on RUN to process the entire code altogether and generate the pipeline
     (or)
    Click on STEP to execute each line of code step by step.
@@ -28,19 +28,22 @@ This Simulator has been developed using React. To host it locally, run the follo
 5. Print outputs appear on the read-only console present at the bottom.
 6. On clicking on RUN, two versions of the pipeline are generated - with forwarding and without forwarding.
 7. The two pipeline tables along with the IPC and the number of stalls are displayed in the console region. Navigate to the two versions by clicking on either 'Pipeline-Forwarding' or 'Pipeline-NoForwarding' buttons next to 'Console' button.
-8. Switch to the Cache segment to enable/disable cache with appropriate settings.
+8. Switch to the CACHE panel to change cache configuration settings and contents of the L1 and L2 caches. 
 9. Click on STEP to see the changes in the caches in real time, or click on RUN to generate the final cache table configurations.
 10. Click on CLEAR ALL to clear the editor, console, pipeline, registers and memory.
+
+<img src="readme_assets/InstructionsPage1.svg" height="750" width="1920">
+<img src="readme_assets/InstructionsPage2.svg" height="750" width="1920">
 
 ## More on Pipeline
 * There are five stages in the pipeline:                                                                                                                        
 Instruction Fetch (IF), Instruction Decode/Register Fetch (IDRF), Execute (EX), Memory (MEM) and Write Back (WB).
 * The types of forwarding allowed are EX-MEM to ID/RF-EX and MEM-WB to ID/RF-EXE.
-* In this simulator, syscall requires the correct values of registers $a0 and $v0 at the EXE stage. A failed IDRF stage is considered to be a STALL, hence IDRF stage occurs only once per instruction.
+* In this simulator, syscall requires the correct values of registers $a0 and $v0 at the EXE stage. A failed IDRF stage is represented as a STALL, hence IDRF stage is displayed only once per instruction.
 
 Note:
-1. Large files may take up to 1 minute to execute. If an unresponsive page prompt is thrown, then please click on Wait until it finishes executing.
-2. The pipeline tables displayed will be trimmed to fit within 200 columns or 100 rows, in the case of long pipelines.
+1. Large programs like BubbleSort may take up to 1 minute to execute. If an unresponsive page prompt is thrown, then please click on Wait until it finishes executing.
+2. The pipeline tables displayed will be trimmed to fit within 200 columns or 100 rows, in the case of long programs so as to prevent the page from slowing down.
 
 ## More on Cache
 * There are two levels of cache: L1 and L2. Each level cache can be tuned independent of the other, according to the requirements.
@@ -49,7 +52,7 @@ Note:
 * [Write-through](https://www.geeksforgeeks.org/write-through-and-write-back-in-cache/#:~:text=In%20write%20through%2C%20data%20is,power%20outage%20or%20system%20failure) write strategy has been adopted by this simulator.
 - [x] Hypothetical Ideal Case:
 
-On selecting this option in the cache settings, the cache is completely disabled and MEM latency is assumed to be 1 clock cycle. This option has been incoorporated to portray the significant difference in the IPC in the ideal case vs the real-world case.
+On selecting this option in the cache settings, the cache is completely disabled and MEM latency is assumed to be 1 clock cycle. This feature has been incorporated to highlight the significant difference in the IPC in the ideal case without a memory bottleneck vs the real-world case.
 
 
 ## Instructions supported by MIPSploration.asm
@@ -74,7 +77,7 @@ On selecting this option in the cache settings, the cache is completely disabled
 ><p>syscall</p>
 
 ## Additional Notes
-1. It is recommended to strictly follow the syntax and formatting conventions of MIPS to avoid unforseen errors. Avoid using registers that are not allowed for user such as the $at register.
+1. It is recommended to strictly follow the syntax and formatting conventions of MIPS to avoid unforeseen errors. Avoid using registers that are not allowed for user such as the $at register.
 2. Refreshing the page or navigating to the instructions page will result in loss of contents of the editor, registers and memory.
 
 ## Framework
