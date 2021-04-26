@@ -32,8 +32,11 @@ This Simulator has been developed using React. To host it locally, run the follo
 9. Click on STEP to see the changes in the caches in real time, or click on RUN to generate the final cache table configurations.
 10. Click on CLEAR ALL to clear the editor, console, pipeline, registers and memory.
 
-<img src="readme_assets/InstructionsPage1.svg" height="750" width="1920">
-<img src="readme_assets/InstructionsPage2.svg" height="750" width="1920">
+## Screenshots
+<p>
+    <img src="readme_assets/InstructionsPage1.svg" height="600" width="1920">
+    <img src="readme_assets/InstructionsPage2.svg" height="600" width="1920">
+</p>
 
 ## More on Pipeline
 * There are five stages in the pipeline:                                                                                                                        
