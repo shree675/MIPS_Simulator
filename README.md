@@ -32,6 +32,9 @@ This Simulator has been developed using React. To host it locally, run the follo
 9. Click on STEP to see the changes in the caches in real time, or click on RUN to generate the final cache table configurations.
 10. Click on CLEAR ALL to clear the editor, console, pipeline, registers and memory.
 
+<img src="readme_assets/InstructionsPage1.svg" height="1080" width="1920">
+<img src="readme_assets/InstructionsPage2.svg" height="1080" width="1920">
+
 ## More on Pipeline
 * There are five stages in the pipeline:                                                                                                                        
 Instruction Fetch (IF), Instruction Decode/Register Fetch (IDRF), Execute (EX), Memory (MEM) and Write Back (WB).
