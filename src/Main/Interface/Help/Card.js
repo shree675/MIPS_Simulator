@@ -22,6 +22,8 @@ class DropDownCard extends Component{
         this.piptest1=this.piptest1.bind(this);
         this.piptest2=this.piptest2.bind(this);
         this.piptest3=this.piptest3.bind(this);
+        this.cachetest1=this.cachetest1.bind(this);
+        this.cachetest2=this.cachetest2.bind(this);
 
       }
 
@@ -82,6 +84,22 @@ class DropDownCard extends Component{
             displayMenu: false,
         });
       }
+
+      cachetest1(){
+        const codes = new Codes();
+        this.props.setCode(codes.cachetest1);
+        this.setState({
+            displayMenu: false,
+        });
+      }
+
+      cachetest2(){
+        const codes = new Codes();
+        this.props.setCode(codes.cachetest2);
+        this.setState({
+            displayMenu: false,
+        });
+      }
       
       displayMenu(event) {                // function that expands the HELP panel on click
         event.preventDefault();
@@ -118,6 +136,8 @@ class DropDownCard extends Component{
                     <button onClick={this.piptest2} id="opened" className="ns a-button">PipeLD/ST.asm</button>
                     <button onClick={this.piptest3} id="opened" className="ns a-button">PipeBranch.asm</button>
                     <button onClick={this.piptest1} id="opened" className="ns a-button">PipeUnited.asm</button>
+                    <button onClick={this.cachetest1} id="opened" className="ns a-button">CacheReads.asm</button>
+                    <button onClick={this.cachetest2} id="opened" className="ns a-button">CacheWrites.asm</button>
                 </div>):(null)
                 }
                 

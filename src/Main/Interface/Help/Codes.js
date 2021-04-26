@@ -17,6 +17,10 @@ class Codes{
 
     piptest3 = '.data\n.word 268500996, 8\n\n.text\n.globl main\n\nmain:\n\t    li $t3, 0x10010000\n\t	add $t1, $t2, $zero\n\t	beq $t1, $zero, Next\n\nNext:\n\t	sub $t2, $t1, $t2\n\t	lw $t1, 0($t3)\n\t	lw $t2, 0($t1)\n\t	bne $t1, $t2, Next2\n\nNext2:\n\t	addi $t1, $zero, 0\n\t	beq $zero, $zero, Next3\n\nNext3:\n\t    sw $t1, 0($t3)\n\t	jr $ra';
 
+    cachetest1 = '# Sample program to test cache reads\n.data\n\t.word 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17\n\n.text\n.globl main\n\nmain:\n\n\tli $s0, 0x10010000\n\n\tlw $t0, 0($s0)      # read 1\n\tlw $t0, 8($s0)      # read 3\n\tlw $t0, 20($s0)     # read 20\n\tlw $t0, 4($s0)      # access 2 from L1\n\tlw $t0, 32($s0)     # read 9\n\tlw $t0, 16($s0)     # read 5\n\tlw $t0, 48($s0)     # read 13\n\tlw $t0, 0($s0)      # access 1 from L2\n\tlw $t0, 64($s0)     # read 17\n\tlw $t0, 12($s0)     # access 4 from L1\n';
+
+    cachetest2 = '# Sample program to test cache writes\n.data\n\t.word 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20\n\n.text\n.globl main\n\nmain:\n\n\tli $s0, 0x10010000\n\n\tlw $t0, 0($s0)          # read 1\n\tlw $t0, 20($s0)         # read 6\n\tsw $t0, 4($s0)          # write 6 into 2\n\tsw $t0, 0($s0)          # write 6 into 1\n\tlw $t0, 36($s0)         # read 10\n\tlw $t0, 4($s0)          # read 6 (updated value)\n\tlw $t0, 16($s0)         # read 5\n\taddi $t0, $t0, 17\n\tsw $t0, 36($s0)         # write 22 into 10\n\taddi $t0, $zero, 1245\n\tsw $t0, 28($s0)         # write 1245 into 8';
+
 }
  
 export default Codes;
