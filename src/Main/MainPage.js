@@ -172,7 +172,7 @@ class MainPage extends Component { //this is the Mainpage where all components o
       PWOFMatrix: null,
       valid: 1,      
 		})
-    this.ideMan.current.highlight(-1);
+    this.ideMan.current.highlight(0);
     processor.L1=new Array(0);
     processor.L2=new Array(0);    
 	}
