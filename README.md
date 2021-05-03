@@ -60,25 +60,26 @@ On selecting this option in the cache settings, the cache is completely disabled
 
 
 ## Instructions supported by MIPSploration.asm
-
-><p>.word</p>
-><p>add $1,$2,$3</p>
-><p>sub $1,$2,$3</p>
-><p>subu $1,$2,$3 </p>
-><p>addi $1,$2,100</p>
-><p>bne $1,$2,100</p>
-><p>lw $1,100($2)</p>
-><p>sw $1,100($2)</p>
-><p>lui $1,100</p>
-><p>li $1,100</p>
-><p>beq $1,$2,100</p>
-><p>ble $1,$2,100</p>
-><p>addiu $1,$2,100</p>
-><p>addu $1,$2,$3</p>
-><p>j loop</p>
-><p>srl $a0,$a0,1</p>
-><p>sll $a0,$a0,1</p>
-><p>syscall</p>
+```  
+.word
+add $1,$2,$3
+sub $1,$2,$3
+subu $1,$2,$3
+addi $1,$2,100
+bne $1,$2,100
+lw $1,100($2)
+sw $1,100($2)
+lui $1,100
+li $1,100
+beq $1,$2,100
+ble $1,$2,100
+addiu $1,$2,100
+addu $1,$2,$3
+j loop
+srl $a0,$a0,1
+sll $a0,$a0,1
+syscall
+```
 
 ## Additional Notes
 1. It is recommended to strictly follow the syntax and formatting conventions of MIPS to avoid unforeseen errors. Avoid using registers that are not allowed for user such as the $at register.
