@@ -12,10 +12,12 @@
 *MIPSploration.asm* is a web-based assembly language simulator that shows you how your MIPS assembly code alters the registers, memory and other related entities, step by step.
 This project was developed as a part of the Computer Organization Lab course and aims to provide a exploratory experience of MIPS and related basic concepts of Computer Organization such as pipelining and memory heirarchy. 
 
+## Get Started
+This Simulator has been developed using React.
+
 Check out our simulator here: http://mipsploration.vercel.app
 
-## Get Started
-This Simulator has been developed using React. To host it locally, run the following
+Alternatively, to host it locally, run the following
 1. Download the zip file (or) fork this repository and use ```git clone``` to clone it on your local desktop
 2. Run ```npm install```
 3. Run ```npm start```
