@@ -87,7 +87,7 @@ syscall
 
 ## Additional Notes
 1. It is recommended to strictly follow the syntax and formatting conventions of MIPS to avoid unforeseen errors. Avoid using registers that are not allowed for user such as the $at register.
-2. Refreshing the page or navigating to the instructions page will result in loss of contents of the editor, registers and memory.
+2. Refreshing the page or navigating to the instructions page will result in loss of contents of the editor, registers, memory and cache.
 
 ## Framework
 This simulator has been built using React. Visit [React dev](https://reactjs.org/).
