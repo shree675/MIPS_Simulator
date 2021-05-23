@@ -23,7 +23,7 @@ Alternatively, to host it locally, run the following
 1. Download the zip file (or) fork this repository and use ```git clone``` to clone it on your local desktop
 2. Run ```npm install```
 3. Run ```npm start```
-<p>*Node and npm are required to run Simulator locally</p>
+<p>*Node is required to run the Simulator locally</p>
 
 ## How to use it
 1. Enter your MIPS assembly code in the integrated code editor provided, either by typing or by using the UPLOAD option.
