@@ -1,7 +1,7 @@
 <p>
     <img src="https://img.shields.io/badge/react-v17.0.1-ff69b4">&emsp;
     <img src="https://img.shields.io/badge/dependencies-up%20to%20date-brightgreen">&emsp;
-    <img src="https://img.shields.io/badge/JavaScript-89.1%25-informational">&emsp;
+    <img src="https://img.shields.io/badge/JavaScript-88.5%25-informational">&emsp;
     <img src="https://img.shields.io/badge/deployement-vercel-lightgrey">&emsp;
     <img src="https://img.shields.io/badge/build-passing-brightgreen">&emsp;
 </p>
@@ -10,16 +10,20 @@
 <img src="readme_assets/asmIcon.svg" height="150" width="150">
 
 *MIPSploration.asm* is a web-based assembly language simulator that shows you how your MIPS assembly code alters the registers, memory and other related entities, step by step.
-This project was developed as a part of the Computer Organization Lab course and aims to provide a exploratory experience of MIPS and related basic concepts of Computer Organization such as pipelining and memory heirarchy. 
+This project was developed as a part of the Computer Organization Lab course and aims to provide a exploratory experience of MIPS and related basic concepts of Computer Organization such as pipelining and memory heirarchy.
+
+Here is a video demo of the simulator: https://www.youtube.com/watch?v=pbqVeBL1omE
+
+## Get Started
+This Simulator has been developed using React.
 
 Check out our simulator here: http://mipsploration.vercel.app
 
-## Get Started
-This Simulator has been developed using React. To host it locally, run the following
+Alternatively, to host it locally, run the following
 1. Download the zip file (or) fork this repository and use ```git clone``` to clone it on your local desktop
 2. Run ```npm install```
 3. Run ```npm start```
-<p>*Node and npm are required to run Simulator locally</p>
+<p>*Node is required to run the Simulator locally</p>
 
 ## How to use it
 1. Enter your MIPS assembly code in the integrated code editor provided, either by typing or by using the UPLOAD option.
@@ -85,7 +89,7 @@ syscall
 
 ## Additional Notes
 1. It is recommended to strictly follow the syntax and formatting conventions of MIPS to avoid unforeseen errors. Avoid using registers that are not allowed for user such as the $at register.
-2. Refreshing the page or navigating to the instructions page will result in loss of contents of the editor, registers and memory.
+2. Refreshing the page or navigating to the instructions page will result in loss of contents of the editor, registers, memory and cache.
 
 ## Framework
 This simulator has been built using React. Visit [React dev](https://reactjs.org/).
