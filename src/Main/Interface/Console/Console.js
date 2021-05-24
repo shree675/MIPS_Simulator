@@ -107,9 +107,21 @@ const Console = props => {               // Console component (main)
             <div className="write-code">
                 ⚠ <span id="normal-text">Write some code and click 'RUN' to generate the pipeline</span>
                 <p>
-                <div style={{color: `#acacac`}}>Note: Large codes may take around a minute to execute.</div>
-                <div style={{color: `#acacac`}}>In case the page is unresponsive, please click on 'Wait' until it finishes executing.</div>
-                            </p></div>)  
+            
+            <div style={{color: `#acacac`}}>
+            <p style={{color: `#acacac`}}>Note:</p>
+                <ol style={{marginTop: `-10px`}}>
+                    <li>
+                    Lengthy codes may take around a minute to execute. In case the page is unresponsive, please click on 'Wait' until it finishes executing.
+                    </li>
+                    <li>
+                    Large pipeline diagrams are truncated to improve performance of the simulator.
+                    </li>
+                </ol>
+            {/* </span> */}
+            </div>
+            </p>
+            </div>)  
             )
             
         );
@@ -185,10 +197,22 @@ const Console = props => {               // Console component (main)
             <div className="write-code">
             ⚠ <span id="normal-text">Write some code and click 'RUN' to generate the pipeline</span>
             <p>
-            <div style={{color: `#acacac`}}>Note: Large codes may take around a minute to execute.</div>
-            <div style={{color: `#acacac`}}>In case the page is unresponsive, please click on 'Wait' until it finishes executing.</div>
-                        </p></div>)  
-            )
+            
+            <div style={{color: `#acacac`}}>
+            <p style={{color: `#acacac`}}>Note:</p>
+                <ol style={{marginTop: `-10px`}}>
+                    <li>
+                    Lengthy codes may take around a minute to execute. In case the page is unresponsive, please click on 'Wait' until it finishes executing.
+                    </li>
+                    <li>
+                    Large pipeline diagrams are truncated to improve performance of the simulator.
+                    </li>
+                </ol>
+            {/* </span> */}
+            </div>
+            </p>
+            </div>
+            ))
             
         );
     }
