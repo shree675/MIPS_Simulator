@@ -66,7 +66,7 @@ On selecting this option in the cache settings, the cache is completely disabled
 
 
 ## Instructions supported by MIPSploration.asm
-```  
+```asm
 .word
 add $1,$2,$3
 sub $1,$2,$3
