@@ -65,25 +65,25 @@ Note:
 On selecting this option in the cache settings, the cache is completely disabled and MEM latency is assumed to be 1 clock cycle. This feature has been incorporated to highlight the significant difference in the IPC in the ideal case without a memory bottleneck vs the real-world case.
 
 
-## Instructions supported by MIPSploration.asm
+## Instructions and keywords supported by MIPSploration.asm
 ```asm
 .word
-add $1,$2,$3
-sub $1,$2,$3
-subu $1,$2,$3
-addi $1,$2,100
-bne $1,$2,100
-lw $1,100($2)
-sw $1,100($2)
-lui $1,100
-li $1,100
-beq $1,$2,100
-ble $1,$2,100
-addiu $1,$2,100
-addu $1,$2,$3
+add $1, $2, $3
+sub $1, $2, $3
+subu $1, $2, $3
+addi $1, $2, 100
+bne $1, $2, 100
+lw $1, 100($2)
+sw $1, 100($2)
+lui $1, 100
+li $1, 100
+beq $1, $2, 100
+ble $1, $2, 100
+addiu $1, $2, 100
+addu $1, $2, $3
 j loop
-srl $a0,$a0,1
-sll $a0,$a0,1
+srl $a0, $a0, 1
+sll $a0, $a0, 1
 syscall
 ```
 
