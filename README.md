@@ -41,8 +41,8 @@ Alternatively, to host it locally, run the following
 
 ## Screenshots
 <p>
-    <img src="readme_assets/InstructionsPage1.svg" height="600" width="1920">
-    <img src="readme_assets/InstructionsPage2.svg" height="600" width="1920">
+    <img src="readme_assets/InstructionsPage1.svg" height="600" width="1080">
+    <img src="readme_assets/InstructionsPage2.svg" height="600" width="1080">
 </p>
 
 ## More on Pipeline
