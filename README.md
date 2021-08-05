@@ -49,7 +49,7 @@ Alternatively, to host it locally, run the following
 * There are five stages in the pipeline:                                                                                                                        
 Instruction Fetch (IF), Instruction Decode/Register Fetch (ID/RF), Execute (EX), Memory (MEM) and Write Back (WB).
 * The types of forwarding allowed are EX-MEM to ID/RF-EX and MEM-WB to ID/RF-EX.
-* In this simulator, syscall requires the correct values of registers $a0 and $v0 at the EX stage. A failed ID/RF stage is represented as a STALL, hence ID/RF stage is displayed only once per instruction.
+* In this simulator, syscall requires the correct values of registers **$a0** and **$v0** at the EX stage. A failed ID/RF stage is represented as a STALL, hence ID/RF stage is displayed only once per instruction.
 
 Note:
 1. Large programs like BubbleSort may take up to 1 minute to execute. If an unresponsive page prompt is thrown, then please click on 'Wait' until it finishes executing.
@@ -88,7 +88,7 @@ syscall
 ```
 
 ## Additional Notes
-1. It is recommended to strictly follow the syntax and formatting conventions of MIPS to avoid unforeseen errors. Avoid using registers that are not allowed for user such as the $at register.
+1. It is recommended to strictly follow the syntax and formatting conventions of MIPS to avoid unforeseen errors. Avoid using registers that are not allowed for user such as the **$at** register.
 2. Refreshing the page or navigating to the instructions page will result in loss of contents of the editor, registers, memory and cache.
 
 ## Framework
