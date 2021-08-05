@@ -48,8 +48,8 @@ Alternatively, to host it locally, run the following
 ## More on Pipeline
 * There are five stages in the pipeline:                                                                                                                        
 Instruction Fetch (IF), Instruction Decode/Register Fetch (ID/RF), Execute (EX), Memory (MEM) and Write Back (WB).
-* The types of forwarding allowed are EX-MEM to ID/RF-EX and MEM-WB to ID/RF-EXE.
-* In this simulator, syscall requires the correct values of registers $a0 and $v0 at the EXE stage. A failed IDRF stage is represented as a STALL, hence IDRF stage is displayed only once per instruction.
+* The types of forwarding allowed are EX-MEM to ID/RF-EX and MEM-WB to ID/RF-EX.
+* In this simulator, syscall requires the correct values of registers $a0 and $v0 at the EX stage. A failed IDRF stage is represented as a STALL, hence ID/RF stage is displayed only once per instruction.
 
 Note:
 1. Large programs like BubbleSort may take up to 1 minute to execute. If an unresponsive page prompt is thrown, then please click on Wait until it finishes executing.
