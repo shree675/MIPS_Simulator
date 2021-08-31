@@ -1,7 +1,7 @@
 <p>
     <img src="https://img.shields.io/badge/react-v17.0.1-ff69b4">&emsp;
     <img src="https://img.shields.io/badge/dependencies-up%20to%20date-brightgreen">&emsp;
-    <img src="https://img.shields.io/badge/JavaScript-88.6%25-informational">&emsp;
+    <img src="https://img.shields.io/badge/javascript-88.6%25-informational">&emsp;
     <img src="https://img.shields.io/badge/deployment-vercel-lightgrey">&emsp;
     <img src="https://img.shields.io/badge/build-passing-brightgreen">&emsp;
 </p>
